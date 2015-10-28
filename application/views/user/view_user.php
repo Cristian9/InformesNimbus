@@ -17,7 +17,7 @@
         <div class="box">
             <div class="box-header">
                 <div class="box-name">
-                    <i class="fa fa-usd"></i>
+                    <i class="fa fa-asterisk"></i>
                     <span>Listado de Usuarios</span>
                 </div>
                 <div class="box-icons">
@@ -33,8 +33,9 @@
                 </div>
                 <div class="no-move"></div>
             </div>
-            <div class="box-content no-padding">
-                <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="datatable-1">
+            <div class="clearfix">&nbsp;</div>
+            <div class="box-content padding-15">
+                <table class="table table-striped table-hover table-heading table-datatable" id="datatable-1">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -43,6 +44,7 @@
                             <th>Usuario</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +59,7 @@
                             <td><?php echo $value['username']; ?></td>
                             <td><?php echo $value['email']; ?></td>
                             <td><?php echo $value['active']; ?></td>
+                            <td align="center"><a href="" title="Eliminar asignacion"><i class="fa fa-trash-o fa-2x"></i></a></td>
                         <?php
                             }
                         ?>
@@ -70,6 +73,7 @@
                             <th>Usuario</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Options</th>
                         </tr>
                     </tfoot>
                 </table>
