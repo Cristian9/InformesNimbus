@@ -6,7 +6,7 @@ Options +FollowSymLinks
 RewriteEngine On
 #the location of the root of your site
 #if writing for subdirectories, you would enter /subdirectory
-RewriteBase /reportes_nimbus
+RewriteBase /informes_nimbus
 #RewriteBase /synergoz/syntesys
 
 

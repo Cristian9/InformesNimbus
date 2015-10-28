@@ -85,7 +85,6 @@ class User_controller extends CI_Controller {
         $user = $this->input->post('user');
         $fstn = $this->input->post('fstn');
         $lstn = $this->input->post('lstn');
-        $pass = $this->input->post('pass');
         $mail = $this->input->post('mail');
         $reco = $_SESSION['id'];
         $date = date('Y-m-d H:i:s');
@@ -94,7 +93,6 @@ class User_controller extends CI_Controller {
                 $user,
                 $fstn,
                 $lstn,
-                $pass,
                 $mail,
                 $reco,
                 $date

@@ -22,10 +22,18 @@ class Main_controller extends CI_Controller {
         session_start();
         $user = $this->input->post('usuario');
         $pass = $this->input->post('password');
+        
+        // Respuesta del AD
         $ok = 'ok';
+        
         if ($ok == 'ok') {
             $_SESSION['usuario'] = $user;
-            redirect('main-menu');
+            $auth_check = $this->main_model->check_user($_SESSION['usuario']);
+            if(!empty($auth_check)){
+                redirect('main-menu');
+            }else{
+                redirect('login?errorAuth=1');
+            }
         }
     }
 
@@ -39,7 +47,7 @@ class Main_controller extends CI_Controller {
             $datos_menu = $this->main_model->get_menu($_SESSION['usuario']);
             $datos_perfil = $this->main_model->get_profile($_SESSION['usuario']);
             $city_profile = $this->main_model->get_city_assignment($_SESSION['usuario']);
-            $period_profile = $this->main_model->get_period_assignment($_SESSION['usuario']);
+            //$period_profile = $this->main_model->get_period_assignment($_SESSION['usuario']);
             $category_profile = $this->main_model->get_category_assignment($_SESSION['usuario']);
 
             $aux = ['area_id', 'faculty_id', 'program_id', 'curso_id'];
@@ -55,7 +63,7 @@ class Main_controller extends CI_Controller {
             }
 
             $_SESSION['city'] = $city_profile;
-            $_SESSION['periodo'] = $period_profile;
+            //$_SESSION['periodo'] = $period_profile;
             $_SESSION['category'] = $category_profile;
 
             /* echo "<pre>";

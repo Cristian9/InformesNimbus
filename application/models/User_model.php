@@ -62,12 +62,12 @@ class User_model extends CI_Model {
             $sql_del_permission = "delete from n_permissions where user_id = " . $usuario;
             $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $usuario;
             $sql_del_ascity = "delete from n_assignment_city where user_id = " . $usuario;
-            $sql_del_asperiodo = "delete from n_assignment_period where user_id = " . $usuario;
+            //$sql_del_asperiodo = "delete from n_assignment_period where user_id = " . $usuario;
             $this->db->query($sql_del_assignment);
             $this->db->query($sql_del_permission);
             $this->db->query($sql_del_ascategory);
             $this->db->query($sql_del_ascity);
-            $this->db->query($sql_del_asperiodo);
+            //$this->db->query($sql_del_asperiodo);
         }
 
         // Verifica que array es el que esta cargado
@@ -130,11 +130,11 @@ class User_model extends CI_Model {
         return ($query_access) ? true : false;
     }
 
-    function add($user, $fstn, $lstn, $pass, $mail, $reco, $date) {
+    function add($user, $fstn, $lstn, $mail, $reco, $date) {
         $sql = "insert into n_users (lastname, firstname, username, "
-                . "password, email, registration_date, creator_id, active) "
-                . "values ('" . strtoupper($lstn) . "', '" . $fstn . "', '" . $user . "', sha1('" . $pass . "')"
-                . ", '" . $mail . "', '" . $date . "', '" . $reco . "', 1)";
+                . " email, registration_date, creator_id, active) "
+                . "values ('" . strtoupper($lstn) . "', '" . $fstn . "', '" . $user . "',"
+                . " '" . $mail . "', '" . $date . "', '" . $reco . "', 1)";
         return $this->db->query($sql);
     }
 

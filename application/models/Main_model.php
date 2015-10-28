@@ -34,13 +34,18 @@ class Main_model extends CI_Model {
 
         return $this->db->query($sql_assignment_city)->result('array');
     }
+    
+    function check_user( $user ){
+        $sql_check = "select username from n_users where username = '".$user."' and active = '1'";
+        return $this->db->query($sql_check)->result('array');
+    }
 
-    function get_period_assignment($userid) {
+    /*function get_period_assignment($userid) {
         $sql_assignment_period = "select period_id, p.periodo from n_assignment_period, "
                 . "n_users u, n_period p where u.id = user_id and period_id = p.id and u.username = '" . $userid . "'";
 
         return $this->db->query($sql_assignment_period)->result('array');
-    }
+    }*/
 
     function get_category_assignment($userid) {
         $sql_assignment_category = "select category_id, c.category "
