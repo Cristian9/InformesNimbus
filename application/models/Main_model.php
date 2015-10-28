@@ -34,10 +34,19 @@ class Main_model extends CI_Model {
 
         return $this->db->query($sql_assignment_city)->result('array');
     }
-    
-    function check_user( $user ){
-        $sql_check = "select username from n_users where username = '".$user."' and active = '1'";
+
+    function check_user($user) {
+        $sql_check = "select username from n_users where username = '" . $user . "' and active = '1'";
         return $this->db->query($sql_check)->result('array');
+    }
+
+    function add_audit($act) {
+        $action = ($act == 'in') ? 'login' : 'logout';
+        $sql_audit = "insert into n_audit(username, action, "
+                . "fecha, hora, ip_address) values ('" . $_SESSION['usuario']
+                . "', '" . $action . "', '" . date('Y-m-d') . "', '"
+                . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+        $this->db->query($sql_audit);
     }
 
     function get_category_assignment($userid) {

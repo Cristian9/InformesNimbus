@@ -30,6 +30,7 @@ class Main_controller extends CI_Controller {
             $_SESSION['usuario'] = $user;
             $auth_check = $this->main_model->check_user($_SESSION['usuario']);
             if(!empty($auth_check)){
+                $this->main_model->add_audit('in');
                 redirect('main-menu');
             }else{
                 redirect('login?errorAuth=1');
@@ -83,6 +84,7 @@ class Main_controller extends CI_Controller {
     function logout() {
         session_start();
         session_destroy();
+        $this->main_model->add_audit('out');
         $this->login();
     }
 
