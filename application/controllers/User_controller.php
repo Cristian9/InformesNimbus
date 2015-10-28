@@ -53,7 +53,7 @@ class User_controller extends CI_Controller {
     }
 
     function save_assignment(){
-        
+        session_start();
         $usuario    = $this->input->post('usuario');
         $niveles    = $this->input->post('niveles');
         $periodo    = $this->input->post('periodo');

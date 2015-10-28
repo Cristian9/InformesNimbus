@@ -62,11 +62,17 @@ class User_model extends CI_Model {
             $sql_del_permission = "delete from n_permissions where user_id = " . $usuario;
             $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $usuario;
             $sql_del_ascity = "delete from n_assignment_city where user_id = " . $usuario;
-            
+
+            $sql_add_audit = "insert into n_audit (username, action, fecha, hora, "
+                    . "ip_address) values ('" . $_SESSION['username'] 
+                    . "', 'Asignacion', '" . date('Y-m-d') 
+                    . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+
             $this->db->query($sql_del_assignment);
             $this->db->query($sql_del_permission);
             $this->db->query($sql_del_ascategory);
             $this->db->query($sql_del_ascity);
+            $this->db->query($sql_add_audit);
         }
 
         // Verifica que array es el que esta cargado
