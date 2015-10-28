@@ -62,12 +62,11 @@ class User_model extends CI_Model {
             $sql_del_permission = "delete from n_permissions where user_id = " . $usuario;
             $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $usuario;
             $sql_del_ascity = "delete from n_assignment_city where user_id = " . $usuario;
-            //$sql_del_asperiodo = "delete from n_assignment_period where user_id = " . $usuario;
+            
             $this->db->query($sql_del_assignment);
             $this->db->query($sql_del_permission);
             $this->db->query($sql_del_ascategory);
             $this->db->query($sql_del_ascity);
-            //$this->db->query($sql_del_asperiodo);
         }
 
         // Verifica que array es el que esta cargado
@@ -89,13 +88,6 @@ class User_model extends CI_Model {
                 if ($key == 'program_id') {
                     $this->db->query("update n_assignment set faculty_id = '" . $facultadx . "' where user_id = '" . $usuario . "'");
                 }
-            }
-
-            // Llenar cada una de las tablas de asignacion
-            // tabla periodo
-            foreach ($periodo as $value) {
-                $sql_insert_periodo = "insert into n_assignment_period (user_id, period_id) values (" . $usuario . ", " . $value . ")";
-                $this->db->query($sql_insert_periodo);
             }
 
             // tabla categoria
