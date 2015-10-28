@@ -25,6 +25,7 @@ class Main_controller extends CI_Controller {
         
         // Respuesta del AD
         $ok = 'ok';
+        //
         
         if ($ok == 'ok') {
             $_SESSION['usuario'] = $user;
