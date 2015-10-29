@@ -102,8 +102,15 @@ class User_controller extends CI_Controller {
         echo $record;
     }
 
-    function delete_assignment(){
+    function delete(){
+        session_start();
+        $uid = base64_encode($_GET['uid']);
+        $uname = base64_decode($_GET['uname']);
+        $role = base64_decode($_GET['role']);
+        $delete_assignment = $this->user_model->delete($uid, $uname, $role);
         
+        if($delete_assignment)
+            redirect('main-menu#users');
     }
 }
 

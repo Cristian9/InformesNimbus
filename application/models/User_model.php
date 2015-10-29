@@ -9,12 +9,12 @@ class User_model extends CI_Model {
     }
 
     function index() {
-        $sql = "select username, lastname, firstname, email, "
+        $sql = "select n_users.id, username, lastname, firstname, email, "
                 . "active, case a.rol when 1 then 'Administrador' "
                 . "when 3 then 'Director de Area' when 3 then "
                 . "'Decano' when 4  then 'Director de carrera' when 5 "
                 . "then 'Coordinador de curso' end as perfil from n_users, "
-                . "n_assignment a where a.user_id = n_users.id";
+                . "n_assignment a where a.user_id = n_users.id and n_users.active=1";
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
@@ -62,21 +62,32 @@ class User_model extends CI_Model {
         $query_menucounter = $this->db->query($sql_menucounter)->result('array');
 
         if (!empty($query_comprobar)) {
-
-            $sql_del_assignment = "delete from n_assignment where user_id = " . $usuario;
-            $sql_del_permission = "delete from n_permissions where user_id = " . $usuario;
-            $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $usuario;
-            $sql_del_ascity = "delete from n_assignment_city where user_id = " . $usuario;
-
+            $role_profile = "";
+           
+            $this->delete_assignment($usuario);
+            switch ($niveles){
+                case 1:
+                    $role_profile = 'Administrador';
+                    break;
+                case 3:
+                    $role_profile = 'Director de Area';
+                    break;
+                case 4:
+                    $role_profile = 'Decano';
+                    break;
+                case 5:
+                    $role_profile = 'Director de carrera';
+                    break;
+                case 6:
+                    $role_profile = 'Coordinador de curso';
+                    break;
+            }
+            
             $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
                     . "ip_address) values ('" . $_SESSION['usuario']
-                    . "', '" . $usern . "', '" . $niveles . "', 'Asignacion', '" . date('Y-m-d')
+                    . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d')
                     . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
 
-            $this->db->query($sql_del_assignment);
-            $this->db->query($sql_del_permission);
-            $this->db->query($sql_del_ascategory);
-            $this->db->query($sql_del_ascity);
             $this->db->query($sql_add_audit);
         }
 
@@ -139,6 +150,30 @@ class User_model extends CI_Model {
                 . "values ('" . strtoupper($lstn) . "', '" . $fstn . "', '" . $user . "',"
                 . " '" . $mail . "', '" . $date . "', '" . $reco . "', 1)";
         return $this->db->query($sql);
+    }
+    
+    function delete_assignment($userid){
+        $sql_del_assignment = "delete from n_assignment where user_id = " . $userid;
+        $sql_del_permission = "delete from n_permissions where user_id = " . $userid;
+        $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $userid;
+        $sql_del_ascity = "delete from n_assignment_city where user_id = " . $userid;
+        
+        $this->db->query($sql_del_assignment);
+        $this->db->query($sql_del_permission);
+        $this->db->query($sql_del_ascategory);
+        $this->db->query($sql_del_ascity);
+    }
+    
+    function delete($uid, $uname, $role) {
+        
+        $this->delete_assignment($uid);
+        
+        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
+                . "ip_address) values ('" . $_SESSION['usuario']
+                . "', '" . $uname . "', '" . $role . "', 'Asignacion', '" . date('Y-m-d')
+                . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+        
+        $this->db->query($sql_add_audit);
     }
 
 }

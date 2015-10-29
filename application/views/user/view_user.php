@@ -59,7 +59,7 @@
                             <td><?php echo $value['email']; ?></td>
                             <td><?php echo $value['perfil']; ?></td>
                             <td><?php echo $value['active']; ?></td>
-                            <td align="center"><a href="#" title="Eliminar asignacion" class="del_assign"><i class="fa fa-trash-o fa-2x"></i></a></td>
+                            <td align="center" ><a href="users-delete?uid=<?php echo base64_encode($value['id']) ?>&uname=<?php echo base64_encode($value['username']) ?>&role=<?php echo base64_encode($value['perfil']) ?>" title="Eliminar asignacion" class="del_assign"><i class="fa fa-trash-o fa-2x"></i></a></td>
                         <?php
                             }
                         ?>
@@ -84,12 +84,6 @@
             },
             'dom': 'Bfrtip',
             'buttons': ['excelHtml5'],
-        });
-        
-        $('.del_assign').each(function(){
-            $(this).click(function(){
-                $(this).parent().parent().fadeOut();
-            });
         });
     });
 </script>
