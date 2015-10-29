@@ -19,7 +19,13 @@ class User_model extends CI_Model {
 
         return $dta_usuario;
     }
+    
+    function get_users(){
+        $sql = "select * from n_users";
+        $dta_usuario = $this->db->query($sql)->result('array');
 
+        return $dta_usuario;
+    }
     function get_areas() {
         $sql = "select * from n_areas order by id, description";
         return $query = $this->db->query($sql)->result();
@@ -63,9 +69,9 @@ class User_model extends CI_Model {
 
         if (!empty($query_comprobar)) {
             $role_profile = "";
-           
+
             $this->delete_assignment($usuario);
-            switch ($niveles){
+            switch ($niveles) {
                 case 1:
                     $role_profile = 'Administrador';
                     break;
@@ -82,7 +88,7 @@ class User_model extends CI_Model {
                     $role_profile = 'Coordinador de curso';
                     break;
             }
-            
+
             $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
                     . "ip_address) values ('" . $_SESSION['usuario']
                     . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d')
@@ -128,7 +134,7 @@ class User_model extends CI_Model {
                     "values (" . $usuario . ", " . $niveles . ")";
             $this->db->query($sql_insert);
         }
-
+        $this->db->query("update n_users set active = 1 where id = '" . $usuario . "'");
         // llenar la tabla para el menu de accesos
         for ($i = $niveles; $i <= $query_menucounter[0]['total']; $i++) {
 
@@ -151,29 +157,34 @@ class User_model extends CI_Model {
                 . " '" . $mail . "', '" . $date . "', '" . $reco . "', 1)";
         return $this->db->query($sql);
     }
-    
-    function delete_assignment($userid){
+
+    function delete_assignment($userid) {
         $sql_del_assignment = "delete from n_assignment where user_id = " . $userid;
         $sql_del_permission = "delete from n_permissions where user_id = " . $userid;
         $sql_del_ascategory = "delete from n_assignment_category where user_id = " . $userid;
         $sql_del_ascity = "delete from n_assignment_city where user_id = " . $userid;
-        
+
         $this->db->query($sql_del_assignment);
         $this->db->query($sql_del_permission);
         $this->db->query($sql_del_ascategory);
         $this->db->query($sql_del_ascity);
     }
-    
+
     function delete($uid, $uname, $role) {
-        
+
         $this->delete_assignment($uid);
-        
+
+        $sql_upd_user = "update n_users set active = 0 where id = '" . $uid . "'";
+
         $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
                 . "ip_address) values ('" . $_SESSION['usuario']
-                . "', '" . $uname . "', '" . $role . "', 'Asignacion', '" . date('Y-m-d')
+                . "', '" . $uname . "', '" . $role . "', 'Desasignacion', '" . date('Y-m-d')
                 . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
-        
-        $this->db->query($sql_add_audit);
+
+        $upd = $this->db->query($sql_upd_user);
+        $aud = $this->db->query($sql_add_audit);
+
+        return ($upd && $aud) ? true : false;
     }
 
 }

@@ -17,7 +17,7 @@ class User_controller extends CI_Controller {
     }
 
     function asignar() {
-        $data['user'] = $this->user_model->index();
+        $data['user'] = $this->user_model->get_users();
         $this->load->view('user/asignar_usuario', $data);
     }
     
@@ -104,13 +104,16 @@ class User_controller extends CI_Controller {
 
     function delete(){
         session_start();
-        $uid = base64_encode($_GET['uid']);
+        $uid = base64_decode($_GET['uid']);
         $uname = base64_decode($_GET['uname']);
         $role = base64_decode($_GET['role']);
         $delete_assignment = $this->user_model->delete($uid, $uname, $role);
         
-        if($delete_assignment)
+        if($delete_assignment){
             redirect('main-menu#users');
+        }else{
+            die('Error');
+        }
     }
 }
 
