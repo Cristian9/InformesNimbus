@@ -66,9 +66,9 @@ class Main_controller extends CI_Controller {
             $_SESSION['city'] = $city_profile;
             $_SESSION['category'] = $category_profile;
 
-            /* echo "<pre>";
-              print_r($_SESSION);
-              exit; */
+            /*echo "<pre>";
+            print_r($_SESSION);
+            exit;*/
             $this->load->view('principal', $datos_menu);
         } else {
             $this->login();

@@ -169,7 +169,7 @@
                                     <?php
                                     foreach ($user as $v):
                                         ?>
-                                        <option value="<?php echo $v['id'] ?>"><?php echo $v['lastname'] . ', ' . $v['firstname'] ?></option>
+                                        <option value="<?php echo $v['id'] . '|' . $v['username'] ?>"><?php echo $v['lastname'] . ', ' . $v['firstname'] ?></option>
                                         <?php
                                     endforeach;
                                     ?>
@@ -549,8 +549,10 @@
         });
     });
     function asignar() {
+        var id_user = document.getElementById('s_usuarios').value.split('|');
         var parameters = {
-            'usuario': document.getElementById('s_usuarios').value,
+            'usuario': id_user[0],
+            'usern' : id_user[1],
             'niveles': document.getElementById('s_niveles').value,
             //'periodo': $('#s_periodo').val(),
             'program': $('#s_programas').val(),
