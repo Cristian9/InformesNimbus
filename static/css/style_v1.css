@@ -156,7 +156,7 @@ a.show-sidebar:hover {
   -moz-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
   padding: 0;
-  background: #6AA6D6;
+  background: rgb(150, 19, 46) !important;//#6AA6D6;
   box-shadow: none;
   visibility:hidden;
 }

@@ -142,7 +142,7 @@
             <div class="box-header">
                 <div class="box-name">
                     <i class="fa fa-users"></i>
-                    <span>Asignaci&oacute;n de Usuarios</span>
+                    <span>Asignar perfil de usuario</span>
                 </div>
                 <div class="box-icons">
                     <a class="collapse-link">
@@ -177,7 +177,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Nivel</label>
+                            <label class="col-sm-3 control-label">Perfil</label>
                             <div class="col-sm-5">
                                 <select class="populate placeholder" name="country" id="s_niveles">
                                     <option value="">-- Seleccione un nivel --</option>

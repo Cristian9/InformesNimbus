@@ -53,7 +53,7 @@
             <div class="container-fluid expanded-panel">
                 <div class="row">
                     <div id="logo" class="col-xs-12 col-sm-2">
-                        <img src="<?php echo base_url()?>static/images/logo_mini.png" width="130" height="50" />
+                        <img src="<?php echo base_url() ?>static/images/logo_mini.png" width="130" height="50" />
                     </div>
                     <div id="top-panel" class="col-xs-12 col-sm-10">
                         <div class="row">
@@ -94,12 +94,30 @@
                 <div id="sidebar-left" class="col-xs-2 col-sm-2">
                     <ul class="nav main-menu">
                         <?php
+                        if($_SESSION['rol'] == 1):
+                        ?>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="fa fa-cogs"></i>
+                                <span class="hidden-xs">Administraci&oacute;n</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="ajax-link" href="">Nuevo periodo</a></li>
+                                <li><a class="ajax-link" href="">Nuevo Usuario</a></li>
+                                <li><a class="ajax-link" href="">Asignar perfil de usuario</a></li>
+                                <li><a class="ajax-link" href="">Usuarios Asignados</a></li>
+                            </ul>
+                        </li>
+                        <?php 
+                        endif;
+                        ?>
+                        <?php
                         foreach ($menu as $v) :
                         ?>
                         <li>
-                            <a href="<?php echo $v['href']?>" class="ajax-link">
-                                <i class="fa <?php echo $v['icon']?>"></i>
-                                <span class="hidden-xs"><?php echo $v['description']?></span>
+                            <a href="<?php echo $v['href'] ?>" class="ajax-link">
+                                <i class="fa <?php echo $v['icon'] ?>"></i>
+                                <span class="hidden-xs"><?php echo $v['description'] ?></span>
                             </a>
                         </li>
                         <?php endforeach; ?>
@@ -124,16 +142,16 @@
         <script src="<?php echo base_url() ?>static/plugins/tinymce/jquery.tinymce.min.js"></script>
 
         <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-        <!--<script src="<?php //echo base_url() ?>static/plugins/datatables/dataTables.bootstrap.js"></script>-->
+        <!--<script src="<?php //echo base_url()  ?>static/plugins/datatables/dataTables.bootstrap.js"></script>-->
         <script src="<?php echo base_url() ?>static/js/dataTables.buttons.js"></script>
         <script src="<?php echo base_url() ?>static/js/jszip.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/pdfmake.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/vfs_fonts.js"></script>
         <script src="<?php echo base_url() ?>static/js/buttons.html5.js"></script>
-        
+
         <!-- All functions for this theme + document.ready processing 
-        <script src="<?php //echo base_url() ?>static/plugins/morris/morris.min.js"></script>
-        <script src="<?php //echo base_url() ?>static/plugins/raphael/raphael-min.js"></script>-->
+        <script src="<?php //echo base_url()  ?>static/plugins/morris/morris.min.js"></script>
+        <script src="<?php //echo base_url()  ?>static/plugins/raphael/raphael-min.js"></script>-->
         <script src="<?php echo base_url() ?>static/js/devoops.js"></script>
         <script src="<?php echo base_url() ?>static/js/jquery.ctools.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/chart.js"></script>
