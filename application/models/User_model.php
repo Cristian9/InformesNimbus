@@ -11,21 +11,22 @@ class User_model extends CI_Model {
     function index() {
         $sql = "select n_users.id, username, lastname, firstname, email, "
                 . "active, case a.rol when 1 then 'Administrador' "
-                . "when 3 then 'Director de Area' when 3 then "
-                . "'Decano' when 4  then 'Director de carrera' when 5 "
+                . "when 3 then 'Director de Area' when 4 then "
+                . "'Decano' when 5  then 'Director de carrera' when 6 "
                 . "then 'Coordinador de curso' end as perfil from n_users, "
                 . "n_assignment a where a.user_id = n_users.id and n_users.active=1";
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
     }
-    
-    function get_users(){
+
+    function get_users() {
         $sql = "select * from n_users";
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
     }
+
     function get_areas() {
         $sql = "select * from n_areas order by id, description";
         return $query = $this->db->query($sql)->result();
@@ -71,30 +72,6 @@ class User_model extends CI_Model {
             $role_profile = "";
 
             $this->delete_assignment($usuario);
-            switch ($niveles) {
-                case 1:
-                    $role_profile = 'Administrador';
-                    break;
-                case 3:
-                    $role_profile = 'Director de Area';
-                    break;
-                case 4:
-                    $role_profile = 'Decano';
-                    break;
-                case 5:
-                    $role_profile = 'Director de carrera';
-                    break;
-                case 6:
-                    $role_profile = 'Coordinador de curso';
-                    break;
-            }
-
-            $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
-                    . "ip_address) values ('" . $_SESSION['usuario']
-                    . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d')
-                    . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
-
-            $this->db->query($sql_add_audit);
         }
 
         // Verifica que array es el que esta cargado
@@ -146,6 +123,31 @@ class User_model extends CI_Model {
                     "values (" . $usuario . ", " . $i . ")";
             $query_access = $this->db->query($sql_insert_accesos);
         }
+
+        switch ($niveles) {
+            case 1:
+                $role_profile = 'Administrador';
+                break;
+            case 3:
+                $role_profile = 'Director de Area';
+                break;
+            case 4:
+                $role_profile = 'Decano';
+                break;
+            case 5:
+                $role_profile = 'Director de carrera';
+                break;
+            case 6:
+                $role_profile = 'Coordinador de curso';
+                break;
+        }
+
+        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
+                . "ip_address) values ('" . $_SESSION['usuario']
+                . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d')
+                . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+
+        $this->db->query($sql_add_audit);
 
         return ($query_access) ? true : false;
     }
