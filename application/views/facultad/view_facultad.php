@@ -150,22 +150,20 @@
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="chats"> Chat
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
+                    </div>
+                    <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="works"> Tareas
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="quizzes"> Evaluaciones
@@ -179,7 +177,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="dropbox"> Comp. Documentos
@@ -192,22 +190,20 @@
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="groups"> Grupos
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
+                    </div>
+                    <div class="col-sm-3">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="gradebook"> Form. Evaluaci&oacute;n
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                    </div>
-                    <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="course_progress"> Prog. Did&aacute;ctica
@@ -276,7 +272,7 @@
     <div class="clearfix"></div>
     <div id="dashboard_tabs" class="col-xs-12 col-sm-12">
         <div class="box-content no-padding">
-            <table class="display" cellspacing="0" width="100%" id="datatable_area">
+            <table class="display hidden" cellspacing="0" width="100%" id="datatable_area">
                 <thead>
                     <tr id="thead">
                         <th>Categoria</th>
@@ -435,8 +431,8 @@
                 var cbo = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
-
-                $('#datatable_area').dataTable({
+                
+                $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
                     'language': {
                         'infoEmpty': 'No hay registros disponibles'
