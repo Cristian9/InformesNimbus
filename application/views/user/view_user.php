@@ -38,11 +38,11 @@
                 <table class="table table-striped table-hover table-heading table-datatable" id="datatable-1">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Usuario</th>
                             <th>Nombres</th>
                             <th>Apellidos</th>
-                            <th>Usuario</th>
                             <th>Email</th>
+                            <th>Perfil</th>
                             <th>Status</th>
                             <th>Options</th>
                         </tr>
@@ -53,11 +53,11 @@
                             foreach($user as $value){
                         ?>
                         <tr>
-                            <td><?php echo $value['id']; ?></td>
+                            <td><?php echo $value['username']; ?></td>
                             <td><img class="img-rounded" src="<?php echo base_url()?>static/images/avatar.jpg" alt=""><?php echo $value['firstname']; ?></td>
                             <td><?php echo $value['lastname']; ?></td>
-                            <td><?php echo $value['username']; ?></td>
                             <td><?php echo $value['email']; ?></td>
+                            <td><?php echo $value['perfil']; ?></td>
                             <td><?php echo $value['active']; ?></td>
                             <td align="center"><a href="#" title="Eliminar asignacion" class="del_assign"><i class="fa fa-trash-o fa-2x"></i></a></td>
                         <?php
@@ -65,17 +65,6 @@
                         ?>
                         <!-- End: list_row -->
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Options</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

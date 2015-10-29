@@ -9,7 +9,12 @@ class User_model extends CI_Model {
     }
 
     function index() {
-        $sql = "select id, lastname, firstname, username, email, active from n_users";
+        $sql = "select username, lastname, firstname, email, "
+                . "active, case a.rol when 1 then 'Administrador' "
+                . "when 3 then 'Director de Area' when 3 then "
+                . "'Decano' when 4  then 'Director de carrera' when 5 "
+                . "then 'Coordinador de curso' end as perfil from n_users, "
+                . "n_assignment a where a.user_id = n_users.id";
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
