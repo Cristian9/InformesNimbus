@@ -145,7 +145,10 @@ $(document).ready(function () {
 
     $('.main-menu').on('click', 'a', function (e) {
 
-        var another_items = $('.main-menu li');
+        var parents = $(this).parents('li');
+
+        //var another_items = $('.main-menu li');
+        var another_items = $('.main-menu li').not(parents);
         another_items.find('a').removeClass('active');
         var li = $(this).closest('li.dropdown');
         another_items.find('a').removeClass('active-parent');
@@ -175,6 +178,13 @@ $(document).ready(function () {
         }
         if ($(this).hasClass('ajax-link')) {
             e.preventDefault();
+
+            if ($(this).hasClass('add-full')) {
+                $('#content').addClass('full-content');
+            }
+            else {
+                $('#content').removeClass('full-content');
+            }
 
             var url = $(this).attr('href');
             window.location.hash = url;

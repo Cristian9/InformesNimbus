@@ -232,42 +232,40 @@
 <!--Start Dashboard 2-->
 <div class="row-fluid">
     <div class="clearfix"></div>
-    <div id="dashboard_tabs" class="col-xs-12 col-sm-12">
-        <div class="box-content no-padding">
-            <table class="display hidden" cellspacing="0" width="100%" id="datatable_area">
-                <thead>
-                    <tr id="thead">
-                        <th>Categoria</th>
-                        <th>Facultad</th>
-                        <th>Escuela</th>
-                        <th>Num_usuarios</th>
-                        <th>Cod_seccion</th>
-                        <th>Cod_curso</th>
-                        <th>Turno</th>
-                        <th>Curso</th>
-                        <th>Cod_docente</th>
-                        <th>Apellidos</th>
-                        <th>Nombres</th>
-                    </tr>
-                </thead>
+    <div class="box-content no-padding">
+        <table class="display hidden" cellspacing="0" width="100%" id="datatable_area">
+            <thead>
+                <tr id="thead">
+                    <th>Categoria</th>
+                    <th>Facultad</th>
+                    <th>Escuela</th>
+                    <th>Num_usuarios</th>
+                    <th>Cod_seccion</th>
+                    <th>Cod_curso</th>
+                    <th>Turno</th>
+                    <th>Curso</th>
+                    <th>Cod_docente</th>
+                    <th>Apellidos</th>
+                    <th>Nombres</th>
+                </tr>
+            </thead>
 
-                <tfoot>
-                    <tr id="tfoot">
-                        <th>Categoria</th>
-                        <th>Facultad</th>
-                        <th>Escuela</th>
-                        <th>Num_usuarios</th>
-                        <th>Cod_seccion</th>
-                        <th>Cod_curso</th>
-                        <th>Turno</th>
-                        <th>Curso</th>
-                        <th>Cod_docente</th>
-                        <th>Apellidos</th>
-                        <th>Nombres</th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+            <tfoot>
+                <tr id="tfoot">
+                    <th>Categoria</th>
+                    <th>Facultad</th>
+                    <th>Escuela</th>
+                    <th>Num_usuarios</th>
+                    <th>Cod_seccion</th>
+                    <th>Cod_curso</th>
+                    <th>Turno</th>
+                    <th>Curso</th>
+                    <th>Cod_docente</th>
+                    <th>Apellidos</th>
+                    <th>Nombres</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
 <!--End Dashboard 2 -->

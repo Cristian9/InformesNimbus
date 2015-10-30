@@ -21,7 +21,7 @@ class User_model extends CI_Model {
     }
 
     function get_users() {
-        $sql = "select * from n_users";
+        $sql = "select * from n_users order by lastname";
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
@@ -63,7 +63,7 @@ class User_model extends CI_Model {
 
         // Comprobar si existe la asignacion
         $sql_comprobar = "select * from n_assignment where user_id = " . $usuario;
-        $sql_menucounter = "select count(*) total from n_item_menu order by id";
+        $sql_menucounter = "select max(id) total from n_item_menu order by id";
 
         $query_comprobar = $this->db->query($sql_comprobar)->result('array');
         $query_menucounter = $this->db->query($sql_menucounter)->result('array');

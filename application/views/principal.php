@@ -102,16 +102,15 @@
                                 <span class="hidden-xs">Administraci&oacute;n</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="ajax-link" href="">Nuevo periodo</a></li>
-                                <li><a class="ajax-link" href="">Nuevo Usuario</a></li>
-                                <li><a class="ajax-link" href="">Asignar perfil de usuario</a></li>
-                                <li><a class="ajax-link" href="">Usuarios Asignados</a></li>
+                                <li><a class="ajax-link" href="users-newperiod">Nuevo periodo</a></li>
+                                <li><a class="ajax-link" href="users-newuser">Nuevo Usuario</a></li>
+                                <li><a class="ajax-link" href="asignar">Asignar perfil de usuario</a></li>
+                                <li><a class="ajax-link" href="users">Usuarios Asignados</a></li>
                             </ul>
                         </li>
                         <?php 
                         endif;
-                        ?>
-                        <?php
+
                         foreach ($menu as $v) :
                         ?>
                         <li>

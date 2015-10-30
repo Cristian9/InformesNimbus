@@ -16,6 +16,14 @@ class User_controller extends CI_Controller {
         $this->load->view('user/view_user', $data);
     }
 
+    function newperiod(){
+        $this->load->view('user/new_period');
+    }
+
+    function newuser(){
+        $this->load->view('user/new_user');
+    }
+
     function asignar() {
         $data['user'] = $this->user_model->get_users();
         $this->load->view('user/asignar_usuario', $data);

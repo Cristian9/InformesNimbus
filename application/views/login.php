@@ -71,15 +71,15 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="form-group  has-feedback">
-                                    <label class="col-sm-2 control-label">Usuario:</label>
-                                    <div class="col-sm-7">
+                                    <label class="col-sm-7 col-xs-9 text-left">Usuario:</label>
+                                    <div class="col-sm-9 col-xs-9">
                                         <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario">
                                         <span class="fa fa-user form-control-feedback"></span>
                                     </div>
                                 </div>
-                                <div class="form-group  has-feedback">
-                                    <label class="col-sm-2 control-label">Contrase&ntilde;a:</label>
-                                    <div class="col-sm-7">
+                                <div class="form-group has-feedback">
+                                    <label class="col-sm-7 col-xs-9 text-left">Contrase&ntilde;a:</label>
+                                    <div class="col-sm-9 col-xs-9">
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                                         <span class="fa fa-key form-control-feedback"></span>
                                     </div>
@@ -89,7 +89,7 @@
                                     <h3 class="page-header">&nbsp;</h3>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-10 weel">
+                                    <div class="col-sm-9 col-xs-9 weel">
                                         <button type="button" id="button" class="btn btn-primary btn-block btn-label-left">
                                             <span><i class="fa fa-clock-o"></i></span>
                                             Iniciar sessi&oacute;n

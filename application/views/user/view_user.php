@@ -6,7 +6,7 @@
         </a>
         <ol class="breadcrumb pull-left">
             <li><a href="main-menu">Home</a></li>
-            <li><a href="#">Usuarios</a></li>
+            <li><a href="#">Usuarios asignados</a></li>
         </ol>
     </div>
 </div>
