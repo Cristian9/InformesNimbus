@@ -1,4 +1,30 @@
 <!DOCTYPE html>
+<?php
+    if(isset($_GET['errorAuth'])){
+        $class = "has-error";
+        $hidden = "";
+        $msgauth = "";
+        switch ($_GET['errorAuth']) {
+            case 1:
+                $msgauth = 'Usuario o contrase&ntilde;a incorrecta';
+                $class = 'has-error';
+                break;
+            case 2:
+                $msg = 'No tiene permiso para ingresar';
+                $class = 'has-error';
+                $hidden = '';
+                break;
+            case 3:
+                $msg = 'El c&oacute;digo ingresado no es correcto';
+                $class = 'has-error';
+                break;
+        }
+    }else{
+        $msg = "";
+        $class = "";
+        $hidden = "hidden";
+    }
+?>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -29,17 +55,21 @@
             $(document).ready(function(){
                 var button = document.getElementById('button');
                 button.addEventListener("click", validar);
-                
+                $('#usuario').focus();
                 $('#usuario').key("enter", function(){
                     $('#password').focus();
                 });
                 
                 $('#password').key("enter", function(){
+                    $('#captcha').focus();
+                });
+                
+                $('#captcha').key("enter", function(){
                     validar();
                 });
             });
             function validar() {
-                $('#usuario, #password').validate({
+                $('#usuario, #password, #captcha').validate({
                     required: true,
                     message: {
                         required: 'requerido'
@@ -86,8 +116,9 @@
                                 </div>
                                 <div class="form-group has-feedback">
                                     <label class="col-sm-7 col-xs-9 text-left">Ingrese el c&oacute;digo que aparece abajo:</label>
-                                    <div class="col-sm-9 col-xs-9">
-                                        <input type="text" id="password" name="password" class="form-control">
+                                    <div class="col-sm-9 col-xs-9 <?php echo $class; ?>">
+                                        <input type="text" id="captcha" name="captcha" class="form-control">
+                                        <small class="help-block <?php echo $hidden; ?>"><?php echo $msg; ?></small>
                                         <span class="fa fa-key fa- form-control-feedback"></span>
                                     </div>
                                 </div>
@@ -95,8 +126,9 @@
                                     <img src="application/captcha.php"/>
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="text-center">
+                                <div class="text-center <?php echo $class; ?>">
                                     <h3 class="page-header">&nbsp;</h3>
+                                    <small class="help-block <?php echo $hidden; ?>"><?php echo $msgauth; ?></small>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-9 col-xs-9 weel">

@@ -15,7 +15,7 @@ do {
 } while( strlen( $md5Hash ) < $captchaTextSize );
 
 $image = imagecreatefrompng('http://localhost/informes_nimbus/static/images/captcha.png');
-$color = imagecolorallocate($image, 31, 118, 92);
+$color = imagecolorallocate($image, 31, 118, 200);
 $lineColor = imagecolorallocate( $image, 15, 103, 103 );
 
 $imageInfo = getimagesize( "http://localhost/informes_nimbus/static/images/captcha.png" );

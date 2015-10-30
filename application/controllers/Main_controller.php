@@ -22,20 +22,28 @@ class Main_controller extends CI_Controller {
         session_start();
         $user = $this->input->post('usuario');
         $pass = $this->input->post('password');
-        
-        // Respuesta del AD
-        $ok = 'ok';
-        //
-        
-        if ($ok == 'ok') {
-            $_SESSION['usuario'] = $user;
-            $auth_check = $this->main_model->check_user($_SESSION['usuario']);
-            if(!empty($auth_check)){
-                $this->main_model->add_audit('in');
-                redirect('main-menu');
-            }else{
+        $capt = $this->input->post('captcha');
+        $key = $_SESSION['key'];
+
+        if ($capt == $key) {
+            // Respuesta del AD
+            $ok = 'ok';
+            //
+
+            if ($ok == 'ok') {
+                $_SESSION['usuario'] = $user;
+                $auth_check = $this->main_model->check_user($_SESSION['usuario']);
+                if (!empty($auth_check)) {
+                    $this->main_model->add_audit('in');
+                    redirect('main-menu');
+                } else {
+                    redirect('login?errorAuth=2');
+                }
+            } else {
                 redirect('login?errorAuth=1');
             }
+        }else{
+            redirect('login?errorAuth=3');
         }
     }
 
@@ -66,9 +74,9 @@ class Main_controller extends CI_Controller {
             $_SESSION['city'] = $city_profile;
             $_SESSION['category'] = $category_profile;
 
-            /*echo "<pre>";
-            print_r($_SESSION);
-            exit;*/
+            /* echo "<pre>";
+              print_r($_SESSION);
+              exit; */
             $this->load->view('principal', $datos_menu);
         } else {
             $this->login();
@@ -85,7 +93,9 @@ class Main_controller extends CI_Controller {
     function logout() {
         session_start();
         session_destroy();
-        $this->main_model->add_audit('out');
+        if(isset($_SESSION['usuario'])){
+            $this->main_model->add_audit('out');
+        }
         $this->login();
     }
 
