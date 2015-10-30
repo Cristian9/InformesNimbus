@@ -1,5 +1,11 @@
+@font-face{
+    font-family: helvetica;
+    src:url('../fonts/helvetica-neue1.ttf');
+    
+}
 * {outline:none !important;}
 body {
+  font-family: helvetica;
   color:#525252;
   /*background:#436E90;*/
   /*background: #634b9c;*/
