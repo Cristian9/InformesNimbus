@@ -70,7 +70,7 @@
                                     <h3 class="page-header">Informes Nimbus</h3>
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="form-group  has-feedback">
+                                <div class="form-group has-feedback">
                                     <label class="col-sm-7 col-xs-9 text-left">Usuario:</label>
                                     <div class="col-sm-9 col-xs-9">
                                         <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Usuario">
@@ -81,8 +81,18 @@
                                     <label class="col-sm-7 col-xs-9 text-left">Contrase&ntilde;a:</label>
                                     <div class="col-sm-9 col-xs-9">
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Password">
-                                        <span class="fa fa-key form-control-feedback"></span>
+                                        <span class="fa fa-unlock-alt form-control-feedback"></span>
                                     </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="col-sm-7 col-xs-9 text-left">Ingrese el c&oacute;digo que aparece abajo:</label>
+                                    <div class="col-sm-9 col-xs-9">
+                                        <input type="text" id="password" name="password" class="form-control">
+                                        <span class="fa fa-key fa- form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <img src="application/captcha.php"/>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="text-center">
