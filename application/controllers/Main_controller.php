@@ -25,12 +25,12 @@ class Main_controller extends CI_Controller {
         $capt = $this->input->post('captcha');
         $key = $_SESSION['key'];
 
-        if ($capt == $key) {
-            // Respuesta del AD
-            $ok = 'ok';
-            //
+        if (strtoupper($capt) == $key) {
 
-            if ($ok == 'ok') {
+            $wsUrl = 'http://10.31.1.223:8051/ServiceAD.asmx?WSDL';
+            $isValid = $this->loginWSAuthenticate($user, $pass, $wsUrl);
+            $isValid = 1;
+            if ($isValid === 1) {
                 $_SESSION['usuario'] = $user;
                 $auth_check = $this->main_model->check_user($_SESSION['usuario']);
                 if (!empty($auth_check)) {
@@ -97,6 +97,68 @@ class Main_controller extends CI_Controller {
             $this->main_model->add_audit('out');
         }
         $this->login();
+    }
+
+    /**
+     * Checks whether a user has the right to enter on the platform or not
+     * @param string The username, as provided in form
+     * @param string The cleartext password, as provided in form
+     * @param string The WS URL, as provided at the beginning of this script
+     */
+    function loginWSAuthenticate($username, $password, $wsUrl) {
+        // check params
+        if (empty($username) or empty($password) or empty($wsUrl)) {
+            return false;
+        }
+        // Create new SOAP client instance
+        $client = new SoapClient($wsUrl, array('trace'=>true, 'exceptions'=>true));
+        if (!$client) {
+            error_log('Could not instanciate SOAP client with URL '.$wsUrl);
+            return false;
+        }
+        // Include phpseclib methods, because of a bug with AES/CFB in mcrypt
+        include_once substr(dirname(__FILE__), 0, -24) . '/static/Classes/phpseclib/Crypt/AES.php';
+        error_log("dsdsd");
+        // Define all elements necessary to the encryption
+        $key = '-+*%$({[]})$%*+-';
+        // Complete password con PKCS7-specific padding
+        $blockSize = 16;
+        $padding = $blockSize - (strlen($password)%$blockSize);
+        $password .= str_repeat(chr($padding),$padding);
+        $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
+        $cipher->setKeyLength(128);
+        $cipher->setKey($key);
+        $cipher->setIV($key);
+
+        $cipheredPass = $cipher->encrypt($password);
+        // Mcrypt call left for documentation purposes - broken, see https://bugs.php.net/bug.php?id=51146
+        //$cipheredPass = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $password,  MCRYPT_MODE_CFB, $key);
+
+        // Following lines present for debug purposes only
+        /*
+        $arr = preg_split('//', $cipheredPass, -1, PREG_SPLIT_NO_EMPTY);
+        foreach ($arr as $char) {
+            error_log(ord($char));
+        }
+        */
+        // Change to base64 to avoid communication alteration
+        $passCrypted = base64_encode($cipheredPass);
+        //error_log($passCrypted);
+        // The call to the webservice will change depending on your definition
+        try {
+            $response = $client->validaUsuarioAD(array('usuario' => $username, 'contrasenia' => $passCrypted, 'sistema' => 'informesnimbus'));
+        } catch (SoapFault $fault) {
+            error_log('Caught something');
+            if ($fault->faultstring != 'Could not connect to host') {
+                error_log('Not a connection problem');
+                throw $fault;
+            } else {
+                error_log('Could not connect to WS host');
+            }
+            return 0;
+        }
+        //error_log(print_r($response,1));
+        return $response->validaUsuarioADResult;
     }
 
 }

@@ -4,14 +4,15 @@
         $class = "has-error";
         $hidden = "";
         $msgauth = "";
+        $msg = "";
         switch ($_GET['errorAuth']) {
             case 1:
                 $msgauth = 'Usuario o contrase&ntilde;a incorrecta';
-                $class = 'has-error';
+                $class = '';
                 break;
             case 2:
                 $msg = 'No tiene permiso para ingresar';
-                $class = 'has-error';
+                $class = '';
                 $hidden = '';
                 break;
             case 3:
