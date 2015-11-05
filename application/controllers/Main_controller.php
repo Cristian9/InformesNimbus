@@ -27,8 +27,8 @@ class Main_controller extends CI_Controller {
 
         if (strtoupper($capt) == $key) {
 
-            $wsUrl = 'http://10.31.1.223:8051/ServiceAD.asmx?WSDL';
-            $isValid = $this->loginWSAuthenticate($user, $pass, $wsUrl);
+            //$wsUrl = 'http://10.31.1.223:8051/ServiceAD.asmx?WSDL';
+            //$isValid = $this->loginWSAuthenticate($user, $pass, $wsUrl);
             $isValid = 1;
             if ($isValid === 1) {
                 $_SESSION['usuario'] = $user;

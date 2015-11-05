@@ -47,6 +47,7 @@ class Carrera_model extends CI_Model {
 
         switch ($_SESSION['rol']) {
             case 1:
+            case 2:
                 $sql = "select fa.id, fa.description from n_faculty fa ".$chk." order by fa.id";
                 break;
             case 4:

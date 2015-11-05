@@ -17,6 +17,7 @@ class Curso_model extends CI_Model {
 
         switch ($_SESSION['rol']) {
             case 1:
+            case 2:
                 $sql = "select code as id, title as description from course where category_code = '" . $curso_id . "' order by title asc";
                 break;
             case 3:

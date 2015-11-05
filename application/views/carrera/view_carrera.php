@@ -15,7 +15,7 @@
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
         <div class="col-sm-2">
-            <?php if($_SESSION['rol'] == 1){ ?>
+            <?php if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){ ?>
             <div class="radio-inline">
                 <label>
                     <input type="radio" name="radio-inline" value="1" checked> Lima
@@ -45,29 +45,20 @@
         <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
             <select class="populate placeholder" id="cbo_periodo">
                 <?php
-                    //if($_SESSION['rol'] == 1){
+                    echo "<option value='0'>.:::Seleccione:::.</option>";
 
-                        echo "<option value='0'>.:::Seleccione:::.</option>";
+                    foreach($periodo as $item){
 
-                        foreach($periodo as $item){
+                        echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
 
-                            echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
-
-                        }
-                    /*}else{
-
-                        foreach ($_SESSION['periodo'] as $value) {
-                            echo "<option value='" . $value['period_id'] . "'>" . $value['periodo'] . "</option>";
-                        }
-
-                    }*/
+                    }
                 ?>
             </select>
         </div>
         <div class="col-sm-2" id="div_cbo_cat"><label>Programa *</label>
             <select class="populate placeholder" id="cbo_cat">
                 <?php
-                    if($_SESSION['rol'] == 1){
+                    if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){
 
                         echo "<option value='0'>.:::Seleccione:::.</option>";
                         echo "<option value='A'>PREGRADO</option>";
@@ -238,7 +229,7 @@
                     <select class="populate placeholder" id="input_date">
                         <option value="0">.:::Seleccione:::.</option>
                         <?php
-                        for ($i = 1; $i <= 14; $i++) {
+                        for ($i = 1; $i <= 16; $i++) {
                             echo "<option value='" . $i . "'>Semana " . $i . "</option>";
                         }
                         ?>
@@ -251,7 +242,7 @@
                     <select class="populate placeholder" id="input_date2">
                         <option value="0">.:::Seleccione:::.</option>
                         <?php
-                        for ($i = 1; $i <= 14; $i++) {
+                        for ($i = 1; $i <= 16; $i++) {
                             echo "<option value='" . $i . "'>Semana " . $i . "</option>";
                         }
                         ?>

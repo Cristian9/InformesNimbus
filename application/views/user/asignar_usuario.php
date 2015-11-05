@@ -56,6 +56,7 @@
                                 <select class="populate placeholder" name="country" id="s_niveles">
                                     <option value="">-- Seleccione un nivel --</option>
                                     <option value="1">Administrador</option>
+                                    <option value="2">Vicerector</option>
                                     <option value="3">Director de &aacute;rea</option>
                                     <option value="4">Decano</option>
                                     <option value="5">Director de Carrera</option>
@@ -108,6 +109,39 @@
             <div class="box-content">
                 <fieldset>
                     <legend>Asignar administrador</legend>
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="button" class="btn btn-primary">Asignar</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-8 hiddenxs 2">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-name">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <span>Vicerector</span>
+                </div>
+                <div class="box-icons">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="expand-link">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="no-move"></div>
+            </div>
+            <div class="box-content">
+                <fieldset>
+                    <legend>Asignar</legend>
                     <div class="clearfix"></div>
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
@@ -307,7 +341,7 @@
 
             $('.adm').removeAttr('style');
 
-            item == '1' && $('.adm').css({'display': 'none'});
+            (item == '1' || item == '2') && $('.adm').css({'display': 'none'});
 
             $('.hiddenxs, .hiddenxss').not('.' + item).css({
                 'display': 'none'
@@ -330,7 +364,8 @@
         var btn = document.getElementsByClassName('btn-primary');
         for (var i = 0; i < btn.length; i++) {
             btn.item(i).addEventListener("click", function () {
-                if (document.getElementById('s_niveles').value != '1') {
+                var nivel = document.getElementById('s_niveles').value;
+                if (nivel != '1' && nivel != '2') {
                     $('#s_usuarios, #s_niveles, #s_programas').validate({
                         required: true,
                         message: {

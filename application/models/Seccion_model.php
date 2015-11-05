@@ -17,6 +17,7 @@ class Seccion_model extends CI_Model {
 
         switch ($_SESSION['rol']) {
             case 1:
+            case 2:
                 $sql = "select id, name from session where name like '" . $id . "%'" . $chk;
                 break;
             case 4:

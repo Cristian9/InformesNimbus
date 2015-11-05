@@ -9,7 +9,7 @@ class Area_model extends CI_Model {
     }
 
     function index() {
-        if($_SESSION['rol'] == 1){
+        if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){
             $sql = "select id, description from n_areas order by id";
         }else{
             $sql = "select ar.id, ar.description from n_areas ar, n_assignment a, ".
@@ -124,7 +124,7 @@ class Area_model extends CI_Model {
                 }
                 $sql_herramientas = substr($sql_herramientas, 0, -1);
                 $sql_totales = substr($sql_totales, 0, -1);
-
+                //echo $sql_herramientas;
                 $data_herramientas[$herramienta[$i]] = $this->db->query($sql_herramientas)->result('array');
             }
             $data_herramientas['Totales'] = $this->db->query($sql_totales)->result('array');

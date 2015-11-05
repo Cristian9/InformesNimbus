@@ -17,27 +17,20 @@
         <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
             <select class="populate placeholder" id="cbo_periodo">
                 <?php
-                    //if($_SESSION['rol'] == 1){
+                    echo "<option value='0'>.:::Seleccione:::.</option>";
 
-                        echo "<option value='0'>.:::Seleccione:::.</option>";
+                    foreach($periodo as $item){
 
-                        foreach($periodo as $item){
+                        echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
 
-                            echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
-
-                        }
-                    /*}else{
-                        foreach ($_SESSION['periodo'] as $value) {
-                            echo "<option value='" . $value['period_id'] . "'>" . $value['periodo'] . "</option>";
-                        }
-                    }*/
+                    }
                 ?>
             </select>
         </div>
         <div class="col-sm-2" id="div_cbo_cat"><label>Programa *</label>
             <select class="populate placeholder" id="cbo_cat">
                 <?php
-                    if($_SESSION['rol'] == 1){
+                    if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){
 
                         echo "<option value='0'>.:::Seleccione:::.</option>";
                         echo "<option value='A'>PREGRADO</option>";
@@ -272,14 +265,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#cbo_periodo, #cbo_cat, #cbo_cursos, #input_date2, #input_date').select2();
-
-        /*var e = document.getElementById('cbo_cat');
-        var category_code = e.value + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
-        var parameter = {
-            'category' : category_code
-        }
-        
-        cargar_select('cbo_cursos', 'curso-getCursos', parameter);*/
 
         $('#cbo_cat, #cbo_periodo').change(function () {
             $('#cbo_periodo, #cbo_cat').validate({

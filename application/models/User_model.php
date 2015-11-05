@@ -11,7 +11,7 @@ class User_model extends CI_Model {
     function index() {
         $sql = "select n_users.id, username, lastname, firstname, email, "
                 . "active, case a.rol when 1 then 'Administrador' "
-                . "when 3 then 'Director de Area' when 4 then "
+                . "when 2 then 'Vicerector' when 3 then 'Director de Area' when 4 then "
                 . "'Decano' when 5  then 'Director de carrera' when 6 "
                 . "then 'Coordinador de curso' end as perfil from n_users, "
                 . "n_assignment a where a.user_id = n_users.id and n_users.active=1";
@@ -127,6 +127,9 @@ class User_model extends CI_Model {
         switch ($niveles) {
             case 1:
                 $role_profile = 'Administrador';
+                break;
+            case 2:
+                $role_profile = 'Vicerector';
                 break;
             case 3:
                 $role_profile = 'Director de Area';

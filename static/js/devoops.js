@@ -15,11 +15,13 @@ function graficar(url, params) {
             var json = eval('(' + e + ')');
             var data_chart = [];
             var label_chart = [];
+            var data_subto = [];
             var html = "";
             $('#d_bar').html(null);
-            for (var item in json) {
+            for (var item in json[0]) {
                 data_chart = [];
                 label_chart = [];
+                data_subto = [];
 
                 html = "<div class='row'>" +
                         "<div class='col-xs-11 col-sm-11'>" +
@@ -36,15 +38,17 @@ function graficar(url, params) {
 
                 $('#d_bar').append(html);
 
-                for (var item_area in json[item]) {
+                for (var item_area in json[0][item]) {
                     label_chart.push(item_area);
-                    data_chart.push(json[item][item_area]);
+                    data_chart.push(json[0][item][item_area]);
+                    data_subto[item_area] = json[1][item][0][item_area];
                 }
 
                 var facultadesBar = {
                     labels: label_chart,
                     datasets: [
                         {
+                            label : data_subto,
                             fillColor: "rgba(48, 164, 255, 0.2)",
                             strokeColor: "rgba(48, 164, 255, 0.8)",
                             highlightFill: "rgba(48, 164, 255, 0.75)",
@@ -57,7 +61,16 @@ function graficar(url, params) {
                 var grafico = document.getElementById('bar-chart_' + item).getContext('2d');
                 window.myLine = new Chart(grafico).Bar(facultadesBar, {
                     responsive: true,
-                    tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>%"
+                    //tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>%"
+                    tooltipTemplate : function( obj ){
+                        var etiqueta = "";
+                        etiqueta = obj.value + "%";
+                        etiqueta += " (" + obj.datasetLabel[obj.label];
+                        etiqueta += " de " + json[1]['Totales'][0][obj.label] + ")";
+                        return etiqueta;
+                        //console.log(obj);
+                        
+                    }
                 });
             }
         }

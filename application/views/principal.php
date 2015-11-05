@@ -132,7 +132,7 @@
         <!--End Container-->
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <!--<script src="http://code.jquery.com/jquery.js"></script>-->
-        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="<?php echo base_url() ?>static/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url() ?>static/plugins/jquery-ui/jquery-ui.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="<?php echo base_url() ?>static/plugins/bootstrap/bootstrap.min.js"></script>
@@ -141,16 +141,13 @@
         <script src="<?php echo base_url() ?>static/plugins/tinymce/jquery.tinymce.min.js"></script>
 
         <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-        <!--<script src="<?php //echo base_url()  ?>static/plugins/datatables/dataTables.bootstrap.js"></script>-->
         <script src="<?php echo base_url() ?>static/js/dataTables.buttons.js"></script>
         <script src="<?php echo base_url() ?>static/js/jszip.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/pdfmake.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/vfs_fonts.js"></script>
         <script src="<?php echo base_url() ?>static/js/buttons.html5.js"></script>
 
-        <!-- All functions for this theme + document.ready processing 
-        <script src="<?php //echo base_url()  ?>static/plugins/morris/morris.min.js"></script>
-        <script src="<?php //echo base_url()  ?>static/plugins/raphael/raphael-min.js"></script>-->
+        <!-- All functions for this theme + document.ready processing -->
         <script src="<?php echo base_url() ?>static/js/devoops.js"></script>
         <script src="<?php echo base_url() ?>static/js/jquery.ctools.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/chart.js"></script>
