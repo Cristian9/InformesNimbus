@@ -118,13 +118,13 @@ class Facu_model extends CI_Model {
                 $sql_herramientas = "select ";
 
                 foreach ($sql_facultades as $value) {
-                    $sql_totales .= "(select count(faculty) from n_report_detail 
+                    $sql_totales .= "(select count(distinct(section_code)) from n_report_detail 
                         where course_title not in ('INGLES I', 'INGLES II', 'INGLES III') and 
                         category = '" . $programa . "' and faculty = '" . $value['faculty'] . "' 
                         and week between '" . $desde . "' and '" . $hasta . "' 
                         GROUP BY faculty) as '" . substr($value['description'], 0, 10) . "',";
 
-                    $sql_herramientas .= "(select count(faculty) from n_report_detail 
+                    $sql_herramientas .= "(select count(distinct(section_code)) from n_report_detail 
                         where " . $herramienta[$i] . " <> 0 and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') 
                         and faculty = '" . $value['faculty'] . "' and category = '" . $programa . "' and week 
                         between '" . $desde . "' and '" . $hasta . "' group by faculty) as '" . substr($value['description'], 0, 10) . "',";

@@ -108,14 +108,14 @@ class Area_model extends CI_Model {
                 $sql_herramientas = "select ";
                 $sql_totales = "select ";
                 foreach ($data_areas as $v) {
-                    $sql_totales .= "(select count(section_code) from n_report_detail " .
+                    $sql_totales .= "(select count(distinct(section_code)) from n_report_detail " .
                             $sql_ciudad . " and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') "
                             . "and category = '" . $programa . "' and  course_code in "
                             . "(select course_code from n_course_areas where area_id = '" . $v['id'] . "') "
                             . "and week between '" . $desde . "' and '" . $hasta . "' "
                             . "ORDER BY course_title asc) " . $v['description'] . ",";
 
-                    $sql_herramientas .= "(select count(section_code) "
+                    $sql_herramientas .= "(select count(distinct(section_code)) "
                             . "from n_report_detail " . $sql_ciudad
                             . "and " . $herramienta[$i] . " <> 0 and course_code in (select course_code "
                             . "from n_course_areas where area_id = '" . $v['id'] . "') and course_title not in "

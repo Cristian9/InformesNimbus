@@ -4,6 +4,23 @@ String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.substr(1);
 }
 
+var herramientas = {
+    'documents'         : 'Documentos',
+    'learnpaths'        : 'Mis Clases',
+    'links'             : 'Enlaces',
+    'forums'            : 'Foros',
+    'announcements'     : 'Anuncios',
+    'chats'             : 'Chat',
+    'works'             : 'Tareas',
+    'quizzes'           : 'Evaluaciones',
+    'agenda'            : 'Agenda',
+    'dropbox'           : 'Comp. Documentos',
+    'survey'            : 'Encuesta',
+    'groups'            : 'Grupos',
+    'gradebook'         : 'Form. Evaluac.',
+    'course_progress'   : 'Prog. Didáctica'
+}
+
 function graficar(url, params) {
     $('#d_bar').html('Graficando.....');
 
@@ -26,7 +43,7 @@ function graficar(url, params) {
                 html = "<div class='row'>" +
                         "<div class='col-xs-11 col-sm-11'>" +
                         "<div class='panel panel-default'>" +
-                        "<div class='panel-heading'>" + item.ucfirst() + "</div>" +
+                        "<div class='panel-heading'>" + herramientas[item] + "</div>" +
                         "<div class='panel-body'>" +
                         "<div class='canvas-wrapper'>" +
                         "<canvas class='main-chart' id='bar-chart_" + item + "' height='200' width='600'></canvas>" +
@@ -69,7 +86,6 @@ function graficar(url, params) {
                         etiqueta += " de " + json[1]['Totales'][0][obj.label] + ")";
                         return etiqueta;
                         //console.log(obj);
-                        
                     }
                 });
             }
@@ -81,12 +97,16 @@ function add_columnas(elem, txt) {
     var x = document.getElementById(txt + "_head");
 
     if (!x) {
-        var trh = document.getElementById(elem).tHead.children[0], thh = document.createElement('th');
+        var trh = document.getElementById(elem).tHead.children[0], 
+            thh = document.createElement('th');
+
         thh.innerHTML = txt.ucfirst();
         thh.setAttribute('id', txt + "_head");
         trh.appendChild(thh);
 
-        var trf = document.getElementById(elem).tFoot.children[0], thf = document.createElement('th');
+        var trf = document.getElementById(elem).tFoot.children[0], 
+            thf = document.createElement('th');
+
         thf.innerHTML = txt.ucfirst();
         thf.setAttribute('id', txt + "_foot");
         trf.appendChild(thf);

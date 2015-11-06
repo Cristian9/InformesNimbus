@@ -86,6 +86,6 @@ class Carrera_controller extends CI_Controller {
                 }
             }
         }
-        echo json_encode(array($graficar, $datos));
+        echo json_encode(array($graficar, $dato));
     }
 }

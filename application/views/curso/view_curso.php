@@ -191,7 +191,7 @@
                     <select class="populate placeholder" id="input_date">
                         <option value="0">.:::Seleccione:::.</option>
                         <?php
-                        for ($i = 1; $i <= 14; $i++) {
+                        for ($i = 1; $i <= 16; $i++) {
                             echo "<option value='" . $i . "'>Semana " . $i . "</option>";
                         }
                         ?>
@@ -204,7 +204,7 @@
                     <select class="populate placeholder" id="input_date2">
                         <option value="0">.:::Seleccione:::.</option>
                         <?php
-                        for ($i = 1; $i <= 14; $i++) {
+                        for ($i = 1; $i <= 16; $i++) {
                             echo "<option value='" . $i . "'>Semana " . $i . "</option>";
                         }
                         ?>
@@ -314,7 +314,7 @@
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
-                        add_columnas('datatable_area', txt);
+                        add_columnas('datatable_area', herramientas[txt]);
                         check[icheck] = txt;
                         icheck++;
                     }

@@ -386,7 +386,7 @@
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
-                        add_columnas('datatable_area', txt);
+                        add_columnas('datatable_area', herramientas[txt]);
                         check[icheck] = txt;
                         icheck++;
                     }

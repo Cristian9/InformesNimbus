@@ -182,12 +182,12 @@ class Carrera_model extends CI_Model {
                 $sql_herramientas = "select ";
                 foreach ($datos_carreras as $v) {
 
-                    $sql_totales .= "(select count(program) from n_report_detail" .
+                    $sql_totales .= "(select count(distinct(section_code)) from n_report_detail" .
                             " where course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " .
                             $sql_ciudad . " and category = '" . $programa . "' " .
                             $n_faculty . " and program = '" . $v['program'] . "' GROUP BY program) as '" . $v['description'] . "', ";
 
-                    $sql_herramientas .= "ifnull((select count(program) from n_report_detail where " .
+                    $sql_herramientas .= "ifnull((select count(distinct(section_code)) from n_report_detail where " .
                             $herramienta[$i] . " <> 0 and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " .
                             $sql_ciudad . "and category = '" . $programa . "' " .
                             $n_faculty . " and program = '" . $v['program'] . "' GROUP BY program), 0) as '" . $v['description'] . "', ";

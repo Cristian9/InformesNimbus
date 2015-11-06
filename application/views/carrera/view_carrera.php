@@ -112,7 +112,7 @@
                     <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="documents"> Documentos
+                                <input type="checkbox" value="documents" name="Documentos"> Documentos
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -120,7 +120,7 @@
                     <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="learnpaths"> Mis clases
+                                <input type="checkbox" value="learnpaths" name="Mis Clases"> Mis clases
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -128,7 +128,7 @@
                     <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="links"> Enlaces
+                                <input type="checkbox" value="links" name="Enlaces"> Enlaces
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -139,19 +139,19 @@
                     <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="forums"> Foros
+                                <input type="checkbox" value="forums" name="Foros"> Foros
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="announcements"> Anuncios
+                                <input type="checkbox" value="announcements" name="Anuncios"> Anuncios
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="chats"> Chat
+                                <input type="checkbox" value="chats" name="Chat"> Chat
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -159,19 +159,19 @@
                     <div class="col-sm-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="works"> Tareas
+                                <input type="checkbox" value="works" name="Tareas"> Tareas
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="quizzes"> Evaluaciones
+                                <input type="checkbox" value="quizzes" name="Evaluaciones"> Evaluaciones
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="agenda"> Agenda
+                                <input type="checkbox" value="agenda" name="Agenda"> Agenda
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -179,19 +179,19 @@
                     <div class="col-sm-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="dropbox"> Comp. Documentos
+                                <input type="checkbox" value="dropbox" name="Compartir Documentos"> Comp. Documentos
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="survey"> Encuesta
+                                <input type="checkbox" value="survey" name="Encuesta"> Encuesta
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="groups"> Grupos
+                                <input type="checkbox" value="groups" name="Grupos"> Grupos
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
@@ -199,22 +199,22 @@
                     <div class="col-sm-3">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="gradebook"> Form. Evaluaci&oacute;n
+                                <input type="checkbox" value="gradebook" name="Form. Evaluaci&oacute;n"> Form. Evaluaci&oacute;n
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" value="course_progress"> Prog. Did&aacute;ctica
+                                <input type="checkbox" value="course_progress" name="Prog. Did&aacute;ctica"> Prog. Did&aacute;ctica
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                        <div class="checkbox">
+                        <!--<div class="checkbox">
                             <label>
                                 <input type="checkbox" value="wiki"> Wiki
                                 <i class="fa fa-square-o"></i>
                             </label>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -420,7 +420,7 @@
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
-                        add_columnas('datatable_area', txt);
+                        add_columnas('datatable_area', herramientas[txt]);
                         herram[icheck] = txt;
                         icheck++;
                     }
