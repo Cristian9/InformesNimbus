@@ -4,21 +4,25 @@ String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.substr(1);
 }
 
+String.prototype.lcfirst = function(){
+    return this.charAt(0).toLowerCase() + this.substr(1);
+}
+
 var herramientas = {
-    'documents'         : 'Documentos',
-    'learnpaths'        : 'Mis Clases',
-    'links'             : 'Enlaces',
-    'forums'            : 'Foros',
-    'announcements'     : 'Anuncios',
-    'chats'             : 'Chat',
-    'works'             : 'Tareas',
-    'quizzes'           : 'Evaluaciones',
-    'agenda'            : 'Agenda',
-    'dropbox'           : 'Comp. Documentos',
-    'survey'            : 'Encuesta',
-    'groups'            : 'Grupos',
-    'gradebook'         : 'Form. Evaluac.',
-    'course_progress'   : 'Prog. Didáctica'
+    'documents'         : 'documentos',
+    'learnpaths'        : 'mis Clases',
+    'links'             : 'enlaces',
+    'forums'            : 'foros',
+    'announcements'     : 'anuncios',
+    'chats'             : 'chat',
+    'works'             : 'tareas',
+    'quizzes'           : 'evaluaciones',
+    'agenda'            : 'agenda',
+    'dropbox'           : 'comp. Documentos',
+    'survey'            : 'encuesta',
+    'groups'            : 'grupos',
+    'gradebook'         : 'form. Evaluac.',
+    'course_progress'   : 'prog. Didáctica'
 }
 
 function graficar(url, params) {
@@ -43,7 +47,7 @@ function graficar(url, params) {
                 html = "<div class='row'>" +
                         "<div class='col-xs-11 col-sm-11'>" +
                         "<div class='panel panel-default'>" +
-                        "<div class='panel-heading'>" + herramientas[item] + "</div>" +
+                        "<div class='panel-heading'>" + herramientas[item].ucfirst() + "</div>" +
                         "<div class='panel-body'>" +
                         "<div class='canvas-wrapper'>" +
                         "<canvas class='main-chart' id='bar-chart_" + item + "' height='200' width='600'></canvas>" +
@@ -93,23 +97,38 @@ function graficar(url, params) {
     });
 }
 
-function add_columnas(elem, txt) {
+function add_columnas(elem, txt, base) {
     var x = document.getElementById(txt + "_head");
 
     if (!x) {
         var trh = document.getElementById(elem).tHead.children[0], 
             thh = document.createElement('th');
 
-        thh.innerHTML = txt.ucfirst();
+        thh.innerHTML = herramientas[txt].ucfirst();
         thh.setAttribute('id', txt + "_head");
         trh.appendChild(thh);
 
         var trf = document.getElementById(elem).tFoot.children[0], 
             thf = document.createElement('th');
 
-        thf.innerHTML = txt.ucfirst();
+        thf.innerHTML = herramientas[txt].ucfirst();
         thf.setAttribute('id', txt + "_foot");
         trf.appendChild(thf);
+
+        if(base == 1){
+            var trhb = document.createElement('th');
+
+            trhb.innerHTML = 'Curso Base ' + herramientas[txt].ucfirst();
+            trhb.setAttribute('id', txt + "_headbase");
+            trh.appendChild(trhb);
+
+
+            var trfb = document.createElement('th');
+
+            trfb.innerHTML = 'Curso Base ' + herramientas[txt].ucfirst();
+            trfb.setAttribute('id', txt + "_footbase");
+            trf.appendChild(trfb);
+        }
     }
 }
 
