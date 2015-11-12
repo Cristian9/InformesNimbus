@@ -33,7 +33,7 @@ for( $i = 0; $i < $linesToDraw; $i++ )  {
 
 imagettftext( $image, 20, 0, 35, 35, $color, "VeraBd.ttf", $key );
 
-header ( "Content-type: image/png" );
+header("Content-type: image/png" );
 header("Cache-Control: no-cache, must-revalidate");
 header("Pragma: no-cache");
 imagepng( $image );
