@@ -27,6 +27,7 @@ class Area_model extends CI_Model {
 
     function listar($ciudad, $area, $herramienta, $prg, $del, $al) {
         $estadisticas = array();
+        $periodo = substr($prg, 1, 3);
         $sql_ciudad = ($ciudad[0] == "1") ?
                 " and n.faculty not in ('F3', 'F4', 'F5') " :
                 " and n.faculty in ('F3', 'F4', 'F5') ";
@@ -34,7 +35,7 @@ class Area_model extends CI_Model {
         $sql_area = ($area != '0') ? " and n.course_code =
                     (select course_code 
                     from n_course_areas 
-                    where area_id in ('" . $area . "') and course_code = n.course_code)" : "";
+                    where area_id in ('" . $area . "') and course_code = n.course_code and period = '".$periodo."')" : "";
         
         if($_SESSION['rol'] == 3){
             if($area == '0'){
@@ -45,7 +46,7 @@ class Area_model extends CI_Model {
                 $sql_area = " and n.course_code =
                     (select course_code 
                     from n_course_areas 
-                    where area_id in (" . $in . ") and course_code = n.course_code)";
+                    where area_id in (" . $in . ") and course_code = n.course_code and period = '".$periodo."')";
             }
         }
 
@@ -83,6 +84,7 @@ class Area_model extends CI_Model {
     }
 
     function data_graficar($ciudad, $programa, $area, $desde, $hasta, $herramienta) {
+        $periodo = substr($programa, 1, 3);
         $sql_ciudad = ($ciudad[0] == "1") ?
                 " where faculty not in ('F3', 'F4', 'F5') " :
                 " where faculty in ('F3', 'F4', 'F5') ";
@@ -111,14 +113,14 @@ class Area_model extends CI_Model {
                     $sql_totales .= "(select count(distinct(section_code)) from n_report_detail " .
                             $sql_ciudad . " and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') "
                             . "and category = '" . $programa . "' and  course_code in "
-                            . "(select course_code from n_course_areas where area_id = '" . $v['id'] . "') "
+                            . "(select course_code from n_course_areas where area_id = '" . $v['id'] . "' and period = '".$periodo."') "
                             . "and week between '" . $desde . "' and '" . $hasta . "' "
                             . "ORDER BY course_title asc) " . $v['description'] . ",";
 
                     $sql_herramientas .= "(select count(distinct(section_code)) "
                             . "from n_report_detail " . $sql_ciudad
                             . "and " . $herramienta[$i] . " <> 0 and course_code in (select course_code "
-                            . "from n_course_areas where area_id = '" . $v['id'] . "') and course_title not in "
+                            . "from n_course_areas where area_id = '" . $v['id'] . "' and period = '".$periodo."') and course_title not in "
                             . "('INGLES I', 'INGLES II', 'INGLES III') and category = '" . $programa . "' "
                             . "and week between '" . $desde . "' and '" . $hasta . "') as " . $v['description'] . ",";
                 }

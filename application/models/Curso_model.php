@@ -14,7 +14,7 @@ class Curso_model extends CI_Model {
     }
 
     function index($curso_id) {
-
+        $periodo = substr($curso_id, 1, 3);
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
@@ -27,7 +27,7 @@ class Curso_model extends CI_Model {
                 $in = substr($in, 0, -1);
                 $sql = "select code as id, title as description from course where substr(visual_code, 5, 4)" 
                     . " in (select course_code from n_course_areas where " 
-                    . " area_id in (" . $in . ")) and category_code = '".$curso_id."'";
+                    . " area_id in (" . $in . ") and period = '".$periodo."') and category_code = '".$curso_id."'";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
@@ -66,7 +66,7 @@ class Curso_model extends CI_Model {
     function listar($categoria, $herramienta, $curso, $del, $al) {
         $estadisticas = array();
         $curso = substr($curso, 4, 4);
-
+        $periodo = substr($categoria, 1, 3);
         $sql_curso = ($curso != '0') ? " and course_code = '" . $curso . "' " : "";
 
         $sql_rol = "";
@@ -78,7 +78,7 @@ class Curso_model extends CI_Model {
                 }
                 $in = substr($in, 0, -1);
                 $sql_rol = " and course_code in (select course_code from " 
-                    . "n_course_areas where area_id in (".$in.") and course_code = course_code)";
+                    . "n_course_areas where area_id in (".$in.") and course_code = course_code and period = '".$periodo."')";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {

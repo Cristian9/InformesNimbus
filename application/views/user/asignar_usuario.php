@@ -37,13 +37,14 @@
                         <legend>Seleccione usuario</legend>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Usuario</label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <select class="populate placeholder" name="country" id="s_usuarios">
                                     <option value="">-- Seleccione usuario --</option>
                                     <?php
                                     foreach ($user as $v):
                                         ?>
-                                        <option value="<?php echo $v['id'] . '|' . $v['username'] ?>"><?php echo $v['lastname'] . ', ' . $v['firstname'] ?></option>
+                                        <option value="<?php echo $v['id'] . '|' . $v['username'] ?>">
+                                            <?php echo $v['lastname'] . ', ' . $v['firstname'] . ' - ' . $v['username'] ?></option>
                                         <?php
                                     endforeach;
                                     ?>

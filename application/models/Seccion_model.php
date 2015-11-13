@@ -60,6 +60,7 @@ class Seccion_model extends CI_Model {
                 " and faculty in ('F3', 'F4', 'F5') ";
 
         $sql_carrera = ($seccion != '0') ? " and section_code = '" . $seccion . "' " : "";
+        $periodo = substr($prg, 1, 3);
 
         $sql_rol = "";
 
@@ -70,7 +71,7 @@ class Seccion_model extends CI_Model {
                 }
                 $in = substr($in, 0, -1);
                 $sql_rol = " and course_code in (select course_code from " 
-                    . "n_course_areas where area_id in (".$in.") and course_code = course_code)";
+                    . "n_course_areas where area_id in (".$in.") and course_code = course_code and period = '".$periodo."')";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
