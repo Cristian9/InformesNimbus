@@ -34,8 +34,8 @@ class Curso_controller extends CI_Controller{
                     $categoria,
                     $check,
                     $curso,
-                    $f1,
-                    $f2
+                    $fdesde,
+                    $fhasta
                 );
         echo json_encode($lista);
     }
