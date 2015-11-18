@@ -18,7 +18,7 @@ class Area_controller extends CI_Controller{
 
     function getAreas() {
         session_start();
-        $json->listas = $data['area'] = $this->area_model->index();
+        $json->listas = $this->area_model->index();
         echo json_encode($json);
     }
 
@@ -28,16 +28,16 @@ class Area_controller extends CI_Controller{
         $herramienta    =   $this->input->post('herramienta');
         $prg            =   $this->input->post('prg');
         $areas          =   $this->input->post('areas');
-        $f1             =   $this->input->post('f1');
-        $f2             =   $this->input->post('f2');
+        $fdesde         =   $this->input->post('f1');
+        $fhasta         =   $this->input->post('f2');
         
         $lista = $this->area_model->listar(
                     $ciudad,
                     $areas,
                     $herramienta,
                     $prg,
-                    $f1,
-                    $f2
+                    $fdesde,
+                    $fhasta
                 );
         echo json_encode($lista);
     }

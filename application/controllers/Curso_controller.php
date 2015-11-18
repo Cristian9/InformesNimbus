@@ -18,7 +18,7 @@ class Curso_controller extends CI_Controller{
     function getCursos($curso_id) {
         session_start();
         $curso_id = $this->input->post('category');
-        $json->listas = $data['curso'] = $this->curso_model->index( $curso_id );
+        $json->listas = $this->curso_model->index( $curso_id );
         echo json_encode($json);
     }
 
@@ -27,8 +27,8 @@ class Curso_controller extends CI_Controller{
         $categoria  = $this->input->post('categoria');
         $check      = $this->input->post('check');
         $curso      = $this->input->post('curso');
-        $f1         = $this->input->post('f1');
-        $f2         = $this->input->post('f2');
+        $fdesde     = $this->input->post('f1');
+        $fhasta     = $this->input->post('f2');
         
         $lista = $this->curso_model->listar(
                     $categoria,

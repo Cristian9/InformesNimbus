@@ -30,33 +30,33 @@ class User_controller extends CI_Controller {
     }
     
     function get_areas(){
-        $json->listas = $dato = $this->user_model->get_areas();
+        $json->listas = $this->user_model->get_areas();
         echo json_encode($json);
     }
 
     function get_category(){
-        $json->listas = $dato = $this->user_model->get_category();
+        $json->listas = $this->user_model->get_category();
         echo json_encode($json);
     }
 
     function getPeriodo(){
-        $json->listas = $dato = $this->user_model->getPeriodo();
+        $json->listas = $this->user_model->getPeriodo();
         echo json_encode($json);
     }
     
     function get_facultades(){
-        $json->listas = $dato = $this->user_model->get_facultades();
+        $json->listas = $this->user_model->get_facultades();
         echo json_encode($json);
     }
     
     function get_carreras(){
         $facultad = $this->input->post('facultad');
-        $json->listas = $dato = $this->user_model->get_carreras( $facultad );
+        $json->listas = $this->user_model->get_carreras( $facultad );
         echo json_encode($json);
     }
     
     function get_cursos(){
-        $json->listas = $dato = $this->user_model->get_cursos();
+        $json->listas = $this->user_model->get_cursos();
         echo json_encode($json);
     }
 

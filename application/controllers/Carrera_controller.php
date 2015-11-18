@@ -20,17 +20,17 @@ class Carrera_controller extends CI_Controller {
     function getFacultades(){
         session_start();
         $fid = $this->input->post('chk');
-        $json->listas = $data['facultad'] = $this->carrera_model->index($fid);
+        $json->listas = $this->carrera_model->index($fid);
         echo json_encode($json);
     }
 
     function getEscuela() {
         session_start();
-        $id = $this->input->post('chk');
+        $idchk = $this->input->post('chk');
         $facultad = $this->input->post('facultades');
         $programa = $this->input->post('prg');
 
-        $json->listas = $data['carrera'] = $this->carrera_model->getEscuelas($id, $facultad, $programa);
+        $json->listas = $this->carrera_model->getEscuelas($idchk, $facultad, $programa);
         echo json_encode($json);
     }
 
@@ -41,8 +41,8 @@ class Carrera_controller extends CI_Controller {
         $facultad       = $this->input->post('facultad');
         $prg            = $this->input->post('prg');
         $herram         = $this->input->post('herram');
-        $f1             = $this->input->post('f1');
-        $f2             = $this->input->post('f2');
+        $fdesde         = $this->input->post('f1');
+        $fhasta         = $this->input->post('f2');
         
         $lista = $this->carrera_model->listar(
                     $ciudad,
@@ -50,8 +50,8 @@ class Carrera_controller extends CI_Controller {
                     $carrera,
                     $facultad,
                     $herram,
-                    $f1,
-                    $f2
+                    $fdesde,
+                    $fhasta
                 );
         echo json_encode($lista);
     }
@@ -80,7 +80,7 @@ class Carrera_controller extends CI_Controller {
             if($key == 'Totales')
                 continue;
 
-            foreach ($value as $k => $v) {
+            foreach ($value as $v) {
                 foreach ($v as $indice => $valor) {
                     $graficar[$key][$indice] = round(($valor / $dato['Totales'][0][$indice]) * 100);
                 }

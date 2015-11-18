@@ -75,7 +75,7 @@
                 ?>
             </select>
         </div>
-        <?php if ($_SESSION['rol'] == 4 || $_SESSION['rol'] == 1) { ?>
+        <?php if ($_SESSION['rol'] == 4 || $_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
             <div class="col-sm-3" id="div_cbo"><label>Facultades</label>
                 <select class="populate placeholder" id="cbo_facultades">
                     <option value="0">.::: Todos :::.</option>

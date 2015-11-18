@@ -18,7 +18,7 @@ class Facu_controller extends CI_Controller{
     function getFacultad(){
         session_start();
         $fid = $this->input->post('chk');
-        $json->listas = $data['facultad'] = $this->facu_model->index($fid);
+        $json->listas = $this->facu_model->index($fid);
         echo json_encode($json);
     }
     
@@ -27,8 +27,8 @@ class Facu_controller extends CI_Controller{
         $radio  =   $this->input->post('radio');
         $cbo    =   $this->input->post('cbo');
         $check  =   $this->input->post('check');
-        $f1     =   $this->input->post('f1');
-        $f2     =   $this->input->post('f2');
+        $fdesde =   $this->input->post('f1');
+        $fhasta =   $this->input->post('f2');
         $prg    =   $this->input->post('prg');
         
         $lista = $this->facu_model->listar(
@@ -36,8 +36,8 @@ class Facu_controller extends CI_Controller{
                     $prg,
                     $cbo,
                     $check,
-                    $f1,
-                    $f2
+                    $fdesde,
+                    $fhasta
                 );
         
         echo json_encode($lista);
@@ -65,7 +65,7 @@ class Facu_controller extends CI_Controller{
             if($key == 'Totales')
                 continue;
 
-            foreach ($value as $k => $v) {
+            foreach ($value as $v) {
                 foreach ($v as $indice => $valor) {
                     $graficar[$key][$indice] = round(($valor / $datos['Totales'][0][$indice]) * 100);
                 }

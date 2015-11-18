@@ -18,8 +18,8 @@ class Seccion_controller extends CI_Controller{
     function getSecciones() {
         session_start();
         $fid = $this->input->post('chk');
-        $id = $this->input->post('programa');
-        $json->listas = $data['seccion'] = $this->seccion_model->index($fid, $id);
+        $idprogram = $this->input->post('programa');
+        $json->listas = $this->seccion_model->index($fid, $idprogram);
         echo json_encode($json);
     }
 
@@ -29,16 +29,16 @@ class Seccion_controller extends CI_Controller{
         $cbo    = $this->input->post('cbo');
         $prg    = $this->input->post('prg');
         $check  = $this->input->post('check');
-        $f1     = $this->input->post('f1');
-        $f2     = $this->input->post('f2');
+        $fdesde = $this->input->post('f1');
+        $fhasta = $this->input->post('f2');
         
         $lista = $this->seccion_model->listar(
                     $radio,
                     $prg,
                     $cbo,
                     $check,
-                    $f1,
-                    $f2
+                    $fdesde,
+                    $fhasta
                 );
         echo json_encode($lista);
     }
