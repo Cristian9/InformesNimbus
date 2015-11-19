@@ -145,10 +145,10 @@ class User_model extends CI_Model {
                 break;
         }
 
-        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
+        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, access_date, "
                 . "ip_address) values ('" . $_SESSION['usuario']
-                . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d')
-                . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+                . "', '" . $usern . "', '" . $role_profile . "', 'Asignacion', '" . date('Y-m-d H:i:s') . "',"
+                . $_SERVER['REMOTE_ADDR'] . "')";
 
         $this->db->query($sql_add_audit);
 
@@ -181,10 +181,10 @@ class User_model extends CI_Model {
 
         $sql_upd_user = "update n_users set active = 0 where id = '" . $uid . "'";
 
-        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, fecha, hora, "
+        $sql_add_audit = "insert into n_audit (username, user_afected, rol_user_afected, action, access_date, "
                 . "ip_address) values ('" . $_SESSION['usuario']
-                . "', '" . $uname . "', '" . $role . "', 'Desasignacion', '" . date('Y-m-d')
-                . "', '" . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+                . "', '" . $uname . "', '" . $role . "', 'Desasignacion', '" . date('Y-m-d H:i:s') . "', "
+                . $_SERVER['REMOTE_ADDR'] . "')";
 
         $upd = $this->db->query($sql_upd_user);
         $aud = $this->db->query($sql_add_audit);

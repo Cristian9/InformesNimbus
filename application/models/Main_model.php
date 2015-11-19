@@ -43,9 +43,9 @@ class Main_model extends CI_Model {
     function add_audit($act) {
         $action = ($act == 'in') ? 'login' : 'logout';
         $sql_audit = "insert into n_audit(username, action, "
-                . "fecha, hora, ip_address) values ('" . $_SESSION['usuario']
-                . "', '" . $action . "', '" . date('Y-m-d') . "', '"
-                . date('H:i:s') . "', '" . $_SERVER['REMOTE_ADDR'] . "')";
+                . "access_date, ip_address) values ('" . $_SESSION['usuario']
+                . "', '" . $action . "', '" . date('Y-m-d H:i:s') "', " 
+                . $_SERVER['REMOTE_ADDR'] . "')";
         $this->db->query($sql_audit);
     }
 
