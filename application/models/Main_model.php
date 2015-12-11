@@ -59,7 +59,16 @@ class Main_model extends CI_Model {
 
     function add_period($id, $desc) {
         $sql_new_period = "insert into n_period values ('" . $id . "', '" . $desc . "')";
-        return $this->db->query($sql_new_period);
+        $sql_get_period = "select id from n_period where id = '".$id."'";
+
+        $data = $this->db->query($sql_get_period)->result('array');
+        if(empty($data)){
+            $record =  $this->db->query($sql_new_period);
+        }else{
+            $record = 'error';
+        }
+
+        return $record;        
     }
 
 }

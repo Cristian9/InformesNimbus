@@ -110,6 +110,14 @@ class User_controller extends CI_Controller {
         echo $record;
     }
 
+    function review(){
+        $user = $this->input->post('username');
+
+        $result = $this->user_model->review($user);
+
+        echo $result;
+    }
+
     function delete(){
         session_start();
         $uid = base64_decode($_GET['uid']);

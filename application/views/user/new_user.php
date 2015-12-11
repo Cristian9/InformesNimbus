@@ -76,6 +76,24 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#usuario').blur(function(){
+            var _self = $(this);
+            var username = _self.val();
+            $.ajaxreq({
+                url : 'users-review',
+                type : 'POST',
+                params : 'username=' + username,
+                callback : function(e){
+                    if(e){
+                        alert('Ya existe un usuario con ese mismo nombre!!!');
+                        $('#btnnew').attr('disabled', true);
+                        _self.focus();
+                    }else{
+                        $('#btnnew').attr('disabled', false);
+                    }
+                }
+            });
+        });
         var btn_newuser = document.getElementById('btnnew');
         btn_newuser.addEventListener("click", function () {
             $('#correo').validate({

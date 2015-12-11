@@ -78,8 +78,13 @@
                     type : 'POST',
                     params : 'id=' + $.trim($('#id_periodo').val()) + '&desc=' + $.trim($('#desc_periodo').val()),
                     callback : function( e ){
-                        if(e){
-                            alert('Periodo agregado!!!');
+                        if(e == 'error'){
+                            alert('Ya existe el periodo ingresado!!!');
+                            $('#btnnewperiod').attr('disabled', false).text('Agregar periodo');
+                            $('input:text').val(null);
+                            $('#id_periodo').focus();
+                        }else{
+                            alert('Periodo ingresado correctamente!!!');
                             location.reload();
                         }
                     }

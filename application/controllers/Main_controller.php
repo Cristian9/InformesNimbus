@@ -87,6 +87,7 @@ class Main_controller extends CI_Controller {
         $id = $this->input->post('id');
         $desc = $this->input->post('desc');
         $record = $this->main_model->add_period($id, $desc);
+        
         echo $record;
     }
 

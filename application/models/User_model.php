@@ -175,6 +175,14 @@ class User_model extends CI_Model {
         $this->db->query($sql_del_ascity);
     }
 
+    function review($user){
+        $sql_review = "select count(*) total from n_users where username = '".$user."'";
+
+        $data = $this->db->query($sql_review)->result('array');
+
+        return $data[0]['total'];
+    }
+
     function delete($uid, $uname, $role) {
 
         $this->delete_assignment($uid);
