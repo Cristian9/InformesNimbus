@@ -443,14 +443,18 @@
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
                     'language': {
-                        'infoEmpty': 'No hay registros disponibles'
+                        'zeroRecords': 'No hay registros disponibles',
+                        "infoEmpty":     "Sin registros que mostrar",
+                        "loadingRecords": "Cargando..."
                     },
                     'dom': 'Bfrtip',
                     'buttons': ['excelHtml5', 'csvHtml5'],
                     'ajax': {
                         'type': 'POST',
                         'url': 'carrera-listar',
-                        'dataSrc': "estadisticas",
+                        'dataSrc': function(data){
+                            return (data != '') ? data['estadisticas'] : false;
+                        },
                         'dataType': 'json',
                         'data': {
                             'ciudad': ciudad,
