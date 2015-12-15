@@ -156,6 +156,14 @@ class User_model extends CI_Model {
     }
 
     function add($user, $fstn, $lstn, $mail, $reco, $date) {
+
+        $review = $this->review($user);
+
+        if($review[0]['total'] == 1){
+            return 'error';
+        }
+        
+
         $sql = "insert into n_users (lastname, firstname, username, "
                 . " email, registration_date, creator_id, active) "
                 . "values ('" . strtoupper($lstn) . "', '" . $fstn . "', '" . $user . "',"

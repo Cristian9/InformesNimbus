@@ -125,7 +125,7 @@
                     type : 'POST',
                     params : $.param(args),
                     callback : function( e ){
-                        if(e){
+                        if(e != 'error'){
                             alert('Usuario registrado!!!');
                             location.reload();
                         }

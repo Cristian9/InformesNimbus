@@ -115,7 +115,7 @@ class User_controller extends CI_Controller {
 
         $result = $this->user_model->review($user);
 
-        echo $result;
+        echo ($result != '0') ? true : false;
     }
 
     function delete(){

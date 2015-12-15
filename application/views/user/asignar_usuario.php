@@ -389,7 +389,6 @@
             'usuario': id_user[0],
             'usern' : id_user[1],
             'niveles': document.getElementById('s_niveles').value,
-            //'periodo': $('#s_periodo').val(),
             'program': $('#s_programas').val(),
             'areas': $('#s_areas').val(),
             'facultad': $('#s_facultades').val(),
@@ -399,14 +398,27 @@
             'ciudad': $('#s_ciudad').val()
         }
         $.ajaxreq({
-            url: 'users-save_assignment',
-            type: 'POST',
-            params: $.param(parameters),
-            callback: function (e) {
-                if (e) {
-                    alert('Asignado correctamente');
-                    location.reload();
+            url : 'users-review',
+            type : 'POST',
+            params : 'username=' + parameters['usern'],
+            callback : function(e){
+                if(e){
+                    if(!confirm('Este usuario ya está asignado a un perfil diferente, desea continuar y actualizar el perfil?')){
+                        return false;
+                    }
                 }
+
+                $.ajaxreq({
+                    url: 'users-save_assignment',
+                    type: 'POST',
+                    params: $.param(parameters),
+                    callback: function (e) {
+                        if (e) {
+                            alert('Asignado correctamente');
+                            location.reload();
+                        }
+                    }
+                });
             }
         });
     }
