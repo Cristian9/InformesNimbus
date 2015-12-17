@@ -10,37 +10,48 @@ class Seccion_model extends CI_Model {
 
     function index($fid, $id) {
         if ($fid == "1") {
-            $chk = " and substr(name, 5, 2) not in ('F3', 'F4', 'F5') order by name asc";
+            $chk = " and faculty not in ('F3', 'F4', 'F5') order by faculty asc";
         } else {
-            $chk = " and substr(name, 5, 2) in ('F3', 'F4', 'F5') order by name asc";
+            $chk = " and faculty in ('F3', 'F4', 'F5') order by faculty asc";
         }
 
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select id, name from session where name like '" . $id . "%'" . $chk;
+                $sql = "select distinct(section_code) as id, section_code as " 
+                    . " name from n_report_detail where section_code like '" . $id . "%'" . $chk;
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select id, name from session where substr(name, 5, 2) in (".$in.") and name like '".$id."%'".$chk;
+                $sql = "select distinct(section_code) as id, section_code as " 
+                    . " name from n_report_detail where " 
+                    . " faculty in (" . $in . ") and category like '" . $id . "%'" . $chk;
                 break;
             case 5:
                 foreach ($_SESSION['program_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select id, name from session where substr(name, 7, 2) in (".$in.") and name like '".$id."%'".$chk;
+                $sql = "select distinct(section_code) as id, section_code as " 
+                    . " name from n_report_detail where " 
+                    . " program in (" . $in . ") and category like '" . $id . "%'" . $chk;
                 break;
             case 6:
-                foreach ($_SESSION['course_id'] as $value) {
-                    $in .= "'" . substr($value, 4, 4) . "',";
+                if(is_array($_SESSION['course_id'])){
+                    foreach ($_SESSION['course_id'] as $value) {
+                        $in .= "'" . substr($value, 4, 4) . "',";
+                    }
+                    $in = substr($in, 0, -1);
+                }else{
+                    $in = "'" . substr($_SESSION['course_id'], 4, 4) . "'";
                 }
-                $in = substr($in, 0, -1);
-                $sql = "select id, name from session where substr(name, 9, 4) in (".$in.") " 
-                    . " and substr(name, 2, 3) = '".substr($id, 1, 3)."'";
+
+                $sql = "select distinct(section_code) as id, section_code as " 
+                    . " name from n_report_detail where " 
+                    . " course_code in (" . $in . ") and category like '" . $id . "%'";
                 break;
         }
 

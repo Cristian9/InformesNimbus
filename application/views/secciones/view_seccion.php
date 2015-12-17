@@ -309,7 +309,6 @@
                 select += "<option " +
                         "value = '" + 
                         json.listas[cbo]['name'] + "'>" +
-                        json.listas[cbo]['id'] + ' - ' +
                         json.listas[cbo]['name'] +
                         "</option>";
             }

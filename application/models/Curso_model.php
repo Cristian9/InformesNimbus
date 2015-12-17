@@ -18,54 +18,58 @@ class Curso_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select code as id, title as description from course where category_code = '" . $curso_id . "' order by title asc";
+                $sql = "select distinct(course_code) as id, course_title " 
+                    . " as description from n_report_detail where category = '" . $curso_id . "'";
                 break;
             case 3:
                 foreach ($_SESSION['area_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select code as id, title as description from course where substr(visual_code, 5, 4)" 
-                    . " in (select course_code from n_course_areas where " 
-                    . " area_id in (" . $in . ") and period = '".$periodo."') and category_code = '".$curso_id."'";
+                $sql = "select distinct(a.course_code) as id, n.course_title as description from " . 
+                    " n_report_detail n, n_course_areas a where a.course_code = " . 
+                    "n.course_code and a.area_id in (" . $in . ") and a.period = '" . $periodo . "' " . 
+                    "and n.category = '" . $curso_id . "' order by a.course_code asc";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select code as id, title as description from course, session s where " 
-                    . "substr(s.name, 9, 4) = substr(visual_code, 5, 4) " 
-                    . "and substr(s.name, 5, 2) in (" . $in . ") and category_code = '".$curso_id
-                    . "' GROUP BY visual_code";
+                $sql = "select distinct(course_code) as id, course_title " . 
+                    " as description from n_report_detail where faculty in (" . $in . ") " . 
+                    " and category = '" . $curso_id . "' order by course_code asc";
                 break;
             case 5:
                 foreach ($_SESSION['program_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select code as id, title as description from course, session s where " 
-                    . "substr(s.name, 9, 4) = substr(visual_code, 5, 4) " 
-                    . "and substr(s.name, 7, 2) in (" . $in . ") and category_code = '".$curso_id
-                    ."' GROUP BY visual_code";
+                $sql = $sql = "select distinct(course_code) as id, course_title " . 
+                    " as description from n_report_detail where program in (" . $in . ") " . 
+                    " and category = '" . $curso_id . "' order by course_code asc";
                 break;
             case 6:
-                foreach ($_SESSION['course_id'] as $value) {
-                    $in .= "'" . substr($value, 4, 4) . "',";
+                if(is_array($_SESSION['course_id'])){
+                   foreach ($_SESSION['course_id'] as $value) {
+                        $in .= "'" . substr($value, 4, 4) . "',";
+                    }
+                    $in = substr($in, 0, -1);
+                }else{
+                    $in = "'" . substr($_SESSION['course_id'], 4, 4) . "'";
                 }
-                $in = substr($in, 0, -1);
-                $sql = "select code as id, title as description from course " 
-                    . "where substr(code, 5, 4) in (" . $in . ") and category_code = '".$curso_id."'";
+                
+                $sql = $sql = $sql = "select distinct(course_code) as id, course_title " . 
+                    " as description from n_report_detail where course_code in (" . $in . ") " . 
+                    " and category = '" . $curso_id . "' order by course_code asc";
                 break;
         }
-
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     function listar($categoria, $herramienta, $curso, $del, $al) {
         $estadisticas = array();
-        $curso = substr($curso, 4, 4);
         $periodo = substr($categoria, 1, 3);
         $sql_curso = ($curso != '0') ? " and course_code = '" . $curso . "' " : "";
 
@@ -77,8 +81,11 @@ class Curso_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql_rol = " and course_code in (select course_code from " 
-                    . "n_course_areas where area_id in (".$in.") and course_code = course_code and period = '".$periodo."')";
+
+                if($sql_curso == ''){
+                    $sql_rol = " and course_code in (select course_code from " 
+                        . "n_course_areas where area_id in (".$in.") and course_code = course_code and period = '".$periodo."')";
+                }
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
@@ -96,11 +103,15 @@ class Curso_model extends CI_Model {
                 break;
             case 6:
                 if($curso == '0'){
-                    foreach ($_SESSION['course_id'] as $value) {
-                        $in .= "'" . substr($value, 4, 4) . "',";
+                    if(is_array($_SESSION['course_id'])){
+                        foreach ($_SESSION['course_id'] as $value) {
+                            $in .= "'" . substr($value, 4, 4) . "',";
+                        }
+                        $in = substr($in, 0, -1);
+                        $sql_curso = " and course_code in (" . $in . ")";
+                    }else{
+                        $sql_curso = " and course_code in ('" . substr($_SESSION['course_id'], 4, 4) . "')";
                     }
-                    $in = substr($in, 0, -1);
-                    $sql_curso = " and course_code in (" . $in . ")";
                 }
                 break;
         }

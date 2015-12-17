@@ -9,12 +9,12 @@ class User_model extends CI_Model {
     }
 
     function index() {
-        $sql = "select n_users.id, username, lastname, firstname, email, "
+        $sql = "select distinct(n_users.id), username, lastname, firstname, email, "
                 . "active, case a.rol when 1 then 'Administrador' "
                 . "when 2 then 'Vicerector' when 3 then 'Director de Area' when 4 then "
                 . "'Decano' when 5  then 'Director de carrera' when 6 "
                 . "then 'Coordinador de curso' end as perfil from n_users, "
-                . "n_assignment a where a.user_id = n_users.id and n_users.active=1";
+                . "n_assignment a where a.user_id = n_users.id and n_users.active=1" . $sqlreview;
         $dta_usuario = $this->db->query($sql)->result('array');
 
         return $dta_usuario;
@@ -184,7 +184,9 @@ class User_model extends CI_Model {
     }
 
     function review($user){
-        $sql_review = "select count(*) total from n_users where username = '".$user."'";
+        $sql_review = "select count(distinct(n_users.id)) total from n_users, " . 
+            "n_assignment a where a.user_id = n_users.id and n_users.active=1 " . 
+            " and username = '" . $user . "'";
 
         $data = $this->db->query($sql_review)->result('array');
 
