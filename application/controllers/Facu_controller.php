@@ -1,68 +1,73 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Facu_controller extends CI_Controller{
-    
+
+class Facu_controller extends CI_Controller {
+
     public function __construct() {
         error_reporting(0);
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('facu_model');
     }
-    
-    function index(){
+
+    function index() {
         session_start();
-        $data['periodo'] = $this->facu_model->getPeriodo();
+        $data['category'] = $this->facu_model->get_category();
         $this->load->view('facultad/view_facultad', $data);
     }
-    
-    function getFacultad(){
+
+    function getPeriodos() {
+        $category = $this->input->post('chk');
+        $json->listas = $this->facu_model->getPeriodos($category);
+        echo json_encode($json);
+    }
+
+    function getWeeks() {
+        $periodo = $this->input->get('periodo');
+        $category = $this->input->get('category');
+        $json->listas = $this->facu_model->getWeeks($periodo, $category);
+        echo json_encode($json);
+    }
+
+    function getFacultad() {
         session_start();
         $fid = $this->input->post('chk');
         $json->listas = $this->facu_model->index($fid);
         echo json_encode($json);
     }
-    
-    function listar(){
+
+    function listar() {
         session_start();
-        $radio  =   $this->input->post('radio');
-        $cbo    =   $this->input->post('cbo');
-        $check  =   $this->input->post('check');
-        $fdesde =   $this->input->post('f1');
-        $fhasta =   $this->input->post('f2');
-        $prg    =   $this->input->post('prg');
-        
+        $radio = $this->input->post('radio');
+        $cbo = $this->input->post('cbo');
+        $check = $this->input->post('check');
+        $fdesde = $this->input->post('f1');
+        $fhasta = $this->input->post('f2');
+        $prg = $this->input->post('prg');
+
         $lista = $this->facu_model->listar(
-                    $radio,
-                    $prg,
-                    $cbo,
-                    $check,
-                    $fdesde,
-                    $fhasta
-                );
-        
+                $radio, $prg, $cbo, $check, $fdesde, $fhasta
+        );
+
         echo json_encode($lista);
     }
 
-    function graficar(){
+    function graficar() {
         session_start();
-        $ciudad         =   $this->input->post('ciudad');
-        $herramienta    =   $this->input->post('herramienta');
-        $programa       =   $this->input->post('programa');
-        $facultad       =   $this->input->post('facultad');
-        $desde          =   $this->input->post('desde');
-        $hasta          =   $this->input->post('hasta');
+        $ciudad = $this->input->post('ciudad');
+        $herramienta = $this->input->post('herramienta');
+        $programa = $this->input->post('programa');
+        $facultad = $this->input->post('facultad');
+        $desde = $this->input->post('desde');
+        $hasta = $this->input->post('hasta');
 
         $datos = $this->facu_model->data_graficar(
-                $ciudad,
-                $herramienta,
-                $programa,
-                $facultad,
-                $desde,
-                $hasta
-            );
+                $ciudad, $herramienta, $programa, $facultad, $desde, $hasta
+        );
         $graficar = array();
         foreach ($datos as $key => $value) {
-            if($key == 'Totales')
+            if ($key == 'Totales')
                 continue;
 
             foreach ($value as $v) {
@@ -73,4 +78,5 @@ class Facu_controller extends CI_Controller{
         }
         echo json_encode(array($graficar, $datos));
     }
+
 }

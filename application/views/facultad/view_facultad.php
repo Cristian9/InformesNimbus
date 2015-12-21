@@ -15,63 +15,54 @@
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
         <div class="col-sm-4">
-            <?php if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){ ?>
-            <div class="radio-inline">
-                <label>
-                    <input type="radio" name="radio-inline" value="1" checked> Lima
-                    <i class="fa fa-circle-o"></i>
-                </label>
-            </div>
-            <div class="radio-inline">
-                <label>
-                    <input type="radio" name="radio-inline" value="2"> Chiclayo
-                    <i class="fa fa-circle-o"></i>
-                </label>
-            </div>
-            <?php 
-                }else{
-                    $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
-                    foreach ($_SESSION['city'] as $value) {
-                        echo "<div class='radio-inline'>";
-                            echo "<label>";
-                                echo "<input type='radio' name='radio-inline' value='".$value['city_id']."' checked> ".$name_ciudad[$value['city_id']];
-                                echo "<i class='fa fa-circle-o'></i>";
-                            echo "</label>";
-                        echo "</div>";
-                    }
-                }
-            ?>
-        </div>
-        <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
-            <select class="populate placeholder" id="cbo_periodo">
+            <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="radio-inline" value="1" checked> Lima
+                        <i class="fa fa-circle-o"></i>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="radio-inline" value="2"> Chiclayo
+                        <i class="fa fa-circle-o"></i>
+                    </label>
+                </div>
                 <?php
-                    echo "<option value='0'>.:::Seleccione:::.</option>";
-
-                    foreach($periodo as $item){
-
-                        echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
-
-                    }
-                ?>
-            </select>
+            } else {
+                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                foreach ($_SESSION['city'] as $value) {
+                    echo "<div class='radio-inline'>";
+                    echo "<label>";
+                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
+                    echo "<i class='fa fa-circle-o'></i>";
+                    echo "</label>";
+                    echo "</div>";
+                }
+            }
+            ?>
         </div>
         <div class="col-sm-2" id="div_cbo_cat"><label>Programa *</label>
             <select class="populate placeholder" id="cbo_cat">
                 <?php
-                    if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){
+                echo "<option value='0'>.:::Seleccione:::.</option>";
 
-                        echo "<option value='0'>.:::Seleccione:::.</option>";
-                        echo "<option value='A'>PREGRADO</option>";
-                        echo "<option value='B'>PPE</option>";
-                        echo "<option value='C'>PET</option>";
+                foreach ($category as $item) {
 
-                    }else{
+                    echo "<option value='" . $item['id'] . "'>" . $item['category'] . "</option>";
+                }
+                ?>
+            </select>
+        </div>
+        <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
+            <select class="populate placeholder" id="cbo_periodo">
+                <?php
+                echo "<option value='0'>.:::Seleccione:::.</option>";
 
-                        foreach ($_SESSION['category'] as $value) {
-                            echo "<option value='" . $value['category_id'] . "'>" . $value['category'] . "</option>";
-                        }
+                foreach ($periodo as $item) {
 
-                    }
+                    echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
+                }
                 ?>
             </select>
         </div>
@@ -201,12 +192,6 @@
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                        <!--<div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="wiki"> Wiki
-                                <i class="fa fa-square-o"></i>
-                            </label>
-                        </div>-->
                     </div>
                 </div>
             </div>
@@ -216,28 +201,14 @@
         <form class="form-horizontal" role="form">
             <div class="form-group has-feedback">
                 <div class="col-sm-2"><label>Desde *</label>
-                    <!--<input type="text" id="input_date" class="form-control" placeholder="Date">
-                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>-->
                     <select class="populate placeholder" id="input_date">
                         <option value="0">.:::Seleccione:::.</option>
-                        <?php
-                        for ($i = 1; $i <= 16; $i++) {
-                            echo "<option value='" . $i . "'>Semana " . $i . "</option>";
-                        }
-                        ?>
                     </select>
                 </div>
 
                 <div class="col-sm-2"><label>Hasta *</label>
-                    <!--<input type="text" id="input_date2" class="form-control" placeholder="Date">
-                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>-->
                     <select class="populate placeholder" id="input_date2">
                         <option value="0">.:::Seleccione:::.</option>
-                        <?php
-                        for ($i = 1; $i <= 16; $i++) {
-                            echo "<option value='" . $i . "'>Semana " . $i . "</option>";
-                        }
-                        ?>
                     </select>
                 </div>
                 <div class="col-sm-offset-1 col-sm-2">
@@ -304,7 +275,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#cbo_periodo, #cbo_facultades, #cbo_cat, #input_date, #input_date2').select2();
- 
+
         var ciudad_select;
         $('input:radio[name=radio-inline]').each(function () {
             if ($(this).is(':checked')) {
@@ -313,6 +284,34 @@
         });
 
         cargar_select('cbo_facultades', 'facultad-getFacultad', ciudad_select);
+
+        $('#cbo_cat').change(function () {
+            var category = $(this).val();
+            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            cargar_select('cbo_periodo', 'facultad-getPeriodos', category);
+        });
+
+        $('#cbo_periodo').change(function () {
+            var periodo = $(this).val();
+            var category = $('#cbo_cat').val();
+
+            $.getJSON('facultad-getWeeks', {
+                periodo: periodo,
+                category: category
+            })
+            .done(function (data) {
+                var json = data;
+                var option = "";
+                for (var i = 0; i < json.listas[0]['weeks']; i++) {
+                    option += "<option ";
+                    option += "value='" + (i + 1) + "'>";
+                    option += "Semana " + (i + 1);
+                    option += "</option>";
+                }
+
+                $('#input_date, #input_date2').append(option);
+            });
+        });
 
         $('input:radio[name=radio-inline]').each(function () {
             $(this).click(function () {
@@ -349,7 +348,7 @@
                     }
                 });
 
-                if(ciudad == ""){
+                if (ciudad == "") {
                     ciudad[iciudad] = $('#city').val();
                 }
 
@@ -358,16 +357,16 @@
                 var facultad = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
-                
+
                 var params = {
-                    'ciudad'        : ciudad,
-                    'herramienta'   : herramienta,
-                    'programa'      : prg,
-                    'facultad'      : facultad,
-                    'desde'         : f1,
-                    'hasta'         : f2
+                    'ciudad': ciudad,
+                    'herramienta': herramienta,
+                    'programa': prg,
+                    'facultad': facultad,
+                    'desde': f1,
+                    'hasta': f2
                 }
-                
+
                 graficar('facultad-graficar', params);
             }
         });
@@ -411,14 +410,14 @@
                         add_columnas('datatable_area', txt, base_course);
                         check[icheck] = txt;
                         icheck++;
-                        if(base_course == 1){
+                        if (base_course == 1) {
                             check[icheck] = txt + '_course_base';
                             icheck++
                         }
                     }
                 });
 
-                if(radio == ""){
+                if (radio == "") {
                     radio[iradio] = $('#city').val();
                 }
 
@@ -427,12 +426,12 @@
                 var cbo = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
-                
+
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
-                        "infoEmpty":     "Sin registros que mostrar",
+                        "infoEmpty": "Sin registros que mostrar",
                         "loadingRecords": "Cargando..."
                     },
                     'dom': 'Bfrtip',
@@ -440,7 +439,7 @@
                     'ajax': {
                         'type': 'POST',
                         'url': 'facultad-listar',
-                        'dataSrc': function(data){
+                        'dataSrc': function (data) {
                             return (data != '') ? data['estadisticas'] : false;
                         },
                         'dataType': 'json',

@@ -14,14 +14,14 @@ class Carrera_model extends CI_Model {
         } else {
             $chk = " and n.faculty in ('F3','F4','F5')";
         }
-        
-        if($facultad == '0'){
+
+        if ($facultad == '0') {
             foreach ($_SESSION['faculty_id'] as $value) {
                 $in .= "'" . $value . "',";
             }
             $in = substr($in, 0, -1);
-            $sql_faculty = " and n.faculty in (".$in.")";
-        }else{
+            $sql_faculty = " and n.faculty in (" . $in . ")";
+        } else {
             $sql_faculty = " and n.faculty = '" . $facultad . "'";
         }
 
@@ -33,9 +33,37 @@ class Carrera_model extends CI_Model {
         return $query->result();
     }
 
-    function getPeriodo(){
-        $sql = "select * from n_period order by id desc";
+    function getPeriodos($category) {
+        $sql = "select np.period as id, pr.periodo as description "
+                . "from n_period_category np, n_period pr where "
+                . "np.period = pr.id and np.category_id = '" . $category . "'";
         return $this->db->query($sql)->result('array');
+    }
+
+    function getWeeks($periodo, $category) {
+        $sql = "select weeks from n_period_category where "
+                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        return $this->db->query($sql)->result('array');
+    }
+
+    function get_category() {
+        $by_category = "";
+        $sql_filtro = "";
+
+        if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
+            $by_category = "";
+            $sql_filtro = "";
+        } else {
+            foreach ($_SESSION['category'] as $value) {
+                $by_category .= "'" . $value['category_id'] . "',";
+            }
+            $by_category = substr($by_category, 0, -1);
+            $sql_filtro = " where id in (" . $by_category . ")";
+        }
+
+        $sql_category = "select id, category from n_category " . $sql_filtro;
+
+        return $this->db->query($sql_category)->result('array');
     }
 
     function index($id) {
@@ -48,7 +76,7 @@ class Carrera_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select fa.id, fa.description from n_faculty fa ".$chk." order by fa.id";
+                $sql = "select fa.id, fa.description from n_faculty fa " . $chk . " order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
@@ -62,8 +90,8 @@ class Carrera_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select program_id as id, description from n_programs where program_id " 
-                    . "in (" . $in . ") and faculty_id = '" . $_SESSION['faculty_id'][0] . "'";
+                $sql = "select program_id as id, description from n_programs where program_id "
+                        . "in (" . $in . ") and faculty_id = '" . $_SESSION['faculty_id'][0] . "'";
                 break;
         }
 
@@ -79,12 +107,12 @@ class Carrera_model extends CI_Model {
                 " and faculty in ('F3', 'F4', 'F5') ";
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
-        
 
-        if($_SESSION['rol'] == 4){
-            if($facultad == '0'){
+
+        if ($_SESSION['rol'] == 4) {
+            if ($facultad == '0') {
                 foreach ($_SESSION['faculty_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
                 $n_faculty = " and faculty in (" . $in . ") ";
@@ -93,17 +121,16 @@ class Carrera_model extends CI_Model {
 
         $sql_carrera = ($carrera != '0') ? " and program = '" . $carrera . "' " : "";
 
-        if($_SESSION['rol'] == 5){
-            if($carrera == '0'){
+        if ($_SESSION['rol'] == 5) {
+            if ($carrera == '0') {
                 foreach ($_SESSION['program_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql_carrera = " and program in (" . $in . ") and faculty = '".$_SESSION['faculty_id'][0]."'";
+                $sql_carrera = " and program in (" . $in . ") and faculty = '" . $_SESSION['faculty_id'][0] . "'";
             }
 
             $n_faculty = ($carrera != "0") ? " and faculty = '" . $_SESSION['faculty_id'][0] . "'" : "";
-
         }
 
         $sql = "select category, f.description as facultad, c.description, "
@@ -146,10 +173,10 @@ class Carrera_model extends CI_Model {
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
 
-        if($_SESSION['rol'] == 4){
-            if($facultad == '0'){
+        if ($_SESSION['rol'] == 4) {
+            if ($facultad == '0') {
                 foreach ($_SESSION['faculty_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
                 $n_faculty = " and faculty in (" . $in . ") ";
@@ -158,16 +185,16 @@ class Carrera_model extends CI_Model {
 
         $where_carrera = ($carrera != '0') ? " and c.program_id = '" . $carrera . "' " : "";
 
-        if($_SESSION['rol'] == 5){
-            if($carrera == '0'){
+        if ($_SESSION['rol'] == 5) {
+            if ($carrera == '0') {
                 foreach ($_SESSION['program_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $where_carrera = " and c.program_id in (" . $in . ") and c.faculty_id = '".$_SESSION['faculty_id'][0]."' ";
-            }else{
-                $where_carrera = " and c.program_id = '" . $carrera . "' and c.faculty_id = '".$_SESSION['faculty_id'][0]."' ";
-            } 
+                $where_carrera = " and c.program_id in (" . $in . ") and c.faculty_id = '" . $_SESSION['faculty_id'][0] . "' ";
+            } else {
+                $where_carrera = " and c.program_id = '" . $carrera . "' and c.faculty_id = '" . $_SESSION['faculty_id'][0] . "' ";
+            }
         }
 
         $sql_carreras = "select n.program, c.description from n_report_detail n, " .

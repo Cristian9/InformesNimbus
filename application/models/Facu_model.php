@@ -17,14 +17,14 @@ class Facu_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select fa.id, fa.description from n_faculty fa ".$chk." order by fa.id";
+                $sql = "select fa.id, fa.description from n_faculty fa " . $chk . " order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select * from n_faculty fa ".$chk." and fa.id in (".$in.") order by fa.id, fa.description";
+                $sql = "select * from n_faculty fa " . $chk . " and fa.id in (" . $in . ") order by fa.id, fa.description";
                 break;
         }
         //echo $sql;
@@ -32,9 +32,37 @@ class Facu_model extends CI_Model {
         return $query->result();
     }
 
-    function getPeriodo(){
-        $sql = "select * from n_period order by id desc";
+    function getPeriodos($category) {
+        $sql = "select np.period as id, pr.periodo as description "
+                . "from n_period_category np, n_period pr where "
+                . "np.period = pr.id and np.category_id = '" . $category . "'";
         return $this->db->query($sql)->result('array');
+    }
+
+    function getWeeks($periodo, $category) {
+        $sql = "select weeks from n_period_category where "
+                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        return $this->db->query($sql)->result('array');
+    }
+
+    function get_category() {
+        $by_category = "";
+        $sql_filtro = "";
+
+        if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
+            $by_category = "";
+            $sql_filtro = "";
+        } else {
+            foreach ($_SESSION['category'] as $value) {
+                $by_category .= "'" . $value['category_id'] . "',";
+            }
+            $by_category = substr($by_category, 0, -1);
+            $sql_filtro = " where id in (" . $by_category . ")";
+        }
+
+        $sql_category = "select id, category from n_category " . $sql_filtro;
+
+        return $this->db->query($sql_category)->result('array');
     }
 
     function listar($ciudad, $prg, $facu, $herramienta, $del, $al) {
@@ -42,14 +70,14 @@ class Facu_model extends CI_Model {
         $sql_ciudad = ($ciudad[0] == "1") ?
                 " and faculty not in ('F3', 'F4', 'F5') " :
                 " and faculty in ('F3', 'F4', 'F5') ";
-                
+
 
         $sql_facu = ($facu != '0') ? " and faculty in ('" . $facu . "') " : "";
 
-        if($_SESSION['rol'] == 4){
-            if($facu == '0'){
+        if ($_SESSION['rol'] == 4) {
+            if ($facu == '0') {
                 foreach ($_SESSION['faculty_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
                 $sql_facu = " and faculty in (" . $in . ") ";
@@ -95,16 +123,16 @@ class Facu_model extends CI_Model {
 
         $where_facultad = ($facultad != '0') ? " and faculty = '" . $facultad . "' " : "";
 
-        if($_SESSION['rol'] == 4){
-            if($facultad == '0'){
+        if ($_SESSION['rol'] == 4) {
+            if ($facultad == '0') {
                 foreach ($_SESSION['faculty_id'] as $value) {
-                    $in .= "'".$value."',";
+                    $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
                 $where_facultad = " and faculty in (" . $in . ") ";
             }
         }
-        
+
         $query_facultades = "select faculty, f.description from n_faculty f, n_report_detail 
             where f.id = faculty and category = '" . $programa . "' " . $where_facultad . " group by faculty";
 

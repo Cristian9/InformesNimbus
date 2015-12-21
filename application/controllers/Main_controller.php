@@ -42,7 +42,7 @@ class Main_controller extends CI_Controller {
             } else {
                 redirect('login?errorAuth=1');
             }
-        }else{
+        } else {
             redirect('login?errorAuth=3');
         }
     }
@@ -87,14 +87,14 @@ class Main_controller extends CI_Controller {
         $id = $this->input->post('id');
         $desc = $this->input->post('desc');
         $record = $this->main_model->add_period($id, $desc);
-        
+
         echo $record;
     }
 
     function logout() {
         session_start();
         session_destroy();
-        if(isset($_SESSION['usuario'])){
+        if (isset($_SESSION['usuario'])) {
             $this->main_model->add_audit('out');
         }
         $this->login();
@@ -112,9 +112,9 @@ class Main_controller extends CI_Controller {
             return false;
         }
         // Create new SOAP client instance
-        $client = new SoapClient($wsUrl, array('trace'=>true, 'exceptions'=>true));
+        $client = new SoapClient($wsUrl, array('trace' => true, 'exceptions' => true));
         if (!$client) {
-            error_log('Could not instanciate SOAP client with URL '.$wsUrl);
+            error_log('Could not instanciate SOAP client with URL ' . $wsUrl);
             return false;
         }
         // Include phpseclib methods, because of a bug with AES/CFB in mcrypt
@@ -124,8 +124,8 @@ class Main_controller extends CI_Controller {
         $key = '-+*%$({[]})$%*+-';
         // Complete password con PKCS7-specific padding
         $blockSize = 16;
-        $padding = $blockSize - (strlen($password)%$blockSize);
-        $password .= str_repeat(chr($padding),$padding);
+        $padding = $blockSize - (strlen($password) % $blockSize);
+        $password .= str_repeat(chr($padding), $padding);
         $cipher = new Crypt_AES(CRYPT_AES_MODE_CFB);
         $cipher->setKeyLength(128);
         $cipher->setKey($key);
@@ -134,14 +134,13 @@ class Main_controller extends CI_Controller {
         $cipheredPass = $cipher->encrypt($password);
         // Mcrypt call left for documentation purposes - broken, see https://bugs.php.net/bug.php?id=51146
         //$cipheredPass = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $password,  MCRYPT_MODE_CFB, $key);
-
         // Following lines present for debug purposes only
         /*
-        $arr = preg_split('//', $cipheredPass, -1, PREG_SPLIT_NO_EMPTY);
-        foreach ($arr as $char) {
-            error_log(ord($char));
-        }
-        */
+          $arr = preg_split('//', $cipheredPass, -1, PREG_SPLIT_NO_EMPTY);
+          foreach ($arr as $char) {
+          error_log(ord($char));
+          }
+         */
         // Change to base64 to avoid communication alteration
         $passCrypted = base64_encode($cipheredPass);
         //error_log($passCrypted);

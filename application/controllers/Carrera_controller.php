@@ -13,11 +13,24 @@ class Carrera_controller extends CI_Controller {
 
     function index() {
         session_start();
-        $data['periodo'] = $this->carrera_model->getPeriodo();
+        $data['category'] = $this->carrera_model->get_category();
         $this->load->view('carrera/view_carrera', $data);
     }
 
-    function getFacultades(){
+    function getPeriodos() {
+        $category = $this->input->post('chk');
+        $json->listas = $this->carrera_model->getPeriodos($category);
+        echo json_encode($json);
+    }
+
+    function getWeeks() {
+        $periodo = $this->input->get('periodo');
+        $category = $this->input->get('category');
+        $json->listas = $this->carrera_model->getWeeks($periodo, $category);
+        echo json_encode($json);
+    }
+
+    function getFacultades() {
         session_start();
         $fid = $this->input->post('chk');
         $json->listas = $this->carrera_model->index($fid);
@@ -36,27 +49,21 @@ class Carrera_controller extends CI_Controller {
 
     function listar() {
         session_start();
-        $ciudad         = $this->input->post('ciudad');
-        $carrera        = $this->input->post('carrera');
-        $facultad       = $this->input->post('facultad');
-        $prg            = $this->input->post('prg');
-        $herram         = $this->input->post('herram');
-        $fdesde         = $this->input->post('f1');
-        $fhasta         = $this->input->post('f2');
-        
+        $ciudad = $this->input->post('ciudad');
+        $carrera = $this->input->post('carrera');
+        $facultad = $this->input->post('facultad');
+        $prg = $this->input->post('prg');
+        $herram = $this->input->post('herram');
+        $fdesde = $this->input->post('f1');
+        $fhasta = $this->input->post('f2');
+
         $lista = $this->carrera_model->listar(
-                    $ciudad,
-                    $prg,
-                    $carrera,
-                    $facultad,
-                    $herram,
-                    $fdesde,
-                    $fhasta
-                );
+                $ciudad, $prg, $carrera, $facultad, $herram, $fdesde, $fhasta
+        );
         echo json_encode($lista);
     }
 
-    function graficar(){
+    function graficar() {
         session_start();
         $ciudad = $this->input->post('ciudad');
         $herram = $this->input->post('herram');
@@ -67,17 +74,11 @@ class Carrera_controller extends CI_Controller {
         $fhasta = $this->input->post('fhasta');
 
         $dato = $this->carrera_model->graficar(
-                $ciudad,
-                $herram,
-                $progra,
-                $carrer,
-                $facult,
-                $fdesde,
-                $fhasta
-            );
+                $ciudad, $herram, $progra, $carrer, $facult, $fdesde, $fhasta
+        );
 
         foreach ($dato as $key => $value) {
-            if($key == 'Totales')
+            if ($key == 'Totales')
                 continue;
 
             foreach ($value as $v) {
@@ -88,4 +89,5 @@ class Carrera_controller extends CI_Controller {
         }
         echo json_encode(array($graficar, $dato));
     }
+
 }

@@ -14,35 +14,21 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
-        <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
-            <select class="populate placeholder" id="cbo_periodo">
-                <?php
-                    echo "<option value='0'>.:::Seleccione:::.</option>";
-
-                    foreach($periodo as $item){
-
-                        echo "<option value='" . $item['id'] . "'>" . $item['periodo'] . "</option>";
-
-                    }
-                ?>
-            </select>
-        </div>
         <div class="col-sm-2" id="div_cbo_cat"><label>Programa *</label>
             <select class="populate placeholder" id="cbo_cat">
                 <?php
-                    if($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2){
+                echo "<option value='0'>.:::Seleccione:::.</option>";
 
-                        echo "<option value='0'>.:::Seleccione:::.</option>";
-                        echo "<option value='A'>PREGRADO</option>";
-                        echo "<option value='B'>PPE</option>";
-                        echo "<option value='C'>PET</option>";
+                foreach ($category as $item) {
 
-                    }else{
-                        foreach ($_SESSION['category'] as $value) {
-                            echo "<option value='" . $value['category_id'] . "'>" . $value['category'] . "</option>";
-                        }
-                    }
+                    echo "<option value='" . $item['id'] . "'>" . $item['category'] . "</option>";
+                }
                 ?>
+            </select>
+        </div>
+        <div class="col-sm-2" id="div_cbo_periodo"><label>Periodo *</label>
+            <select class="populate placeholder" id="cbo_periodo">
+                <option value="0">.::: Seleccione :::.</option>
             </select>
         </div>
         <div class="col-sm-5" id="div_cbo"><label>Cursos</label>
@@ -171,12 +157,6 @@
                                 <i class="fa fa-square-o"></i>
                             </label>
                         </div>
-                        <!--<div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="wiki"> Wiki
-                                <i class="fa fa-square-o"></i>
-                            </label>
-                        </div>-->
                     </div>
                 </div>
             </div>
@@ -186,28 +166,14 @@
         <form class="form-horizontal" role="form">
             <div class="form-group has-feedback">
                 <div class="col-sm-2"><label>Desde *</label>
-                    <!--<input type="text" id="input_date" class="form-control" placeholder="Date">
-                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>-->
                     <select class="populate placeholder" id="input_date">
                         <option value="0">.:::Seleccione:::.</option>
-                        <?php
-                        for ($i = 1; $i <= 16; $i++) {
-                            echo "<option value='" . $i . "'>Semana " . $i . "</option>";
-                        }
-                        ?>
                     </select>
                 </div>
 
                 <div class="col-sm-2"><label>Hasta *</label>
-                    <!--<input type="text" id="input_date2" class="form-control" placeholder="Date">
-                    <span class="fa fa-calendar txt-danger form-control-feedback"></span>-->
                     <select class="populate placeholder" id="input_date2">
                         <option value="0">.:::Seleccione:::.</option>
-                        <?php
-                        for ($i = 1; $i <= 16; $i++) {
-                            echo "<option value='" . $i . "'>Semana " . $i . "</option>";
-                        }
-                        ?>
                     </select>
                 </div>
                 <div class="col-sm-offset-1 col-sm-2">
@@ -266,23 +232,49 @@
     $(document).ready(function () {
         $('#cbo_periodo, #cbo_cat, #cbo_cursos, #input_date2, #input_date').select2();
 
-        $('#cbo_cat, #cbo_periodo').change(function () {
+        $('#cbo_cat').change(function () {
+            var category = $(this).val();
+            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            cargar_select('cbo_periodo', 'curso-getPeriodos', category);
+        });
+
+        $('#cbo_periodo').change(function () {
             $('#cbo_periodo, #cbo_cat').validate({
-                required : true,
-                message : {
-                    required : 'Requerido'
+                required: true,
+                message: {
+                    required: 'Requerido'
                 }
             });
-            
-            if($.isValid){
+
+            if ($.isValid) {
                 var e = document.getElementById('cbo_cat');
                 var category_code = e.value + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
                 var parameter = {
-                    'category' : category_code
+                    'category': category_code
                 }
                 $('#cbo_cursos').html(null).append("<option value='0'>::: Todos :::</option>");
                 cargar_select('cbo_cursos', 'curso-getCursos', parameter);
             }
+
+            var periodo = $(this).val();
+            var category = $('#cbo_cat').val();
+
+            $.getJSON('curso-getWeeks', {
+                periodo: periodo,
+                category: category
+            })
+            .done(function (data) {
+                var json = data;
+                var option = "";
+                for (var i = 0; i < json.listas[0]['weeks']; i++) {
+                    option += "<option ";
+                    option += "value='" + (i + 1) + "'>";
+                    option += "Semana " + (i + 1);
+                    option += "</option>";
+                }
+
+                $('#input_date, #input_date2').append(option);
+            });
         });
         $('#btn_send').click(function () {
 
@@ -306,13 +298,13 @@
                     $('#thead').find("#" + $(this).val() + "_headbase").remove();
                     $('#tfoot').find("#" + $(this).val() + "_footbase").remove();
                 });
-                
+
                 var check = [];
                 var icheck = 0;
-                
+
                 var e = document.getElementById('cbo_cat');
                 var category_code = e.value + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
-                
+
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
@@ -320,13 +312,13 @@
                         add_columnas('datatable_area', txt, base_course);
                         check[icheck] = txt;
                         icheck++;
-                        if(base_course == 1){
+                        if (base_course == 1) {
                             check[icheck] = txt + '_course_base';
                             icheck++
                         }
                     }
                 });
-                
+
                 var curso = $('#cbo_cursos').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
@@ -335,7 +327,7 @@
                     'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
-                        "infoEmpty":     "Sin registros que mostrar",
+                        "infoEmpty": "Sin registros que mostrar",
                         "loadingRecords": "Cargando..."
                     },
                     'dom': 'Bfrtip',
@@ -343,12 +335,12 @@
                     'ajax': {
                         'type': 'POST',
                         'url': 'curso-listar',
-                        'dataSrc': function(data){
+                        'dataSrc': function (data) {
                             return (data != '') ? data['estadisticas'] : false;
                         },
                         'dataType': 'json',
                         'data': {
-                            'categoria' : category_code,
+                            'categoria': category_code,
                             'check': check,
                             'curso': curso,
                             'f1': f1,

@@ -21,7 +21,7 @@ class User_controller extends CI_Controller {
                 $user_assignment[$value['id']] = $data[$key];
             } else {
                 $user_assignment[$value['id']]['Accesos'] .= " &crarr;<br/>" . $value['Accesos'];
-            }  
+            }
         }
 
         $datos['user'] = $user_assignment;
@@ -29,11 +29,11 @@ class User_controller extends CI_Controller {
         $this->load->view('user/view_user', $datos);
     }
 
-    function newperiod(){
+    function newperiod() {
         $this->load->view('user/new_period');
     }
 
-    function newuser(){
+    function newuser() {
         $this->load->view('user/new_user');
     }
 
@@ -41,69 +41,59 @@ class User_controller extends CI_Controller {
         $data['user'] = $this->user_model->get_users();
         $this->load->view('user/asignar_usuario', $data);
     }
-    
-    function get_areas(){
+
+    function get_areas() {
         $json->listas = $this->user_model->get_areas();
         echo json_encode($json);
     }
 
-    function get_category(){
+    function get_category() {
         $json->listas = $this->user_model->get_category();
         echo json_encode($json);
     }
 
-    function getPeriodo(){
+    function getPeriodo() {
         $json->listas = $this->user_model->getPeriodo();
         echo json_encode($json);
     }
-    
-    function get_facultades(){
+
+    function get_facultades() {
         $json->listas = $this->user_model->get_facultades();
         echo json_encode($json);
     }
-    
-    function get_carreras(){
+
+    function get_carreras() {
         $facultad = $this->input->post('facultad');
-        $json->listas = $this->user_model->get_carreras( $facultad );
+        $json->listas = $this->user_model->get_carreras($facultad);
         echo json_encode($json);
     }
-    
-    function get_cursos(){
+
+    function get_cursos() {
         $json->listas = $this->user_model->get_cursos();
         echo json_encode($json);
     }
 
-    function save_assignment(){
+    function save_assignment() {
         session_start();
-        $usuario    = $this->input->post('usuario');
-        $usern      = $this->input->post('usern');
-        $niveles    = $this->input->post('niveles');
-        $periodo    = $this->input->post('periodo');
-        $program    = $this->input->post('program');
-        $areas      = $this->input->post('areas');
-        $facultad   = $this->input->post('facultad');
-        $facultadx  = $this->input->post('facultadx');
-        $carreras   = $this->input->post('carreras');
-        $cursos     = $this->input->post('cursos');
-        $ciudad     = $this->input->post('ciudad');
+        $usuario = $this->input->post('usuario');
+        $usern = $this->input->post('usern');
+        $niveles = $this->input->post('niveles');
+        $periodo = $this->input->post('periodo');
+        $program = $this->input->post('program');
+        $areas = $this->input->post('areas');
+        $facultad = $this->input->post('facultad');
+        $facultadx = $this->input->post('facultadx');
+        $carreras = $this->input->post('carreras');
+        $cursos = $this->input->post('cursos');
+        $ciudad = $this->input->post('ciudad');
 
         $asignacion = $this->user_model->save_assignment(
-                $usuario,
-                $usern,
-                $niveles,
-                $periodo,
-                $program,
-                $ciudad,
-                $areas,
-                $facultad,
-                $facultadx,
-                $carreras,
-                $cursos
-            );
+                $usuario, $usern, $niveles, $periodo, $program, $ciudad, $areas, $facultad, $facultadx, $carreras, $cursos
+        );
         print $asignacion;
     }
 
-    function add(){
+    function add() {
         session_start();
         $user = $this->input->post('user');
         $fstn = $this->input->post('fstn');
@@ -111,19 +101,14 @@ class User_controller extends CI_Controller {
         $mail = $this->input->post('mail');
         $reco = $_SESSION['id'];
         $date = date('Y-m-d H:i:s');
-        
+
         $record = $this->user_model->add(
-                $user,
-                $fstn,
-                $lstn,
-                $mail,
-                $reco,
-                $date
-            );
+                $user, $fstn, $lstn, $mail, $reco, $date
+        );
         echo $record;
     }
 
-    function review(){
+    function review() {
         $user = $this->input->post('username');
         $type = $this->input->post('type');
 
@@ -132,24 +117,25 @@ class User_controller extends CI_Controller {
         } else {
             $result = $this->user_model->review_assignment($user);
         }
-        
+
 
         echo ($result != '0') ? true : false;
     }
 
-    function delete(){
+    function delete() {
         session_start();
         $uid = base64_decode($_GET['uid']);
         $uname = base64_decode($_GET['uname']);
         $role = base64_decode($_GET['role']);
         $delete_assignment = $this->user_model->delete($uid, $uname, $role);
-        
-        if($delete_assignment){
+
+        if ($delete_assignment) {
             redirect('main-menu#users');
-        }else{
+        } else {
             die('Error');
         }
     }
+
 }
 
 ?>
