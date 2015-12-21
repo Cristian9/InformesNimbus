@@ -12,8 +12,21 @@ class User_controller extends CI_Controller {
     }
 
     function index() {
-        $data['user'] = $this->user_model->index();
-        $this->load->view('user/view_user', $data);
+        $data = $this->user_model->index();
+        $user_assignment = array();
+        foreach ($data as $key => $value) {
+
+            if (!$user_assignment[$value['id']]) {
+                $user_assignment[$value['id']] = array();
+                $user_assignment[$value['id']] = $data[$key];
+            } else {
+                $user_assignment[$value['id']]['Accesos'] .= " &crarr;<br/>" . $value['Accesos'];
+            }  
+        }
+
+        $datos['user'] = $user_assignment;
+
+        $this->load->view('user/view_user', $datos);
     }
 
     function newperiod(){
@@ -112,8 +125,14 @@ class User_controller extends CI_Controller {
 
     function review(){
         $user = $this->input->post('username');
+        $type = $this->input->post('type');
 
-        $result = $this->user_model->review($user);
+        if ($type == 'new') {
+            $result = $this->user_model->review_useradd($user);
+        } else {
+            $result = $this->user_model->review_assignment($user);
+        }
+        
 
         echo ($result != '0') ? true : false;
     }

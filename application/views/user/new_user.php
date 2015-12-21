@@ -82,7 +82,7 @@
             $.ajaxreq({
                 url : 'users-review',
                 type : 'POST',
-                params : 'username=' + username,
+                params : 'username=' + username + '&type=new',
                 callback : function(e){
                     if(e){
                         alert('Ya existe un usuario con ese mismo nombre!!!');
@@ -128,6 +128,8 @@
                         if(e != 'error'){
                             alert('Usuario registrado!!!');
                             location.reload();
+                        } else {
+                            alert('Error al intentar registrar al usuario, verifique por favor.');
                         }
                     }
                 });

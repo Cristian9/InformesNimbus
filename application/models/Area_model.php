@@ -88,7 +88,7 @@ class Area_model extends CI_Model {
         $sql_ciudad = ($ciudad[0] == "1") ?
                 " where faculty not in ('F3', 'F4', 'F5') " :
                 " where faculty in ('F3', 'F4', 'F5') ";
-
+                
         $where_area = ($area == '0') ? "" : " where id = '" . $area . "'";
         
         if($_SESSION['rol'] == 3){
@@ -100,9 +100,9 @@ class Area_model extends CI_Model {
                 $where_area = " where id in (" . $in . ")";
             }
         }
-
+        
         $data_areas = $this->db->query("select * from n_areas " . $where_area . " order by id, description")->result('array');
-
+        
         if (!empty($herramienta)) {
             for ($i = 0; $i < count($herramienta); $i++) {
                 $sql_herramientas = "";
@@ -116,7 +116,7 @@ class Area_model extends CI_Model {
                             . "(select course_code from n_course_areas where area_id = '" . $v['id'] . "' and period = '".$periodo."') "
                             . "and week between '" . $desde . "' and '" . $hasta . "' "
                             . "ORDER BY course_title asc) " . $v['description'] . ",";
-
+    
                     $sql_herramientas .= "(select count(distinct(section_code)) "
                             . "from n_report_detail " . $sql_ciudad
                             . "and " . $herramienta[$i] . " <> 0 and course_code in (select course_code "

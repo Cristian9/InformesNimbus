@@ -400,7 +400,7 @@
         $.ajaxreq({
             url : 'users-review',
             type : 'POST',
-            params : 'username=' + parameters['usern'],
+            params : 'username=' + parameters['usern'] + '&type=sign',
             callback : function(e){
                 if(e){
                     if(!confirm('Este usuario ya está asignado a un perfil diferente, desea continuar y actualizar el perfil?')){

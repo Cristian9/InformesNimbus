@@ -44,6 +44,7 @@
                             <th>Email</th>
                             <th>Perfil</th>
                             <th>Status</th>
+                            <th>Asignado a</th>
                             <th>Options</th>
                         </tr>
                     </thead>
@@ -59,6 +60,7 @@
                             <td><?php echo $value['email']; ?></td>
                             <td><?php echo $value['perfil']; ?></td>
                             <td><?php echo $value['active']; ?></td>
+                            <td><?php echo $value['Accesos']; ?></td>
                             <td align="center" >
                                 <a class="delete" href="users-delete?uid=<?php echo base64_encode($value['id']) ?>&uname=<?php echo base64_encode($value['username']) ?>&role=<?php echo base64_encode($value['perfil']) ?>" title="Eliminar asignacion" class="del_assign">
                                     <i class="fa fa-chain-broken fa-2x"></i>
