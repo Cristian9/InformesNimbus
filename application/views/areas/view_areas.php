@@ -276,13 +276,20 @@
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
-            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            $('#cbo_periodo')
+                .html(null)
+                .append("<option value='0'>.::: Seleccione :::.</option>");
+                
             cargar_select('cbo_periodo', 'area-getPeriodos', category);
         });
 
         $('#cbo_periodo').change(function () {
             var periodo = $(this).val();
             var category = $('#cbo_cat').val();
+            var option = "";
+            $('#input_date, #input_date2')
+                .attr('disabled', true)
+                .append("<option value='0'>Cargando....</option>");
 
             $.getJSON('area-getWeeks', {
                 periodo: periodo,
@@ -290,15 +297,17 @@
             })
             .done(function (data) {
                 var json = data;
-                var option = "";
                 for (var i = 0; i < json.listas[0]['weeks']; i++) {
                     option += "<option ";
                     option += "value='" + (i + 1) + "'>";
                     option += "Semana " + (i + 1);
                     option += "</option>";
                 }
-
-                $('#input_date, #input_date2').append(option);
+                $('#input_date, #input_date2')
+                    .removeAttr('disabled')
+                    .html(null)
+                    .append("<option value='0'>.::: Seleccione :::.</option>")
+                    .append(option);
             });
         });
 

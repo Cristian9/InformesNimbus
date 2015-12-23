@@ -165,13 +165,6 @@ class User_model extends CI_Model {
 
     function add($user, $fstn, $lstn, $mail, $reco, $date) {
 
-        $review = $this->review_useradd($user);
-
-        if($review[0]['total'] == 1){
-            return 'error';
-        }
-        
-
         $sql = "insert into n_users (lastname, firstname, username, "
                 . " email, registration_date, creator_id, active) "
                 . "values ('" . strtoupper($lstn) . "', '" . $fstn . "', '" . $user . "',"
@@ -191,23 +184,23 @@ class User_model extends CI_Model {
         $this->db->query($sql_del_ascity);
     }
 
-    function review_assignment($user){
+    function isAssigned($user){
         $sql_review = "select count(distinct(n_users.id)) total from n_users, " . 
             "n_assignment a where a.user_id = n_users.id and n_users.active=1 " . 
             " and username = '" . $user . "'";
 
         $data = $this->db->query($sql_review)->result('array');
 
-        return $data[0]['total'];
+        return ($data[0]['total'] > 0) ? true : false;
     }
 
-    function review_useradd($user){
+    function exists_user($user){
         $sql_review = "select count(distinct(username)) total " 
             . " from n_users where username = '".$user."'";
 
         $data = $this->db->query($sql_review)->result('array');
 
-        return $data[0]['total'];
+        return ($data[0]['total'] > 0) ? true : false;
     }
 
     function delete($uid, $uname, $role) {

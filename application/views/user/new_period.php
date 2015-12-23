@@ -71,22 +71,49 @@
                     required : 'Requerido'
                 }
             });
-            $('#btnnewperiod').attr('disabled', true).text('Registrando, espere por favor...');
             if($.isValid){
-                $.ajaxreq({
-                    url : 'addcal',
-                    type : 'POST',
-                    params : 'id=' + $.trim($('#id_periodo').val()) + '&desc=' + $.trim($('#desc_periodo').val()),
-                    callback : function( e ){
-                        if(e == 'error'){
-                            alert('Ya existe el periodo ingresado!!!');
-                            $('#btnnewperiod').attr('disabled', false).text('Agregar periodo');
-                            $('input:text').val(null);
-                            $('#id_periodo').focus();
-                        }else{
-                            alert('Periodo ingresado correctamente!!!');
-                            location.reload();
-                        }
+                $('#btnnewperiod').attr('disabled', true).text('Registrando, espere por favor...');
+                $.post('addcal', {
+                    id : $.trim($('#id_periodo').val()),
+                    desc : $.trim($('#desc_periodo').val())
+                })
+                .done(function(e){
+                    if (!e) {
+                        var alert = new BootstrapDialog({
+                            title : 'Aviso',
+                            cssClass : 'alert',
+                            message : 'El periodo ingresado ya existe !!!',
+                            buttons : [
+                                {
+                                    label : 'Aceptar',
+                                    cssClass : 'btn-primary',
+                                    action : function(dialogRef){
+                                        dialogRef.close();
+                                        
+                                    }
+                                }
+                            ]
+                        });
+                        $('#btnnewperiod').attr('disabled', false).text('Agregar periodo');
+                        $('input:text').val(null);
+                        $('#id_periodo').focus();
+                        alert.open();
+                    } else {
+                        var alert = new BootstrapDialog({
+                            title : 'Aviso',
+                            cssClass : 'alert',
+                            message : 'Periodo ingresado correctamente',
+                            buttons : [
+                                {
+                                    label : 'Aceptar',
+                                    cssClass : 'btn-primary',
+                                    action : function(){
+                                        location.reload();
+                                    }
+                                }
+                            ]
+                        });
+                        alert.open();
                     }
                 });
             }

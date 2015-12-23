@@ -102,9 +102,16 @@ class User_controller extends CI_Controller {
         $reco = $_SESSION['id'];
         $date = date('Y-m-d H:i:s');
 
-        $record = $this->user_model->add(
+        $exists_user = $this->user_model->exists_user($user);
+
+        if($exists_user){
+            $record = false;
+        }else{
+            $record = $this->user_model->add(
                 $user, $fstn, $lstn, $mail, $reco, $date
-        );
+            );
+        }
+
         echo $record;
     }
 
@@ -113,13 +120,13 @@ class User_controller extends CI_Controller {
         $type = $this->input->post('type');
 
         if ($type == 'new') {
-            $result = $this->user_model->review_useradd($user);
+            $result = $this->user_model->exists_user($user);
         } else {
-            $result = $this->user_model->review_assignment($user);
+            $result = $this->user_model->isAssigned($user);
         }
 
 
-        echo ($result != '0') ? true : false;
+        echo $result;
     }
 
     function delete() {

@@ -20,7 +20,7 @@
         <link href="<?php echo base_url() ?>static/plugins/chartist/chartist.min.css" rel="stylesheet">
         <link href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.css" rel="stylesheet">
         <link href="<?php echo base_url() ?>static/css/buttons.dataTables.css" rel="stylesheet">
-
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
                         <script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
@@ -152,5 +152,6 @@
         <script src="<?php echo base_url() ?>static/js/jquery.ctools.min.js"></script>
         <script src="<?php echo base_url() ?>static/js/chart.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>static/plugins/select2/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
     </body>
 </html>

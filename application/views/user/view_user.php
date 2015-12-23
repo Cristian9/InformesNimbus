@@ -95,9 +95,36 @@
 
         $('.delete').each(function(){
             $(this).click(function(e){
-                if(!confirm('Confirma que desea realizar la acción?')){
-                    e.preventDefault();
-                }
+                var _self = $(this);
+                e.preventDefault();
+                var dialog = new BootstrapDialog({
+                    title : 'Confirmar !!',
+                    message: 'Va a eliminar la asignación del usuario, desea continuar?',
+                    tabindex: 50,
+                    cssClass : 'alert',
+                    buttons: [
+                        {
+                            id: 'btn-ok',        
+                            label: 'Aceptar',
+                            cssClass: 'btn-primary', 
+                            autospin: false,
+                            action: function(dialogRef){    
+                                dialogRef.close();
+                                window.location = _self.attr('href');
+                            }
+                        },
+                        {
+                            id : 'btn-cancel',
+                            label : 'Cancelar',
+                            cssClass : 'btn-danger',
+                            autospin : false,
+                            action: function(dialogRef){
+                                dialogRef.close();
+                            }
+                        }
+                    ]
+                });
+                dialog.open();
             });
         });
     });

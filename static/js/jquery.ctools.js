@@ -19,8 +19,8 @@
                 maxlen      : args.maxlen || null,
                 regexp      : args.regexp || null,
                 message     : {},
-                background  : args.background || "#F9C",
-                border      : args.border || "#F0C dotted 1px",
+                background  : args.background || "#FFF",
+                border      : args.border || "#b25050 solid 1px",
                 onerror     : args.onerror || false
             };
             
@@ -88,9 +88,9 @@
                         _this.after(" <span id='sp_err_" + _this.attr('id') + "'>" + _msg + "</span>");
                         
                         $('#sp_err_' + _this.attr('id')).css({
-                            'color'         : '#F00',
+                            'color'         : '#D15E5E',
                             'font-family'   : 'calibri',
-                            'font-size'     : '12px'
+                            'font-size'     : '14px'
                         });
                     }
                     

@@ -327,22 +327,28 @@
 
             var periodo = $(this).val();
             var category = $('#cbo_cat').val();
+            var option = "";
+            $('#input_date, #input_date2')
+                .attr('disabled', true)
+                .append("<option value='0'>Cargando....</option>");
 
-            $.getJSON('secciones-getWeeks', {
+            $.getJSON('area-getWeeks', {
                 periodo: periodo,
                 category: category
             })
             .done(function (data) {
                 var json = data;
-                var option = "";
                 for (var i = 0; i < json.listas[0]['weeks']; i++) {
                     option += "<option ";
                     option += "value='" + (i + 1) + "'>";
                     option += "Semana " + (i + 1);
                     option += "</option>";
                 }
-
-                $('#input_date, #input_date2').append(option);
+                $('#input_date, #input_date2')
+                    .removeAttr('disabled')
+                    .html(null)
+                    .append("<option value='0'>.::: Seleccione :::.</option>")
+                    .append(option);
             });
         });
 

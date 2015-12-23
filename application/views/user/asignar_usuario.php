@@ -385,41 +385,100 @@
     });
     function asignar() {
         var id_user = document.getElementById('s_usuarios').value.split('|');
-        var parameters = {
-            'usuario': id_user[0],
-            'usern' : id_user[1],
-            'niveles': document.getElementById('s_niveles').value,
-            'program': $('#s_programas').val(),
-            'areas': $('#s_areas').val(),
-            'facultad': $('#s_facultades').val(),
-            'facultadx': $('#s_facultadesaux').val(),
-            'carreras': $('#s_carreras').val(),
-            'cursos': $('#s_cursos').val(),
-            'ciudad': $('#s_ciudad').val()
-        }
-        $.ajaxreq({
-            url : 'users-review',
-            type : 'POST',
-            params : 'username=' + parameters['usern'] + '&type=sign',
-            callback : function(e){
-                if(e){
-                    if(!confirm('Este usuario ya está asignado a un perfil diferente, desea continuar y actualizar el perfil?')){
-                        return false;
-                    }
-                }
+        $.post('users-review', {
+            'username' : id_user[1],
+            'type' : 'sign'
+        })
+        .done(function(e){
+            if(e){
+                var dialog = new BootstrapDialog({
 
-                $.ajaxreq({
-                    url: 'users-save_assignment',
-                    type: 'POST',
-                    params: $.param(parameters),
-                    callback: function (e) {
-                        if (e) {
-                            alert('Asignado correctamente');
-                            location.reload();
+                    title : 'Confirmar !!',
+                    message: 'Este usuario ya tiene asignado un perfil diferente, desea continuar y actualizar al perfil seleccionado?',
+                    tabindex: 50,
+                    cssClass : 'alert',
+                    buttons: [
+                        {
+                            id: 'btn-ok',        
+                            label: 'Aceptar',
+                            cssClass: 'btn-primary', 
+                            autospin: false,
+                            action: function(dialogRef){    
+                                dialogRef.close();
+                                $.post('users-save_assignment', {
+                                    'usuario': id_user[0],
+                                    'usern' : id_user[1],
+                                    'niveles': document.getElementById('s_niveles').value,
+                                    'program': $('#s_programas').val(),
+                                    'areas': $('#s_areas').val(),
+                                    'facultad': $('#s_facultades').val(),
+                                    'facultadx': $('#s_facultadesaux').val(),
+                                    'carreras': $('#s_carreras').val(),
+                                    'cursos': $('#s_cursos').val(),
+                                    'ciudad': $('#s_ciudad').val()
+                                })
+                                .done(function(e){
+                                    var alert = new BootstrapDialog({
+                                        title : 'Aviso',
+                                        cssClass : 'alert',
+                                        message : 'Usuario asignado correctamente',
+                                        buttons : [
+                                            {
+                                                label : 'Aceptar',
+                                                cssClass : 'btn-primary',
+                                                action : function(){
+                                                    location.reload();
+                                                }
+                                            }
+                                        ]
+                                    });
+                                    alert.open();
+                                });
+                            }
+                        },
+                        {
+                            id : 'btn-cancel',
+                            label : 'Cancelar',
+                            cssClass : 'btn-danger',
+                            autospin : false,
+                            action: function(dialogRef){
+                                dialogRef.close();
+                            }
                         }
-                    }
+                    ]
+                });
+                dialog.open();
+            } else {
+                $.post('users-save_assignment', {
+                    'usuario': id_user[0],
+                    'usern' : id_user[1],
+                    'niveles': document.getElementById('s_niveles').value,
+                    'program': $('#s_programas').val(),
+                    'areas': $('#s_areas').val(),
+                    'facultad': $('#s_facultades').val(),
+                    'facultadx': $('#s_facultadesaux').val(),
+                    'carreras': $('#s_carreras').val(),
+                    'cursos': $('#s_cursos').val(),
+                    'ciudad': $('#s_ciudad').val()
+                })
+                .done(function(e){
+                    var alert = new BootstrapDialog({
+                        title : 'Aviso',
+                        cssClass : 'alert',
+                        message : 'Usuario asignado correctamente',
+                        buttons : [
+                            {
+                                label : 'Aceptar',
+                                cssClass : 'btn-primary',
+                                action : function(){
+                                    location.reload();
+                                }
+                            }
+                        ]
+                    });
+                    alert.open();
                 });
             }
-        });
+        })
     }
 </script>

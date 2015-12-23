@@ -86,8 +86,15 @@ class Main_controller extends CI_Controller {
     function add_period() {
         $id = $this->input->post('id');
         $desc = $this->input->post('desc');
-        $record = $this->main_model->add_period($id, $desc);
 
+        $exists = $this->main_model->existsPeriod($id);
+
+        if($exists){
+            $record = false;
+        }else{
+            $record = $this->main_model->add_period($id, $desc);
+        }
+        
         echo $record;
     }
 

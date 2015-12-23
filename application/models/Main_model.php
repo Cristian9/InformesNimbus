@@ -57,16 +57,18 @@ class Main_model extends CI_Model {
         return $this->db->query($sql_assignment_category)->result('array');
     }
 
+    function existsPeriod( $id ) {
+        $sql_get_period = "select count(id) total from n_period where id = '" . $id . "'";
+
+        $review = $this->db->query($sql_get_period)->result('array');
+
+        return ($review[0]['total'] > 0) ? true : false;
+    }
+
     function add_period($id, $desc) {
         $sql_new_period = "insert into n_period values ('" . $id . "', '" . $desc . "')";
-        $sql_get_period = "select id from n_period where id = '".$id."'";
-
-        $data = $this->db->query($sql_get_period)->result('array');
-        if(empty($data)){
-            $record =  $this->db->query($sql_new_period);
-        }else{
-            $record = 'error';
-        }
+        
+        $record =  $this->db->query($sql_new_period);
 
         return $record;        
     }

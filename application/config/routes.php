@@ -10,7 +10,7 @@ $route['out']                   = 	"main_controller/logout";
 $route['auth']                  = 	"main_controller/auth";
 $route['main-menu']             = 	"main_controller/menu_principal";
 $route['excel']                 = 	"main_controller/excel";
-$route['addcal']                =       "main_controller/add_period";
+$route['addcal']                =   "main_controller/add_period";
 
 #Users
 $route['users']                 = 	"user_controller/index";

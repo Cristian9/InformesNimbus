@@ -36,9 +36,10 @@
                     <form class="form-horizontal" name="newuser" role="form" method="post" action="users-add">
                         <div class="form-group  has-feedback">
                             <label class="col-sm-3 control-label">Usuario:</label>
-                            <div class="col-sm-4">
-                                <input type="text" id="usuario" name="usuario" class="form-control" placeholder="p.ej. ctapia">
+                            <div class="col-sm-4" id="divuser">
+                                <input type="text" id="usuario" name="usuario" class="form-control" placeholder="p.ej. jperez">
                                 <span class="fa fa-user form-control-feedback"></span>
+                                <span id="errorlog" class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group  has-feedback">
@@ -51,14 +52,14 @@
                         <div class="form-group  has-feedback">
                             <label class="col-sm-3 control-label">Apellidos:</label>
                             <div class="col-sm-4">
-                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Apellidos">
+                                <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Apellidos Completos">
                                 <span class="fa fa-user form-control-feedback"></span>
                             </div>
                         </div>
                         <div class="form-group  has-feedback">
                             <label class="col-sm-3 control-label">Correo:</label>
                             <div class="col-sm-4">
-                                <input type="text" id="correo" name="correo" class="form-control" placeholder="">
+                                <input type="text" id="correo" name="correo" class="form-control" placeholder="example@example.com">
                                 <span class="fa fa-at form-control-feedback"></span>
                             </div>
                         </div>
@@ -79,18 +80,20 @@
         $('#usuario').blur(function(){
             var _self = $(this);
             var username = _self.val();
-            $.ajaxreq({
-                url : 'users-review',
-                type : 'POST',
-                params : 'username=' + username + '&type=new',
-                callback : function(e){
-                    if(e){
-                        alert('Ya existe un usuario con ese mismo nombre!!!');
-                        $('#btnnew').attr('disabled', true);
-                        _self.focus();
-                    }else{
-                        $('#btnnew').attr('disabled', false);
-                    }
+            $.post('users-review', {
+                username : username,
+                type : 'new'
+            })
+            .done(function(success){
+                if(success){
+                    $('#divuser').addClass('has-error');
+                    $('#errorlog').text('Usuario no disponible');
+                    $('#btnnew').attr('disabled', true);
+                    _self.focus();
+                } else {
+                    $('#divuser').removeClass('has-error');
+                    $('#errorlog').text('');
+                    $('#btnnew').attr('disabled', false);
                 }
             });
         });
@@ -113,24 +116,54 @@
             });
 
             if ($.isValid) {
-                var args = {
+                $('#btnnew')
+                    .attr('disabled', true)
+                    .text('Registrando, espere por favor...');
+
+
+                $.post('users-add', {
                     'user' : $.trim($('#usuario').val()),
                     'fstn' : $.trim($('#firstname').val()),
                     'lstn' : $.trim($('#lastname').val()),
                     'mail' : $.trim($('#correo').val())
-                };
-                $('#btnnew').attr('disabled', true).text('Registrando, espere por favor...');
-                $.ajaxreq({
-                    url : 'users-add',
-                    type : 'POST',
-                    params : $.param(args),
-                    callback : function( e ){
-                        if(e != 'error'){
-                            alert('Usuario registrado!!!');
-                            location.reload();
-                        } else {
-                            alert('Error al intentar registrar al usuario, verifique por favor.');
-                        }
+                })
+                .done(function(success){
+                    if (success) {
+                        var alert = new BootstrapDialog({
+                            title : 'Aviso',
+                            cssClass : 'alert',
+                            message : 'Usuario registrado correctamente !!!',
+                            buttons : [
+                                {
+                                    label : 'Aceptar',
+                                    cssClass : 'btn-primary',
+                                    action : function(dialogRef){
+                                        dialogRef.close();
+                                        location.reload();
+                                    }
+                                }
+                            ]
+                        });
+                        alert.open();                        
+                    } else {
+                        var alert = new BootstrapDialog({
+                            title : 'Aviso',
+                            cssClass : 'alert',
+                            message : 'Error al intentar registrar al usuario, verifique por favor.',
+                            buttons : [
+                                {
+                                    label : 'Aceptar',
+                                    cssClass : 'btn-primary',
+                                    action : function(dialogRef){
+                                        dialogRef.close();
+                                    }
+                                }
+                            ]
+                        });
+                        $('#btnnew')
+                                .removeAttr('disabled')
+                                .text('Registrar usuario');
+                        alert.open();
                     }
                 });
             }
