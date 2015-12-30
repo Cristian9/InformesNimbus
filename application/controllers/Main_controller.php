@@ -59,7 +59,7 @@ class Main_controller extends CI_Controller {
             $city_profile = $this->main_model->get_city_assignment($_SESSION['usuario']);
             $category_profile = $this->main_model->get_category_assignment($_SESSION['usuario']);
 
-            $aux = ['area_id', 'faculty_id', 'program_id', 'curso_id'];
+            $aux = ['area_id', 'faculty_id', 'program_id', 'course_id'];
 
             foreach ($datos_perfil as $key => $value) {
                 foreach ($value as $k => $v) {
@@ -73,10 +73,7 @@ class Main_controller extends CI_Controller {
 
             $_SESSION['city'] = $city_profile;
             $_SESSION['category'] = $category_profile;
-
-            /* echo "<pre>";
-              print_r($_SESSION);
-              exit; */
+            
             $this->load->view('principal', $datos_menu);
         } else {
             $this->login();

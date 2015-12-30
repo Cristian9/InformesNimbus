@@ -67,7 +67,7 @@ class Curso_model extends CI_Model {
                     $in = "'" . substr($_SESSION['course_id'], 4, 4) . "'";
                 }
 
-                $sql = $sql = $sql = "select distinct(course_code) as id, course_title " .
+                $sql = "select distinct(course_code) as id, course_title " .
                         " as description from n_report_detail where course_code in (" . $in . ") " .
                         " and category = '" . $curso_id . "' order by course_code asc";
                 break;

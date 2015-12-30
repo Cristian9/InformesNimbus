@@ -359,6 +359,10 @@
             var facultad = {
                 'facultad': $(this).val()
             }
+            $('#s_carreras')
+                .html(null)
+                .append('<option value="0">-- Seleccione --</option>');
+                
             cargar_select('s_carreras', 'users-get_carreras', facultad);
         })
 
