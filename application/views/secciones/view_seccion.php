@@ -277,7 +277,10 @@
                         "</option>";
             }
 
-            $('#cbo_secciones').removeAttr('disabled').html(null).append(select);
+            $('#cbo_secciones')
+                .removeAttr('disabled')
+                .html(null)
+                .append(select);
         });
     }
 
@@ -286,7 +289,10 @@
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
-            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            $('#cbo_periodo')
+                .select2('val', 0)
+                .html(null)
+                .append("<option value='0'>.::: Seleccione :::.</option>");
             cargar_select('cbo_periodo', 'secciones-getPeriodos', category);
         });
 
@@ -346,6 +352,7 @@
                 }
                 $('#input_date, #input_date2')
                     .removeAttr('disabled')
+                    .select2('val', 0)
                     .html(null)
                     .append("<option value='0'>.::: Seleccione :::.</option>")
                     .append(option);

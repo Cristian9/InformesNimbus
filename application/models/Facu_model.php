@@ -10,9 +10,9 @@ class Facu_model extends CI_Model {
 
     function index($id) {
         if ($id == "1") {
-            $chk = " where (fa.id not like 'F%' and fa.id <> 'P2') ";
+            $chk = " where fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
         } else {
-            $chk = " where (fa.id like 'F%' or fa.id = 'P2') ";
+            $chk = " where fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
         }
         switch ($_SESSION['rol']) {
             case 1:
@@ -24,10 +24,9 @@ class Facu_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select * from n_faculty fa " . $chk . " and fa.id in (" . $in . ") order by fa.id, fa.description";
+                $sql = "select * from n_faculty fa where fa.id in (" . $in . ") order by fa.id, fa.description";
                 break;
         }
-        //echo $sql;
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -68,8 +67,8 @@ class Facu_model extends CI_Model {
     function listar($ciudad, $prg, $facu, $herramienta, $del, $al) {
         $estadisticas = array();
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5') " :
-                " and faculty in ('F3', 'F4', 'F5') ";
+                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
 
         $sql_facu = ($facu != '0') ? " and faculty in ('" . $facu . "') " : "";
@@ -118,10 +117,10 @@ class Facu_model extends CI_Model {
 
     function data_graficar($ciudad, $herramienta, $programa, $facultad, $desde, $hasta) {
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5') " :
-                " and faculty in ('F3', 'F4', 'F5') ";
+                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
-        $where_facultad = ($facultad != '0') ? " and faculty = '" . $facultad . "' " : "";
+        $where_facultad = ($facultad != '0') ? " and faculty = '" . $facultad . "' " : $sql_ciudad;
 
         if ($_SESSION['rol'] == 4) {
             if ($facultad == '0') {
@@ -155,11 +154,11 @@ class Facu_model extends CI_Model {
                     $sql_herramientas .= "(select count(distinct(section_code)) from n_report_detail 
                         where " . $herramienta[$i] . " <> 0 and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') 
                         and faculty = '" . $value['faculty'] . "' and category = '" . $programa . "' and week 
-                        between '" . $desde . "' and '" . $hasta . "' group by faculty) as '" . substr($value['description'], 0, 10) . "',";
+                        between '" . $desde . "' and '" . $hasta . "' group by faculty) as '" . 
+                        substr($value['description'], 0, 10) . "',";
                 }
 
                 $sql_herramientas = substr($sql_herramientas, 0, -1);
-
                 $data_para_graficos[$herramienta[$i]] = $this->db->query($sql_herramientas)->result('array');
             }
             $sql_totales = substr($sql_totales, 0, -1);

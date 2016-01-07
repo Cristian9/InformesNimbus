@@ -62,7 +62,7 @@
         <?php if ($_SESSION['rol'] == 4 || $_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
             <div class="col-sm-3" id="div_cbo"><label>Facultades</label>
                 <select class="populate placeholder" id="cbo_facultades">
-                    <option value="0">.::: Todos :::.</option>
+                    <option value="0">.::: Seleccione :::.</option>
                 </select>
             </div>
         <?php } ?>
@@ -292,7 +292,10 @@
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
-            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            $('#cbo_periodo')
+                .select2('val', 0)
+                .html(null)
+                .append("<option value='0'>.::: Seleccione :::.</option>");
             cargar_select('cbo_periodo', 'carrera-getPeriodos', category);
         });
 
@@ -318,6 +321,7 @@
                 }
                 $('#input_date, #input_date2')
                     .removeAttr('disabled')
+                    .select2('val', 0)
                     .html(null)
                     .append("<option value='0'>.::: Seleccione :::.</option>")
                     .append(option);
@@ -345,7 +349,10 @@
         $('input:radio[name=radio-inline]').each(function () {
             $(this).click(function () {
                 ciudad_select = $(this).val();
-                $('#cbo_facultades').html(null).append("<option value='0'>::: Todos :::</option>");
+                $('#cbo_facultades')
+                    .select2('val', 0)
+                    .html(null)
+                    .append("<option value='0'>::: Seleccione :::</option>");
                 cargar_select('cbo_facultades', 'carrera-getFacultades', ciudad_select);
             });
         });

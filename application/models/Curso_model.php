@@ -60,11 +60,11 @@ class Curso_model extends CI_Model {
             case 6:
                 if (is_array($_SESSION['course_id'])) {
                     foreach ($_SESSION['course_id'] as $value) {
-                        $in .= "'" . substr($value, 4, 4) . "',";
+                        $in .= "'" . $value . "',";
                     }
                     $in = substr($in, 0, -1);
                 } else {
-                    $in = "'" . substr($_SESSION['course_id'], 4, 4) . "'";
+                    $in = "'" . $_SESSION['course_id'] . "'";
                 }
 
                 $sql = "select distinct(course_code) as id, course_title " .
@@ -96,12 +96,16 @@ class Curso_model extends CI_Model {
         return $this->db->query($sql_category)->result('array');
     }
 
-    function listar($categoria, $herramienta, $curso, $del, $al) {
+    function listar($categoria, $herramienta, $curso, $ciudad, $del, $al) {
         $estadisticas = array();
         $periodo = substr($categoria, 1, 3);
         $sql_curso = ($curso != '0') ? " and course_code = '" . $curso . "' " : "";
 
         $sql_rol = "";
+
+        $sql_ciudad = ($ciudad[0] == "1") ?
+                " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
         switch ($_SESSION['rol']) {
             case 3:
@@ -133,12 +137,12 @@ class Curso_model extends CI_Model {
                 if ($curso == '0') {
                     if (is_array($_SESSION['course_id'])) {
                         foreach ($_SESSION['course_id'] as $value) {
-                            $in .= "'" . substr($value, 4, 4) . "',";
+                            $in .= "'" . $value . "',";
                         }
                         $in = substr($in, 0, -1);
                         $sql_curso = " and course_code in (" . $in . ")";
                     } else {
-                        $sql_curso = " and course_code in ('" . substr($_SESSION['course_id'], 4, 4) . "')";
+                        $sql_curso = " and course_code in ('" . $_SESSION['course_id'] . "')";
                     }
                 }
                 break;
@@ -151,7 +155,7 @@ class Curso_model extends CI_Model {
 
         $sql_from = " from n_report_detail n, n_faculty f, n_programs c "
                 . "where f.id = faculty and c.program_id = program and "
-                . "f.id = c.faculty_id and week "
+                . "f.id = c.faculty_id " . $sql_ciudad . " and week "
                 . "between '" . $del . "' and '" . $al . "' "
                 . $sql_curso . " and category = '" . $categoria
                 . "' " . $sql_rol . " GROUP BY section_code";

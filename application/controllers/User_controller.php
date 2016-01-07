@@ -14,14 +14,65 @@ class User_controller extends CI_Controller {
     function index() {
         $data = $this->user_model->index();
         $user_assignment = array();
-        foreach ($data as $key => $value) {
+        
+        foreach ($data[0] as $key => $value) {
+            $user_assignment[$key]['id'] = $value['id'];
+            $user_assignment[$key]['username'] = $value['username'];
+            $user_assignment[$key]['firstname'] = $value['firstname'];
+            $user_assignment[$key]['lastname'] = $value['lastname'];
+            $user_assignment[$key]['email'] = $value['email'];
+            $user_assignment[$key]['perfil'] = $value['perfil'];
 
-            if (!$user_assignment[$value['id']]) {
-                $user_assignment[$value['id']] = array();
-                $user_assignment[$value['id']] = $data[$key];
-            } else {
-                $user_assignment[$value['id']]['Accesos'] .= " &crarr;<br/>" . $value['Accesos'];
+            foreach ($data[1] as $k => $v) {
+                if($v['id'] == $value['id']){
+
+                    if (isset($user_assignment[$key]['area'])) {
+
+                        if(!stristr($user_assignment[$key]['area'], $v['area'])){
+                            $user_assignment[$key]['area'] .= (!empty($v['area'])) ? "&bull; " . $v['area'] . "<br>" : "";
+                        }
+
+                        if(!stristr($user_assignment[$key]['facultad'], $v['facultad'])){
+                            $user_assignment[$key]['facultad'] .= (!empty($v['facultad'])) ? "&bull; " . $v['facultad'] . "<br>" : "";
+                        }
+
+                        if(!stristr($user_assignment[$key]['escuela'], $v['escuela'])){
+                            $user_assignment[$key]['escuela'] .= (!empty($v['escuela'])) ? "&bull; " . $v['escuela'] . "<br>" : "";
+                        }
+
+                        if(!stristr($user_assignment[$key]['curso'], $v['curso'])){
+                            $user_assignment[$key]['curso'] .= (!empty($v['curso'])) ? "&bull; " . $v['curso'] . "<br>" : "";
+                        }
+                    } else {
+                        $user_assignment[$key]['area'] = (!empty($v['area'])) ? "&bull; " . $v['area'] . "<br>" : "";
+                        $user_assignment[$key]['facultad'] = (!empty($v['facultad'])) ? "&bull; " . $v['facultad'] . "<br>" : "";
+                        
+                        $user_assignment[$key]['escuela'] = (!empty($v['escuela'])) ? "&bull; " . $v['escuela'] . "<br>" : "";
+                        $user_assignment[$key]['curso'] = (!empty($v['curso'])) ? "&bull; " . $v['curso'] . "<br>" : "";
+                    }
+                }
             }
+
+            foreach ($data[2] as $k => $v) {
+
+                if ($v['user_id'] == $value['id']) {
+                    $user_assignment[$key]['ciudad'] .= $v['Ciudad'] . "<br/>";
+
+                } elseif ($value['rol'] == 1 || $value['rol'] == 2) {
+                    $user_assignment[$key]['ciudad'] = "Todos";
+                }
+            }
+
+            foreach ($data[3] as $k => $v) {
+                if ($v['user_id'] == $value['id']) {
+
+                    $user_assignment[$key]['programa'] .= $v['category'] . "<br/>";
+
+                } elseif ($value['rol'] == 1 || $value['rol'] == 2) {
+                    $user_assignment[$key]['programa'] = "Todos";
+                }
+            }
+
         }
 
         $datos['user'] = $user_assignment;

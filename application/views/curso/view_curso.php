@@ -14,6 +14,34 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
+        <div class="col-sm-3">
+            <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="radio-inline" value="1" checked> Lima
+                        <i class="fa fa-circle-o"></i>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="radio-inline" value="2"> Chiclayo
+                        <i class="fa fa-circle-o"></i>
+                    </label>
+                </div>
+                <?php
+            } else {
+                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                foreach ($_SESSION['city'] as $value) {
+                    echo "<div class='radio-inline'>";
+                    echo "<label>";
+                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
+                    echo "<i class='fa fa-circle-o'></i>";
+                    echo "</label>";
+                    echo "</div>";
+                }
+            }
+            ?>
+        </div>
         <div class="col-sm-2" id="div_cbo_cat"><label>Programa *</label>
             <select class="populate placeholder" id="cbo_cat">
                 <?php
@@ -234,7 +262,10 @@
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
-            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            $('#cbo_periodo')
+                .select2('val', 0)
+                .html(null)
+                .append("<option value='0'>.::: Seleccione :::.</option>");
             cargar_select('cbo_periodo', 'curso-getPeriodos', category);
         });
 
@@ -252,7 +283,10 @@
                 var parameter = {
                     'category': category_code
                 }
-                $('#cbo_cursos').html(null).append("<option value='0'>::: Todos :::</option>");
+                $('#cbo_cursos')
+                    .select2('val', 0)
+                    .html(null)
+                    .append("<option value='0'>::: Todos :::</option>");
                 cargar_select('cbo_cursos', 'curso-getCursos', parameter);
             }
 
@@ -277,6 +311,7 @@
                 }
                 $('#input_date, #input_date2')
                     .removeAttr('disabled')
+                    .select2('val', 0)
                     .html(null)
                     .append("<option value='0'>.::: Seleccione :::.</option>")
                     .append(option);
@@ -306,7 +341,9 @@
                 });
 
                 var check = [];
+                var ciudad = [];
                 var icheck = 0;
+                var iciudad = 0;
 
                 var e = document.getElementById('cbo_cat');
                 var category_code = e.value + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
@@ -322,6 +359,13 @@
                             check[icheck] = txt + '_course_base';
                             icheck++
                         }
+                    }
+                });
+
+                $('input:radio[name=radio-inline]').each(function () {
+                    if ($(this).is(':checked')) {
+                        ciudad[iciudad] = $(this).val();
+                        iciudad++;
                     }
                 });
 
@@ -349,6 +393,7 @@
                             'categoria': category_code,
                             'check': check,
                             'curso': curso,
+                            'ciudad' : ciudad,
                             'f1': f1,
                             'f2': f2
                         }

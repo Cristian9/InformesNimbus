@@ -23,9 +23,11 @@ class Seccion_model extends CI_Model {
 
     function index($fid, $id) {
         if ($fid == "1") {
-            $chk = " and faculty not in ('F3', 'F4', 'F5') order by faculty asc";
+            $chk = " and faculty not in ('F3', 'F4', 'F5', "
+                    . "'F6', 'F7', 'FP', 'F8') order by faculty asc";
         } else {
-            $chk = " and faculty in ('F3', 'F4', 'F5') order by faculty asc";
+            $chk = " and faculty in ('F3', 'F4', 'F5', "
+                    . "'F6', 'F7', 'FP', 'F8') order by faculty asc";
         }
 
         switch ($_SESSION['rol']) {
@@ -55,16 +57,16 @@ class Seccion_model extends CI_Model {
             case 6:
                 if (is_array($_SESSION['course_id'])) {
                     foreach ($_SESSION['course_id'] as $value) {
-                        $in .= "'" . substr($value, 4, 4) . "',";
+                        $in .= "'" . $value . "',";
                     }
                     $in = substr($in, 0, -1);
                 } else {
-                    $in = "'" . substr($_SESSION['course_id'], 4, 4) . "'";
+                    $in = "'" . $_SESSION['course_id'] . "'";
                 }
 
                 $sql = "select distinct(section_code) as id, section_code as "
                         . " name from n_report_detail where "
-                        . " course_code in (" . $in . ") and category like '" . $id . "%'";
+                        . " course_code in (" . $in . ") and category like '" . $id . "%'" . $chk;
                 break;
         }
 
@@ -100,8 +102,8 @@ class Seccion_model extends CI_Model {
     function listar($ciudad, $prg, $seccion, $herramienta, $del, $al) {
         $estadisticas = array();
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5') " :
-                " and faculty in ('F3', 'F4', 'F5') ";
+                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'FP', 'F8') " :
+                " and faculty in ('F3', 'F4', 'F5', 'F6', 'FP', 'F8') ";
 
         $sql_carrera = ($seccion != '0') ? " and section_code = '" . $seccion . "' " : "";
         $periodo = substr($prg, 1, 3);
@@ -130,6 +132,13 @@ class Seccion_model extends CI_Model {
                 }
                 $in = substr($in, 0, -1);
                 $sql_rol = " and program in (" . $in . ")";
+                break;
+            case 6:
+                foreach ($_SESSION['course_id'] as $value) {
+                    $in .= "'" . $value . "',";
+                }
+                $in = substr($in, 0, -1);
+                $sql_rol = " and course_code in (" . $in . ")";
                 break;
         }
 

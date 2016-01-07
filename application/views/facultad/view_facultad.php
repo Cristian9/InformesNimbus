@@ -287,7 +287,10 @@
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
-            $('#cbo_periodo').html(null).append("<option value='0'>.::: Seleccione :::.</option>");
+            $('#cbo_periodo')
+                .select2('val', 0)
+                .html(null)
+                .append("<option value='0'>.::: Seleccione :::.</option>");
             cargar_select('cbo_periodo', 'facultad-getPeriodos', category);
         });
 
@@ -296,8 +299,7 @@
             var category = $('#cbo_cat').val();
             var option = "";
             $('#input_date, #input_date2')
-                .attr('disabled', true)
-                .append("<option value='0'>Cargando....</option>");
+                .attr('disabled', true);
 
             $.getJSON('area-getWeeks', {
                 periodo: periodo,
@@ -313,6 +315,7 @@
                 }
                 $('#input_date, #input_date2')
                     .removeAttr('disabled')
+                    .select2('val', 0)
                     .html(null)
                     .append("<option value='0'>.::: Seleccione :::.</option>")
                     .append(option);
@@ -322,7 +325,10 @@
         $('input:radio[name=radio-inline]').each(function () {
             $(this).click(function () {
                 ciudad_select = $(this).val();
-                $('#cbo_facultades').html(null).append("<option value='0'>::: Todos :::</option>");
+                $('#cbo_facultades')
+                    .select2('val', 0)
+                    .html(null)
+                    .append("<option value='0'>::: Todos :::</option>");
                 cargar_select('cbo_facultades', 'facultad-getFacultad', ciudad_select);
             });
         });

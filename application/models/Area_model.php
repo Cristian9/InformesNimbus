@@ -57,8 +57,8 @@ class Area_model extends CI_Model {
         $estadisticas = array();
         $periodo = substr($prg, 1, 3);
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and n.faculty not in ('F3', 'F4', 'F5') " :
-                " and n.faculty in ('F3', 'F4', 'F5') ";
+                " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
         $sql_area = ($area != '0') ? " inner join n_course_areas 
                 nc on n.course_code = nc.course_code and nc.area_id = 
@@ -113,8 +113,8 @@ class Area_model extends CI_Model {
     function data_graficar($ciudad, $programa, $area, $desde, $hasta, $herramienta) {
         $periodo = substr($programa, 1, 3);
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " n.faculty not in ('F3', 'F4', 'F5') " :
-                " n.faculty in ('F3', 'F4', 'F5') ";
+                " n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
         $where_area = ($area == '0') ? "" : " where id = '" . $area . "'";
 

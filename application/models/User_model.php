@@ -10,22 +10,32 @@ class User_model extends CI_Model {
 
     function index() {
 
-        $sql = "select distinct(n_users.id), username, lastname, firstname, email, "
-            . "active, case a.rol when 1 then 'Administrador' when 2 then 'Vicerector' "
-            . "when 3 then 'Director de Area' when 4 then 'Decano' when 5  then "
-            . "'Director de carrera' when 6 then 'Coordinador de curso' end as perfil, "
-            . "case a.rol when 1 then 'Acceso General' when 2 then 'Areas, "
-            . "Facultades, Carreras, Cursos' when 3 then (select description from "
-            . "n_areas where id = a.area_id) when 4 then (select description from "
-            . "n_faculty where id = a.faculty_id) when 5 then (select description "
-            . "from n_programs where faculty_id = a.faculty_id and program_id = "
-            . "a.program_id) when 6 then (select course_title from n_report_detail "
-            . "where course_code = substr(a.course_id, 5, 4) limit 1) end as Accesos "
-            . "from n_users, n_assignment a where a.user_id = n_users.id and n_users.active=1";
+        $sql_userlevels = "select distinct(nu.id), username, lastname, firstname, email, active, 
+            a.rol, case a.rol when 1 then 'Administrador' when 2 then 'Vicerector' when 3 then 
+            'Director de Area' when 4 then 'Decano' when 5 then 'Director de carrera' when 6 
+            then 'Coordinador de curso' end as perfil from n_users nu inner join n_assignment 
+            a on a.user_id = nu.id and nu.active=1";
 
-        $dta_usuario = $this->db->query($sql)->result('array');
+        $sql_assigned_to = "select nu.id, 
+            (select description from n_areas where id = a.area_id) as area,  
+            (select description from n_faculty where id = a.faculty_id) as facultad, 
+            (select description from n_programs where faculty_id = a.faculty_id and 
+            program_id = a.program_id) as escuela, (select course_title from 
+            n_report_detail where course_code = a.course_id limit 1) as curso from 
+            n_users nu inner join n_assignment a on a.user_id = nu.id and nu.active=1";
 
-        return $dta_usuario;
+        $sql_assigned_city = "select user_id, case city_id when 1 then 'Lima' when 2 
+            then 'Chiclayo' end as Ciudad from n_assignment_city";
+
+        $sql_assigned_category = "select nca.user_id, ca.category from n_assignment_category 
+            nca, n_category ca where nca.category_id = ca.id";
+
+        $data_userlevel = $this->db->query($sql_userlevels)->result('array');
+        $data_assigned_to = $this->db->query($sql_assigned_to)->result('array');
+        $data_assigned_city = $this->db->query($sql_assigned_city)->result('array');
+        $data_assigned_category = $this->db->query($sql_assigned_category)->result('array');
+
+        return array($data_userlevel, $data_assigned_to, $data_assigned_city, $data_assigned_category);
     }
 
     function get_users() {
@@ -61,7 +71,8 @@ class User_model extends CI_Model {
     }
 
     function get_cursos() {
-        $sql = "select code as id, title as description from course order by code, title";
+        $sql = "select substr(code, 5, 4) as id, title 
+            as description from course group by code order by code, title";
         return $query = $this->db->query($sql)->result();
     }
 
@@ -87,6 +98,7 @@ class User_model extends CI_Model {
         (!empty($facultad)) && ($data['faculty_id'] = $facultad);
         (!empty($carreras)) && ($data['program_id'] = $carreras);
         (!empty($cursos)) && ($data['course_id'] = $cursos);
+
         // inserta el array cargado
         if (!empty($data)) {
             foreach ($data as $key => $value) {
@@ -120,6 +132,7 @@ class User_model extends CI_Model {
             $this->db->query($sql_insert);
         }
         $this->db->query("update n_users set active = 1 where id = '" . $usuario . "'");
+
         // llenar la tabla para el menu de accesos
         for ($i = $niveles; $i <= $query_menucounter[0]['total']; $i++) {
 
@@ -184,19 +197,19 @@ class User_model extends CI_Model {
         $this->db->query($sql_del_ascity);
     }
 
-    function isAssigned($user){
-        $sql_review = "select count(distinct(n_users.id)) total from n_users, " . 
-            "n_assignment a where a.user_id = n_users.id and n_users.active=1 " . 
-            " and username = '" . $user . "'";
+    function isAssigned($user) {
+        $sql_review = "select count(distinct(n_users.id)) total from n_users, " .
+                "n_assignment a where a.user_id = n_users.id and n_users.active=1 " .
+                " and username = '" . $user . "'";
 
         $data = $this->db->query($sql_review)->result('array');
 
         return ($data[0]['total'] > 0) ? true : false;
     }
 
-    function exists_user($user){
-        $sql_review = "select count(distinct(username)) total " 
-            . " from n_users where username = '".$user."'";
+    function exists_user($user) {
+        $sql_review = "select count(distinct(username)) total "
+                . " from n_users where username = '" . $user . "'";
 
         $data = $this->db->query($sql_review)->result('array');
 

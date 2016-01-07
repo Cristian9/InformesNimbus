@@ -42,11 +42,12 @@ class Curso_controller extends CI_Controller {
         $categoria = $this->input->post('categoria');
         $check = $this->input->post('check');
         $curso = $this->input->post('curso');
+        $ciudad = $this->input->post('ciudad');
         $fdesde = $this->input->post('f1');
         $fhasta = $this->input->post('f2');
 
         $lista = $this->curso_model->listar(
-                $categoria, $check, $curso, $fdesde, $fhasta
+                $categoria, $check, $curso, $ciudad, $fdesde, $fhasta
         );
         echo json_encode($lista);
     }

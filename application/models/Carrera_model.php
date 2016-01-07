@@ -9,26 +9,22 @@ class Carrera_model extends CI_Model {
     }
 
     function getEscuelas($id, $facultad, $prg) {
-        if ($id == "1") {
-            $chk = " and n.faculty not in ('F3','F4','F5')";
-        } else {
-            $chk = " and n.faculty in ('F3','F4','F5')";
-        }
 
         if ($facultad == '0') {
             foreach ($_SESSION['faculty_id'] as $value) {
                 $in .= "'" . $value . "',";
             }
             $in = substr($in, 0, -1);
-            $sql_faculty = " and n.faculty in (" . $in . ")";
+            $sql_faculty = " and c.faculty_id in (" . $in . ")";
         } else {
-            $sql_faculty = " and n.faculty = '" . $facultad . "'";
+            $sql_faculty = " and c.faculty_id = '" . $facultad . "'";
         }
 
         $sql = "select n.program as id, c.description from " .
-                "n_report_detail n, n_programs c where n.program = c.program_id and n.category = '" . $prg . "'" .
-                $chk . $sql_faculty . " GROUP BY n.program";
-
+                "n_report_detail n, n_programs c where n.program " . 
+                "= c.program_id and n.category = '" . $prg . "'" .
+                $sql_faculty . " GROUP BY n.program";
+                
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -68,9 +64,11 @@ class Carrera_model extends CI_Model {
 
     function index($id) {
         if ($id == "1") {
-            $chk = " where (fa.id not like 'F%' and fa.id <> 'P2')";
+            //$chk = " where (fa.id not like 'F%' and fa.id <> 'P2')";
+            $chk = " where fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8')";
         } else {
-            $chk = " where (fa.id like 'F%' or fa.id = 'P2')";
+            //$chk = " where (fa.id like 'F%' or fa.id = 'P2')";
+            $chk = " where fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8')";
         }
 
         switch ($_SESSION['rol']) {
@@ -103,8 +101,8 @@ class Carrera_model extends CI_Model {
         $estadisticas = array();
 
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5') " :
-                " and faculty in ('F3', 'F4', 'F5') ";
+                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
 
@@ -168,8 +166,8 @@ class Carrera_model extends CI_Model {
 
     function graficar($ciudad, $herramienta, $programa, $carrera, $facultad, $desde, $hasta) {
         $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5') " :
-                " and faculty in ('F3', 'F4', 'F5') ";
+                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
+                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
 
