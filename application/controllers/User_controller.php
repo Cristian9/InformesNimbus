@@ -28,27 +28,23 @@ class User_controller extends CI_Controller {
 
                     if (isset($user_assignment[$key]['area'])) {
 
-                        if(!stristr($user_assignment[$key]['area'], $v['area'])){
-                            $user_assignment[$key]['area'] .= (!empty($v['area'])) ? "&bull; " . $v['area'] . "<br>" : "";
+                        foreach ($v as $index => $items) {
+                            if($index == 'id')
+                                continue;
+
+                            if(!stristr($user_assignment[$key][$index], $items)){
+                                $user_assignment[$key][$index] .= (!empty($items)) ? "&bull; " . $items . "<br>" : "";
+                            }
                         }
 
-                        if(!stristr($user_assignment[$key]['facultad'], $v['facultad'])){
-                            $user_assignment[$key]['facultad'] .= (!empty($v['facultad'])) ? "&bull; " . $v['facultad'] . "<br>" : "";
-                        }
-
-                        if(!stristr($user_assignment[$key]['escuela'], $v['escuela'])){
-                            $user_assignment[$key]['escuela'] .= (!empty($v['escuela'])) ? "&bull; " . $v['escuela'] . "<br>" : "";
-                        }
-
-                        if(!stristr($user_assignment[$key]['curso'], $v['curso'])){
-                            $user_assignment[$key]['curso'] .= (!empty($v['curso'])) ? "&bull; " . $v['curso'] . "<br>" : "";
-                        }
                     } else {
-                        $user_assignment[$key]['area'] = (!empty($v['area'])) ? "&bull; " . $v['area'] . "<br>" : "";
-                        $user_assignment[$key]['facultad'] = (!empty($v['facultad'])) ? "&bull; " . $v['facultad'] . "<br>" : "";
-                        
-                        $user_assignment[$key]['escuela'] = (!empty($v['escuela'])) ? "&bull; " . $v['escuela'] . "<br>" : "";
-                        $user_assignment[$key]['curso'] = (!empty($v['curso'])) ? "&bull; " . $v['curso'] . "<br>" : "";
+
+                        foreach ($v as $index => $items) {
+                            if($index == 'id')
+                                continue;
+
+                            $user_assignment[$key][$index] = (!empty($items)) ? "&bull; " . $items . "<br>" : "";
+                        }
                     }
                 }
             }
