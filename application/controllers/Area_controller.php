@@ -24,8 +24,8 @@ class Area_controller extends CI_Controller {
     }
 
     function getWeeks() {
-        $periodo = $this->input->get('periodo');
-        $category = $this->input->get('category');
+        $periodo    = $this->input->get('periodo');
+        $category   = $this->input->get('category');
         $json->listas = $this->area_model->getWeeks($periodo, $category);
         echo json_encode($json);
     }
@@ -38,12 +38,12 @@ class Area_controller extends CI_Controller {
 
     function listar() {
         session_start();
-        $ciudad = $this->input->post('ciudad');
-        $herramienta = $this->input->post('herramienta');
-        $prg = $this->input->post('prg');
-        $areas = $this->input->post('areas');
-        $fdesde = $this->input->post('f1');
-        $fhasta = $this->input->post('f2');
+        $ciudad         = $this->input->post('ciudad');
+        $herramienta    = $this->input->post('herramienta');
+        $prg            = $this->input->post('prg');
+        $areas          = $this->input->post('areas');
+        $fdesde         = $this->input->post('f1');
+        $fhasta         = $this->input->post('f2');
 
         $lista = $this->area_model->listar(
                 $ciudad, $areas, $herramienta, $prg, $fdesde, $fhasta
@@ -53,12 +53,12 @@ class Area_controller extends CI_Controller {
 
     function graficar() {
         session_start();
-        $ciudad = $this->input->post('ciudad');
-        $programa = $this->input->post('programa');
-        $area = $this->input->post('area');
-        $desde = $this->input->post('desde');
-        $hasta = $this->input->post('hasta');
-        $herramienta = $this->input->post('herramientas');
+        $ciudad         = $this->input->post('ciudad');
+        $programa       = $this->input->post('programa');
+        $area           = $this->input->post('area');
+        $desde          = $this->input->post('desde');
+        $hasta          = $this->input->post('hasta');
+        $herramienta    = $this->input->post('herramientas');
 
         $datos = $this->area_model->data_graficar(
                 $ciudad, $programa, $area, $desde, $hasta, $herramienta

@@ -85,8 +85,8 @@ function graficar(url, params) {
                     tooltipTemplate : function( obj ){
                         var etiqueta = "";
                         etiqueta = obj.value + "%";
-                        etiqueta += " (" + obj.datasetLabel[obj.label];
-                        etiqueta += " de " + json[1]['Totales'][0][obj.label] + ")";
+                        etiqueta += " ( " + obj.datasetLabel[obj.label];
+                        etiqueta += " de " + json[1]['Totales'][0][obj.label] + " )";
                         return etiqueta;
                         //console.log(obj);
                     }
