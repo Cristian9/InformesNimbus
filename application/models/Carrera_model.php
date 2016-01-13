@@ -20,25 +20,26 @@ class Carrera_model extends CI_Model {
             $sql_faculty = " and c.faculty_id = '" . $facultad . "'";
         }
 
-        $sql = "select n.program as id, c.description from " .
-                "n_report_detail n, n_programs c where n.program " . 
-                "= c.program_id and n.category = '" . $prg . "'" .
-                $sql_faculty . " GROUP BY n.program";
+        $sql = "SELECT n.program as id, c.description from 
+            n_report_detail n, n_programs c where n.program = c.program_id 
+            and n.category = '" . $prg . "'" . $sql_faculty . " GROUP BY n.program";
                 
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     function getPeriodos($category) {
-        $sql = "select np.period as id, pr.periodo as description "
-                . "from n_period_category np, n_period pr where "
-                . "np.period = pr.id and np.category_id = '" . $category . "'";
+        $sql = "SELECT np.period as id, pr.periodo as description 
+            from n_period_category np, n_period pr where 
+            np.period = pr.id and np.category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
     function getWeeks($periodo, $category) {
-        $sql = "select weeks from n_period_category where "
-                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        $sql = "SELECT weeks from n_period_category where 
+            period = '" . $periodo . "' and category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
@@ -57,7 +58,7 @@ class Carrera_model extends CI_Model {
             $sql_filtro = " where id in (" . $by_category . ")";
         }
 
-        $sql_category = "select id, category from n_category " . $sql_filtro;
+        $sql_category = "SELECT id, category from n_category " . $sql_filtro;
 
         return $this->db->query($sql_category)->result('array');
     }
@@ -74,21 +75,21 @@ class Carrera_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select fa.id, fa.description from n_faculty fa " . $chk . " order by fa.id";
+                $sql = "SELECT fa.id, fa.description from n_faculty fa " . $chk . " order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select * from n_faculty fa " . $chk . " and fa.id in (" . $in . ") order by fa.id, fa.description";
+                $sql = "SELECT * from n_faculty fa " . $chk . " and fa.id in (" . $in . ") order by fa.id, fa.description";
                 break;
             case 5:
                 foreach ($_SESSION['program_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select program_id as id, description from n_programs where program_id "
+                $sql = "SELECT program_id as id, description from n_programs where program_id "
                         . "in (" . $in . ") and faculty_id = '" . $_SESSION['faculty_id'][0] . "'";
                 break;
         }
@@ -131,12 +132,12 @@ class Carrera_model extends CI_Model {
             $n_faculty = ($carrera != "0") ? " and faculty = '" . $_SESSION['faculty_id'][0] . "'" : "";
         }
 
-        $sql = "select category, f.description as facultad, c.description, "
-                . "n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', "
-                . "if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, "
-                . "n.coach, n.lastname, n.firstname";
+        $sql = "SELECT category, f.description as facultad, c.description, 
+            n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
+            if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
+            n.coach, n.lastname, n.firstname";
 
-        $sql_from = " from n_report_detail n, n_faculty f, n_programs c "
+        $sql_from = " FROM n_report_detail n, n_faculty f, n_programs c "
                 . "where f.id = faculty and c.program_id = program and "
                 . "f.id = c.faculty_id and week "
                 . "between '" . $del . "' and '" . $al . "' "
@@ -195,24 +196,26 @@ class Carrera_model extends CI_Model {
             }
         }
 
-        $sql_carreras = "select n.program, c.description from n_report_detail n, " .
-                "n_programs c where n.program = c.program_id and n.faculty = c.faculty_id and n.category = '" . $programa . "' " .
-                $sql_ciudad . $n_faculty . $where_carrera . " GROUP BY n.program";
+        $sql_carreras = "SELECT n.program, c.description from n_report_detail n, 
+            n_programs c where n.program = c.program_id and n.faculty = 
+            c.faculty_id and n.category = '" . $programa . "' " . $sql_ciudad . 
+            $n_faculty . $where_carrera . " GROUP BY n.program";
+            
         //echo $sql_carreras;
         $datos_carreras = $this->db->query($sql_carreras)->result('array');
 
         if (!empty($herramienta)) {
             for ($i = 0; $i < count($herramienta); $i++) {
-                $sql_totales = "select ";
-                $sql_herramientas = "select ";
+                $sql_totales = "SELECT ";
+                $sql_herramientas = "SELECT ";
                 foreach ($datos_carreras as $v) {
 
-                    $sql_totales .= "(select count(distinct(section_code)) from n_report_detail" .
+                    $sql_totales .= "(SELECT count(distinct(section_code)) from n_report_detail" .
                             " where course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " .
                             $sql_ciudad . " and category = '" . $programa . "' " .
                             $n_faculty . " and program = '" . $v['program'] . "' GROUP BY program) as '" . $v['description'] . "', ";
 
-                    $sql_herramientas .= "ifnull((select count(distinct(section_code)) from n_report_detail where " .
+                    $sql_herramientas .= "ifnull((SELECT count(distinct(section_code)) from n_report_detail where " .
                             $herramienta[$i] . " <> 0 and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " .
                             $sql_ciudad . "and category = '" . $programa . "' " .
                             $n_faculty . " and program = '" . $v['program'] . "' GROUP BY program), 0) as '" . $v['description'] . "', ";

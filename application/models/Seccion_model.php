@@ -9,15 +9,17 @@ class Seccion_model extends CI_Model {
     }
 
     function getPeriodos($category) {
-        $sql = "select np.period as id, pr.periodo as description "
-                . "from n_period_category np, n_period pr where "
-                . "np.period = pr.id and np.category_id = '" . $category . "'";
+        $sql = "SELECT np.period as id, pr.periodo as description 
+            from n_period_category np, n_period pr where 
+            np.period = pr.id and np.category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
     function getWeeks($periodo, $category) {
-        $sql = "select weeks from n_period_category where "
-                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        $sql = "SELECT weeks from n_period_category where 
+            period = '" . $periodo . "' and category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
@@ -33,26 +35,27 @@ class Seccion_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select distinct(section_code) as id, section_code as "
-                        . " name from n_report_detail where section_code like '" . $id . "%'" . $chk;
+                $sql = "SELECT distinct(section_code) as id, section_code as 
+                    name from n_report_detail where section_code like '" . $id . "%'" . $chk;
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select distinct(section_code) as id, section_code as "
-                        . " name from n_report_detail where "
-                        . " faculty in (" . $in . ") and category like '" . $id . "%'" . $chk;
+                $sql = "SELECT distinct(section_code) as id, section_code as 
+                    name from n_report_detail where faculty in (" . $in . ") 
+                    and category like '" . $id . "%'" . $chk;
+
                 break;
             case 5:
                 foreach ($_SESSION['program_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select distinct(section_code) as id, section_code as "
-                        . " name from n_report_detail where "
-                        . " program in (" . $in . ") and category like '" . $id . "%'" . $chk;
+                $sql = "SELECT distinct(section_code) as id, section_code as 
+                    name from n_report_detail where program in (" . $in . ") 
+                    and category like '" . $id . "%'" . $chk;
                 break;
             case 6:
                 if (is_array($_SESSION['course_id'])) {
@@ -64,9 +67,9 @@ class Seccion_model extends CI_Model {
                     $in = "'" . $_SESSION['course_id'] . "'";
                 }
 
-                $sql = "select distinct(section_code) as id, section_code as "
-                        . " name from n_report_detail where "
-                        . " course_code in (" . $in . ") and category like '" . $id . "%'" . $chk;
+                $sql = "SELECT distinct(section_code) as id, section_code as 
+                    name from n_report_detail where course_code in (" . $in . ") 
+                    and category like '" . $id . "%'" . $chk;
                 break;
         }
 
@@ -75,7 +78,7 @@ class Seccion_model extends CI_Model {
     }
 
     function getPeriodo() {
-        $sql = "select * from n_period order by id desc";
+        $sql = "SELECT * from n_period order by id desc";
         return $this->db->query($sql)->result('array');
     }
 
@@ -94,7 +97,7 @@ class Seccion_model extends CI_Model {
             $sql_filtro = " where id in (" . $by_category . ")";
         }
 
-        $sql_category = "select id, category from n_category " . $sql_filtro;
+        $sql_category = "SELECT id, category from n_category " . $sql_filtro;
 
         return $this->db->query($sql_category)->result('array');
     }
@@ -116,7 +119,7 @@ class Seccion_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql_rol = " and course_code in (select course_code from "
+                $sql_rol = " and course_code in (SELECT course_code from "
                         . "n_course_areas where area_id in (" . $in . ") and course_code = course_code and period = '" . $periodo . "')";
                 break;
             case 4:
@@ -142,17 +145,16 @@ class Seccion_model extends CI_Model {
                 break;
         }
 
-        $sql = "select category, f.description as facultad, c.description, "
-                . "n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', "
-                . "if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, "
-                . "n.coach, n.lastname, n.firstname";
+        $sql = "SELECT category, f.description as facultad, c.description, 
+            n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
+            if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, n.coach, 
+            n.lastname, n.firstname";
 
-        $sql_from = " from n_report_detail n, n_faculty f, n_programs c "
-                . "where f.id = faculty and c.program_id = program and "
-                . "f.id = c.faculty_id and week "
-                . "between '" . $del . "' and '" . $al . "' "
-                . $sql_ciudad . $sql_carrera . " and category = '" . $prg
-                . "' " . $sql_rol . " GROUP BY section_code";
+        $sql_from = " from n_report_detail n, n_faculty f, n_programs c 
+            where f.id = faculty and c.program_id = program and f.id = 
+            c.faculty_id and week between '" . $del . "' and '" . $al . "' "
+            . $sql_ciudad . $sql_carrera . " and category = '" . $prg
+            . "' " . $sql_rol . " GROUP BY section_code";
 
         if (!empty($herramienta)) {
             $sql_columns = ", ";

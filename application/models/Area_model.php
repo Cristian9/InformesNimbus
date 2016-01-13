@@ -10,10 +10,10 @@ class Area_model extends CI_Model {
 
     function index() {
         if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
-            $sql = "select id, description from n_areas order by id";
+            $sql = "SELECT id, description FROM n_areas ORDER BY id";
         } else {
-            $sql = "select ar.id, ar.description from n_areas ar, n_assignment a, " .
-                    "n_users u where ar.id = a.area_id and a.user_id = u.id and u.username = '" . $_SESSION['usuario'] . "'";
+            $sql = "SELECT ar.id, ar.description from n_areas ar, n_assignment a, 
+            n_users u where ar.id = a.area_id and a.user_id = u.id and u.username = '" . $_SESSION['usuario'] . "'";
         }
 
         $query = $this->db->query($sql);
@@ -21,15 +21,17 @@ class Area_model extends CI_Model {
     }
 
     function getPeriodos($category) {
-        $sql = "select np.period as id, pr.periodo as description "
-                . "from n_period_category np, n_period pr where "
-                . "np.period = pr.id and np.category_id = '" . $category . "'";
+        $sql = "SELECT np.period as id, pr.periodo as description 
+            from n_period_category np, n_period pr where 
+            np.period = pr.id and np.category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
     function getWeeks($periodo, $category) {
-        $sql = "select weeks from n_period_category where "
-                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        $sql = "SELECT weeks from n_period_category where 
+            period = '" . $periodo . "' AND category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
@@ -48,7 +50,7 @@ class Area_model extends CI_Model {
             $sql_filtro = " where id in (" . $by_category . ")";
         }
 
-        $sql_category = "select id, category from n_category " . $sql_filtro;
+        $sql_category = "SELECT id, category from n_category " . $sql_filtro;
 
         return $this->db->query($sql_category)->result('array');
     }
@@ -77,12 +79,12 @@ class Area_model extends CI_Model {
             }
         }
 
-        $sql = "select n.category, f.description as facultad, c.description, "
+        $sql = "SELECT n.category, f.description as facultad, c.description, "
                 . "n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', "
                 . "if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, "
                 . "n.coach, n.lastname, n.firstname";
 
-        $sql_from = " from n_report_detail n " . $sql_area . " inner join n_faculty 
+        $sql_from = " FROM n_report_detail n " . $sql_area . " inner join n_faculty 
             f on f.id = n.faculty inner join n_programs c on c.program_id = 
             n.program and f.id = c.faculty_id and n.week between '" . $del . "' and '" . $al ."' 
             " . $sql_ciudad . " and n.category = '" . $prg . "' GROUP BY n.section_code";
@@ -128,23 +130,23 @@ class Area_model extends CI_Model {
             }
         }
 
-        $data_areas = $this->db->query("select * from n_areas " . $where_area . " order by id, description")->result('array');
+        $data_areas = $this->db->query("SELECT * from n_areas " . $where_area . " order by id, description")->result('array');
 
         if (!empty($herramienta)) {
             for ($i = 0; $i < count($herramienta); $i++) {
                 $sql_herramientas = "";
                 $sql_totales = "";
-                $sql_herramientas = "select ";
-                $sql_totales = "select ";
+                $sql_herramientas = "SELECT ";
+                $sql_totales = "SELECT ";
                 foreach ($data_areas as $v) {
-                    $sql_totales .= "(select count(distinct(n.section_code)) from n_report_detail " 
+                    $sql_totales .= "(SELECT COUNT(distinct(n.section_code)) from n_report_detail " 
                         . " n inner join n_course_areas c on" . $sql_ciudad 
                         . " and n.course_code = c.course_code and c.area_id = '" . $v['id'] . "' and " 
                         . " c.period = '" . $periodo . "' and n.course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " 
                         . " and n.category = '" . $programa . "' and n.week between '".$desde."' and '".$hasta."'"
                         . " order by n.course_title asc) " . $v['description'] . ",";
                     
-                    $sql_herramientas .= "(select count(distinct(n.section_code)) from n_report_detail " 
+                    $sql_herramientas .= "(SELECT count(distinct(n.section_code)) from n_report_detail " 
                         . " n inner join n_course_areas c on" . $sql_ciudad 
                         . " and n." . $herramienta[$i] . " <> 0 and n.course_code = c.course_code and c.area_id = '" . $v['id'] . "' and " 
                         . " c.period = '" . $periodo . "' and n.course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " 

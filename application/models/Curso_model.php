@@ -9,15 +9,17 @@ class Curso_model extends CI_Model {
     }
 
     function getPeriodos($category) {
-        $sql = "select np.period as id, pr.periodo as description "
-                . "from n_period_category np, n_period pr where "
-                . "np.period = pr.id and np.category_id = '" . $category . "'";
+        $sql = "SELECT np.period as id, pr.periodo as description 
+            from n_period_category np, n_period pr where 
+            np.period = pr.id and np.category_id = '" . $category . "'";
+
         return $this->db->query($sql)->result('array');
     }
 
     function getWeeks($periodo, $category) {
-        $sql = "select weeks from n_period_category where "
-                . "period = '" . $periodo . "' and category_id = '" . $category . "'";
+        $sql = "SELECT weeks from n_period_category where 
+            period = '" . $periodo . "' and category_id = '" . $category . "'";
+            
         return $this->db->query($sql)->result('array');
     }
 
@@ -26,7 +28,7 @@ class Curso_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "select distinct(course_code) as id, course_title "
+                $sql = "SELECT distinct(course_code) as id, course_title "
                         . " as description from n_report_detail where category = '" . $curso_id . "'";
                 break;
             case 3:
@@ -34,7 +36,7 @@ class Curso_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select distinct(a.course_code) as id, n.course_title as description from " .
+                $sql = "SELECT distinct(a.course_code) as id, n.course_title as description from " .
                         " n_report_detail n, n_course_areas a where a.course_code = " .
                         "n.course_code and a.area_id in (" . $in . ") and a.period = '" . $periodo . "' " .
                         "and n.category = '" . $curso_id . "' order by a.course_code asc";
@@ -44,7 +46,7 @@ class Curso_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "select distinct(course_code) as id, course_title " .
+                $sql = "SELECT distinct(course_code) as id, course_title " .
                         " as description from n_report_detail where faculty in (" . $in . ") " .
                         " and category = '" . $curso_id . "' order by course_code asc";
                 break;
@@ -53,7 +55,7 @@ class Curso_model extends CI_Model {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = $sql = "select distinct(course_code) as id, course_title " .
+                $sql = $sql = "SELECT distinct(course_code) as id, course_title " .
                         " as description from n_report_detail where program in (" . $in . ") " .
                         " and category = '" . $curso_id . "' order by course_code asc";
                 break;
@@ -67,7 +69,7 @@ class Curso_model extends CI_Model {
                     $in = "'" . $_SESSION['course_id'] . "'";
                 }
 
-                $sql = "select distinct(course_code) as id, course_title " .
+                $sql = "SELECT distinct(course_code) as id, course_title " .
                         " as description from n_report_detail where course_code in (" . $in . ") " .
                         " and category = '" . $curso_id . "' order by course_code asc";
                 break;
@@ -91,7 +93,7 @@ class Curso_model extends CI_Model {
             $sql_filtro = " where id in (" . $by_category . ")";
         }
 
-        $sql_category = "select id, category from n_category " . $sql_filtro;
+        $sql_category = "SELECT id, category from n_category " . $sql_filtro;
 
         return $this->db->query($sql_category)->result('array');
     }
@@ -115,7 +117,7 @@ class Curso_model extends CI_Model {
                 $in = substr($in, 0, -1);
 
                 if ($sql_curso == '') {
-                    $sql_rol = " and course_code in (select course_code from "
+                    $sql_rol = " and course_code in (SELECT course_code from "
                             . "n_course_areas where area_id in (" . $in . ") and course_code = course_code and period = '" . $periodo . "')";
                 }
                 break;
@@ -148,7 +150,7 @@ class Curso_model extends CI_Model {
                 break;
         }
 
-        $sql = "select category, f.description as facultad, c.description, "
+        $sql = "SELECT category, f.description as facultad, c.description, "
                 . "n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', "
                 . "if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, "
                 . "n.coach, n.lastname, n.firstname";
