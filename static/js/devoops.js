@@ -81,6 +81,7 @@ function graficar(url, params) {
                 var grafico = document.getElementById('bar-chart_' + item).getContext('2d');
                 window.myLine = new Chart(grafico).Bar(facultadesBar, {
                     responsive: true,
+                    scaleFontSize : 10,
                     //tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>%"
                     tooltipTemplate : function( obj ){
                         var etiqueta = "";
@@ -88,7 +89,6 @@ function graficar(url, params) {
                         etiqueta += " ( " + obj.datasetLabel[obj.label];
                         etiqueta += " de " + json[1]['Totales'][0][obj.label] + " )";
                         return etiqueta;
-                        //console.log(obj);
                     }
                 });
             }
