@@ -1,6 +1,8 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+ini_set( 'session.use_only_cookies', TRUE );                
+ini_set( 'session.use_trans_sid', FALSE );
 
 class Main_controller extends CI_Controller {
 
@@ -8,6 +10,7 @@ class Main_controller extends CI_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('main_model');
+        require_once APPPATH . 'libraries/securesession.class.php';
     }
 
     function index() {
@@ -34,8 +37,16 @@ class Main_controller extends CI_Controller {
                 $_SESSION['usuario'] = $user;
                 $auth_check = $this->main_model->check_user($_SESSION['usuario']);
                 if (!empty($auth_check)) {
+
+                    $ss = new SecureSession();
+                    $ss->check_browser = true;
+                    $ss->check_ip_blocks = 3;
+                    $ss->regenerate_id = true;
+                    $ss->Open();
+                    $_SESSION['logedinnimbus'] = true;
                     $this->main_model->add_audit('in');
                     redirect('main-menu');
+
                 } else {
                     redirect('login?errorAuth=2');
                 }
@@ -53,30 +64,39 @@ class Main_controller extends CI_Controller {
 
     function menu_principal() {
         session_start();
-        if (isset($_SESSION['usuario']) && $_SESSION['usuario'] != "") {
-            $datos_menu = $this->main_model->get_menu($_SESSION['usuario']);
-            $datos_perfil = $this->main_model->get_profile($_SESSION['usuario']);
-            $city_profile = $this->main_model->get_city_assignment($_SESSION['usuario']);
-            $category_profile = $this->main_model->get_category_assignment($_SESSION['usuario']);
+        $ss = new SecureSession();
+        $ss->check_browser = true;
+        $ss->check_ip_blocks = 3;
+        $ss->regenerate_id = true;
+        
+        if (!$ss->Check() || !isset($_SESSION['logedinnimbus']) || !$_SESSION['logedinnimbus']) {
+            $this->login();
+        } else {
+            if (isset($_SESSION['usuario']) && $_SESSION['usuario'] != "") {
+                $datos_menu = $this->main_model->get_menu($_SESSION['usuario']);
+                $datos_perfil = $this->main_model->get_profile($_SESSION['usuario']);
+                $city_profile = $this->main_model->get_city_assignment($_SESSION['usuario']);
+                $category_profile = $this->main_model->get_category_assignment($_SESSION['usuario']);
 
-            $aux = ['area_id', 'faculty_id', 'program_id', 'course_id'];
+                $aux = ['area_id', 'faculty_id', 'program_id', 'course_id'];
 
-            foreach ($datos_perfil as $key => $value) {
-                foreach ($value as $k => $v) {
-                    if (in_array($k, $aux)) {
-                        $_SESSION[$k][$key] = $v;
-                    } else {
-                        $_SESSION[$k] = $v;
+                foreach ($datos_perfil as $key => $value) {
+                    foreach ($value as $k => $v) {
+                        if (in_array($k, $aux)) {
+                            $_SESSION[$k][$key] = $v;
+                        } else {
+                            $_SESSION[$k] = $v;
+                        }
                     }
                 }
-            }
 
-            $_SESSION['city'] = $city_profile;
-            $_SESSION['category'] = $category_profile;
-            
-            $this->load->view('principal', $datos_menu);
-        } else {
-            $this->login();
+                $_SESSION['city'] = $city_profile;
+                $_SESSION['category'] = $category_profile;
+                
+                $this->load->view('principal', $datos_menu);
+            } else {
+                $this->login();
+            }
         }
     }
 
