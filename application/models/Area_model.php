@@ -24,7 +24,7 @@ class Area_model extends CI_Model {
         $sql = "SELECT np.period as id, pr.periodo as description 
             from n_period_category np, n_period pr where 
             np.period = pr.id and np.category_id = '" . $category . "'";
-
+            
         return $this->db->query($sql)->result('array');
     }
 

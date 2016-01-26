@@ -134,6 +134,7 @@
         <!--<script src="http://code.jquery.com/jquery.js"></script>-->
         <script src="<?php echo base_url() ?>static/plugins/jquery/jquery.min.js"></script>
         <script src="<?php echo base_url() ?>static/plugins/jquery-ui/jquery-ui.js"></script>
+        <script src="<?php echo base_url() ?>static/js/jquery.cookie.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="<?php echo base_url() ?>static/plugins/bootstrap/bootstrap.min.js"></script>
         <script src="<?php echo base_url() ?>static/plugins/justified-gallery/jquery.justifiedGallery.min.js"></script>

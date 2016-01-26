@@ -92,7 +92,11 @@
                     </div>
                     <div class="box">
                         <div class="box-content">
-                            <form class="form-horizontal" name="login" role="form" method="post" action="auth">
+                            <!--<form class="form-horizontal" name="login" role="form" method="post" action="auth">-->
+                            <?php 
+                                $attr = array("class" => "form-horizontal", "name" => "login", "role" => "form");
+                                echo form_open("auth", $attr); 
+                            ?>
                                 <div class="text-center">
                                     <img src="<?php echo base_url() ?>static/images/logo_master.png" />
                                 </div>
@@ -139,7 +143,8 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            <?php echo form_close(); ?>
+                            <!--</form>-->
                         </div>
                     </div>
                 </div>

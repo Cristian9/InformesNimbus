@@ -32,7 +32,11 @@
                 <div class="no-move"></div>
             </div>
             <div class="box-content">
-                <form id="defaultForm" method="post" action="" class="form-horizontal">
+                <!--<form id="defaultForm" method="post" action="" class="form-horizontal">-->
+                <?php
+                    $attr = array("class" => "form-horizontal", "id" => "defaultForm", "role" => "form");
+                    echo form_open("", $attr);
+                ?>
                     <fieldset>
                         <legend>Seleccione usuario</legend>
                         <div class="form-group">
@@ -83,7 +87,8 @@
                             </div>
                         </div>
                     </fieldset>
-                </form>
+                <!--</form>-->
+                <?php echo form_close(); ?>
             </div>
         </div>
     </div>
@@ -390,6 +395,7 @@
     function asignar() {
         var id_user = document.getElementById('s_usuarios').value.split('|');
         $.post('users-review', {
+            '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
             'username' : id_user[1],
             'type' : 'sign'
         })
@@ -410,6 +416,7 @@
                             action: function(dialogRef){    
                                 dialogRef.close();
                                 $.post('users-save_assignment', {
+                                    '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
                                     'usuario': id_user[0],
                                     'usern' : id_user[1],
                                     'niveles': document.getElementById('s_niveles').value,
@@ -454,6 +461,7 @@
                 dialog.open();
             } else {
                 $.post('users-save_assignment', {
+                    '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
                     'usuario': id_user[0],
                     'usern' : id_user[1],
                     'niveles': document.getElementById('s_niveles').value,

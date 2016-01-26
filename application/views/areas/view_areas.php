@@ -412,6 +412,7 @@
                 var cbo = $('#cbo_areas').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var csrf = $.cookie('nbscookie');
 
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
@@ -430,6 +431,7 @@
                         },
                         'dataType': 'json',
                         'data': {
+                            'nbstoken' : csrf,
                             'ciudad': radio,
                             'prg': prg,
                             'herramienta': check,

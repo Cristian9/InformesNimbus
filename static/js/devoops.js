@@ -1,11 +1,11 @@
 "use strict";
 String.prototype.ucfirst = function () {
     return this.charAt(0).toUpperCase() + this.substr(1);
-}
+};
 
 String.prototype.lcfirst = function(){
     return this.charAt(0).toLowerCase() + this.substr(1);
-}
+};
 
 var herramientas = {
     'documents'         : 'documentos',
@@ -22,15 +22,15 @@ var herramientas = {
     'groups'            : 'grupos',
     'gradebook'         : 'form. Evaluac.',
     'course_progress'   : 'prog. Didáctica'
-}
+};
 
 function graficar(url, params) {
     $('#d_bar').html('Graficando.....');
-
+    var csrf = $.cookie('nbscookie');
     $.ajaxreq({
         url: url,
         type: 'POST',
-        params: $.param(params),
+        params: $.param(params) + '&nbstoken=' + csrf,
         callback: function (e) {
             var json = eval('(' + e + ')');
             var data_chart = [];
@@ -132,6 +132,7 @@ function add_columnas(elem, txt, base) {
 }
 
 function cargar_select(select, url, param) {
+    var csrf = $.cookie('nbscookie');
     var select_data = "";
     var serialize = "";
     var parameter = param || null;
@@ -144,7 +145,7 @@ function cargar_select(select, url, param) {
     $.ajaxreq({
         url: url,
         type: 'POST',
-        params: serialize,
+        params: serialize + '&nbstoken=' + csrf,
         callback: function (e) {
             var json = eval('(' + e + ')');
 
@@ -165,9 +166,13 @@ function cargar_select(select, url, param) {
 
 function LoadAjaxContent(url) {
     $('.preloader').show();
+    var csrf = $.cookie('nbscookie');
     $.ajax({
         mimeType: 'text/html; charset=utf-8',
         url: url,
+        data : {
+            nbstoken : csrf
+        },
         type: 'GET',
         success: function (data) {
             $('#ajax-content').html(data);
@@ -209,14 +214,12 @@ $(document).ready(function () {
             var current = $(this).next();
             if (current.is(':visible')) {
                 li.find("ul.dropdown-menu").slideUp('fast');
-                li.find("ul.dropdown-menu a").removeClass('active')
-            }
-            else {
+                li.find("ul.dropdown-menu a").removeClass('active');
+            } else {
                 another_items.find("ul.dropdown-menu").slideUp('fast');
                 current.slideDown('fast');
             }
-        }
-        else {
+        } else {
             if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
                 var pre = $(this).closest('ul.dropdown-menu');
                 pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
@@ -225,7 +228,7 @@ $(document).ready(function () {
 
         if ($(this).hasClass('active') == false) {
             $(this).parents("ul.dropdown-menu").find('a').removeClass('active');
-            $(this).addClass('active')
+            $(this).addClass('active');
         }
         if ($(this).hasClass('ajax-link')) {
             e.preventDefault();
@@ -280,5 +283,4 @@ $(document).ready(function () {
         var content = $(this).closest('div.box');
         content.remove();
     });
-    ;
 });

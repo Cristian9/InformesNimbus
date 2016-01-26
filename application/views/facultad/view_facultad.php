@@ -438,6 +438,7 @@
                 var cbo = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var csrf = $.cookie('nbscookie');
 
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
@@ -456,6 +457,7 @@
                         },
                         'dataType': 'json',
                         'data': {
+                            'nbstoken' : csrf,
                             'prg': prg,
                             'radio': radio,
                             'check': check,

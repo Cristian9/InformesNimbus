@@ -258,12 +258,14 @@
 <!--End Dashboard 2 -->
 <script type="text/javascript">
     function cargar_select_seccion(valchk) {
+        var csrf = $.cookie('nbscookie');
         var select = "";
         var prg = $('#cbo_cat').val() + $('#cbo_periodo').val();
         $('#cbo_secciones')
                 .attr('disabled', true)
                 .html("<option value='0'>Cargando.....</option>");
         $.post('secciones-getSecciones', {
+            'nbstoken' : csrf,
             'chk': valchk,
             'programa': prg
         }, function (e) {
@@ -426,6 +428,7 @@
                 var cbo = $('#cbo_secciones').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var csrf = $.cookie('nbscookie');
 
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'scrollX': true,
@@ -444,6 +447,7 @@
                         },
                         'dataType': 'json',
                         'data': {
+                            'nbstoken' : csrf,
                             'radio': radio,
                             'prg': prg,
                             'check': check,

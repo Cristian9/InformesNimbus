@@ -33,7 +33,11 @@
             </div>
             <div class="box-content">
                 <fieldset>
-                    <form class="form-horizontal" name="newuser" role="form" method="post" action="users-add">
+                    <!--<form class="form-horizontal" name="newuser" role="form" method="post" action="users-add">-->
+                    <?php
+                        $attr = array("class" => "form-horizontal", "name" => "newuser", "role" => "form");
+                        echo form_open("users-add", $attr);
+                    ?>
                         <div class="form-group  has-feedback">
                             <label class="col-sm-3 control-label">Usuario:</label>
                             <div class="col-sm-4" id="divuser">
@@ -69,7 +73,8 @@
                                 <button type="button" id="btnnew" class="btn btn-danger">Registrar usuario</button>
                             </div>
                         </div>
-                    </form>
+                    <?php echo form_close(); ?>
+                    <!--</form>-->
                 </fieldset>
             </div>
         </div>
@@ -81,6 +86,7 @@
             var _self = $(this);
             var username = _self.val();
             $.post('users-review', {
+                '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
                 username : username,
                 type : 'new'
             })
@@ -97,6 +103,7 @@
                 }
             });
         });
+        
         var btn_newuser = document.getElementById('btnnew');
         btn_newuser.addEventListener("click", function () {
             $('#correo').validate({
@@ -122,6 +129,7 @@
 
 
                 $.post('users-add', {
+                    '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
                     'user' : $.trim($('#usuario').val()),
                     'fstn' : $.trim($('#firstname').val()),
                     'lstn' : $.trim($('#lastname').val()),

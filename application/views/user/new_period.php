@@ -33,7 +33,11 @@
             </div>
             <div class="box-content">
                 <fieldset>
-                    <form class="form-horizontal" name="newperiodo" role="form" method="post" action="newperiod">
+                    <!--<form class="form-horizontal" name="newperiodo" role="form" method="post" action="newperiod">-->
+                    <?php
+                        $attr = array("class" => "form-horizontal", "name" => "newperiodo", "role" => "form");
+                        echo form_open("newperiod", $attr);
+                    ?>
                         <div class="form-group  has-feedback">
                             <label class="col-sm-3 control-label">C&oacute;digo:</label>
                             <div class="col-sm-4">
@@ -54,7 +58,8 @@
                                 <button type="button" id="btnnewperiod" class="btn btn-danger">Agregar periodo</button>
                             </div>
                         </div>
-                    </form>
+                    <?php echo form_close(); ?>
+                    <!--</form>-->
                 </fieldset>
             </div>
         </div>
@@ -74,6 +79,7 @@
             if($.isValid){
                 $('#btnnewperiod').attr('disabled', true).text('Registrando, espere por favor...');
                 $.post('addcal', {
+                    '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
                     id : $.trim($('#id_periodo').val()),
                     desc : $.trim($('#desc_periodo').val())
                 })
