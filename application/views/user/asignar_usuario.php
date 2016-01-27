@@ -43,7 +43,7 @@
                             <label class="col-sm-3 control-label">Usuario</label>
                             <div class="col-sm-6">
                                 <select class="populate placeholder" name="country" id="s_usuarios">
-                                    <option value="">-- Seleccione usuario --</option>
+                                    <option value="subzero">-- Seleccione usuario --</option>
                                     <?php
                                     foreach ($user as $v):
                                         ?>
@@ -59,7 +59,7 @@
                             <label class="col-sm-3 control-label">Perfil</label>
                             <div class="col-sm-5">
                                 <select class="populate placeholder" name="country" id="s_niveles">
-                                    <option value="">-- Seleccione un nivel --</option>
+                                    <option value="subzero">-- Seleccione un nivel --</option>
                                     <option value="1">Administrador</option>
                                     <option value="2">Vicerector</option>
                                     <option value="3">Director de &aacute;rea</option>
@@ -82,7 +82,6 @@
                             <label class="col-sm-3 control-label">Programa</label>
                             <div class="col-sm-5">
                                 <select class="populate placeholder" multiple name="country" id="s_programas">
-                                    <option value="">-- Seleccione programa --</option>
                                 </select>
                             </div>
                         </div>
@@ -185,7 +184,7 @@
                         <label class="col-sm-3 control-label">&Aacute;reas</label>
                         <div class="col-sm-5">
                             <select class="populate placeholder" multiple name="country" id="s_areas">
-                                <option value="0">-- Seleccione --</option>
+                                <option value="zubsero">-- Seleccione --</option>
                             </select>
                         </div>
                     </div>
@@ -226,7 +225,7 @@
                         <label class="col-sm-3 control-label">Facultades</label>
                         <div class="col-sm-5">
                             <select class="populate placeholder" multiple name="country" id="s_facultades">
-                                <option value="0">-- Seleccione --</option>
+                                <option value="zubsero">-- Seleccione --</option>
                             </select>
                         </div>
                     </div>
@@ -267,7 +266,7 @@
                         <label class="col-sm-3 control-label">Facultades</label>
                         <div class="col-sm-5">
                             <select class="populate placeholder" name="country" id="s_facultadesaux">
-                                <option value="0">-- Seleccione --</option>
+                                <option value="zubsero">-- Seleccione --</option>
                             </select>
                         </div>
                     </div>
@@ -276,7 +275,7 @@
                         <label class="col-sm-3 control-label">Carreras</label>
                         <div class="col-sm-5">
                             <select class="populate placeholder" multiple name="country" id="s_carreras">
-                                <option value="0">-- Seleccione --</option>
+                                <option value="zubsero">-- Seleccione --</option>
                             </select>
                         </div>
                     </div>
@@ -317,7 +316,7 @@
                         <label class="col-sm-3 control-label">Cursos</label>
                         <div class="col-sm-8">
                             <select class="populate placeholder" multiple name="country" id="s_cursos">
-                                <option value="0">-- Seleccione --</option>
+                                <option value="zubsero">-- Seleccione --</option>
                             </select>
                         </div>
                     </div>
@@ -333,7 +332,9 @@
     </div>
 </div>
 <script type="text/javascript">
+    var nivel = 0;
     $(document).ready(function () {
+
         $('.hiddenxs').css({
             'display': 'none'
         });
@@ -349,9 +350,13 @@
 
             (item == '1' || item == '2') && $('.adm').css({'display': 'none'});
 
-            $('.hiddenxs, .hiddenxss').not('.' + item).css({
-                'display': 'none'
-            });
+            nivel = item;
+
+            $('.hiddenxs')
+                .not('.' + item)
+                .css({
+                    'display': 'none'
+                });
         });
 
         cargar_select('s_areas', 'users-get_areas');
@@ -417,19 +422,19 @@
                                 dialogRef.close();
                                 $.post('users-save_assignment', {
                                     '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
-                                    'usuario': id_user[0],
-                                    'usern' : id_user[1],
-                                    'niveles': document.getElementById('s_niveles').value,
-                                    'program': $('#s_programas').val(),
-                                    'areas': $('#s_areas').val(),
-                                    'facultad': $('#s_facultades').val(),
-                                    'facultadx': $('#s_facultadesaux').val(),
-                                    'carreras': $('#s_carreras').val(),
-                                    'cursos': $('#s_cursos').val(),
-                                    'ciudad': $('#s_ciudad').val()
+                                    'usuario'   :   id_user[0],
+                                    'usern'     :   id_user[1],
+                                    'niveles'   :   document.getElementById('s_niveles').value,
+                                    'program'   :   $('#s_programas').val(),
+                                    'areas'     :   (nivel == 3) ? $('#s_areas').val() : '',
+                                    'facultad'  :   (nivel == 4) ? $('#s_facultades').val() : '',
+                                    'facultadx' :   (nivel == 5) ? $('#s_facultadesaux').val() : '',
+                                    'carreras'  :   (nivel == 5) ? $('#s_carreras').val() : '',
+                                    'cursos'    :   (nivel == 6) ? $('#s_cursos').val() : '',
+                                    'ciudad'    :   $('#s_ciudad').val()
                                 })
                                 .done(function(e){
-                                    var alert = new BootstrapDialog({
+                                    var alertconfirm = new BootstrapDialog({
                                         title : 'Aviso',
                                         cssClass : 'alert',
                                         message : 'Usuario asignado correctamente',
@@ -437,13 +442,22 @@
                                             {
                                                 label : 'Aceptar',
                                                 cssClass : 'btn-primary',
-                                                action : function(){
-                                                    location.reload();
+                                                action : function(dialogRef){
+                                                    $('select').each(function(){
+                                                        var attribute = $(this).attr('multiple');
+                                                        if(typeof attribute === 'undefined'){
+                                                            $(this).select2('val', 'subzero');
+                                                        } else {
+                                                            $(this).select2('val', null);
+                                                        }
+                                                    });
+                                                    $('.hiddenxs').css({'display': 'none'});
+                                                    dialogRef.close();
                                                 }
                                             }
                                         ]
                                     });
-                                    alert.open();
+                                    alertconfirm.open();
                                 });
                             }
                         },
@@ -483,7 +497,16 @@
                                 label : 'Aceptar',
                                 cssClass : 'btn-primary',
                                 action : function(){
-                                    location.reload();
+                                    $('select').each(function(){
+                                        var attribute = $(this).attr('multiple');
+                                        if(typeof attribute === 'undefined'){
+                                            $(this).select2('val', 'subzero');
+                                        } else {
+                                            $(this).select2('val', null);
+                                        }
+                                    });
+                                    $('.hiddenxs').css({'display': 'none'});
+                                    dialogRef.close();
                                 }
                             }
                         ]

@@ -147,7 +147,8 @@
                                     cssClass : 'btn-primary',
                                     action : function(dialogRef){
                                         dialogRef.close();
-                                        location.reload();
+                                        $('input').val(null);
+                                        $('#usuario').focus();
                                     }
                                 }
                             ]

@@ -114,7 +114,8 @@
                                     label : 'Aceptar',
                                     cssClass : 'btn-primary',
                                     action : function(){
-                                        location.reload();
+                                        $('input').val('');
+                                        $('#id_periodo').focus();
                                     }
                                 }
                             ]
