@@ -496,7 +496,7 @@
                             {
                                 label : 'Aceptar',
                                 cssClass : 'btn-primary',
-                                action : function(){
+                                action : function(dialogRef){
                                     $('select').each(function(){
                                         var attribute = $(this).attr('multiple');
                                         if(typeof attribute === 'undefined'){

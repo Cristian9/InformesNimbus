@@ -154,7 +154,7 @@ class Area_model extends CI_Model {
                 }
                 $sql_herramientas = substr($sql_herramientas, 0, -1);
                 $sql_totales = substr($sql_totales, 0, -1);
-
+                
                 $data_herramientas[$herramienta[$i]] = $this->db->query($sql_herramientas)->result('array');
             }
             $data_herramientas['Totales'] = $this->db->query($sql_totales)->result('array');
