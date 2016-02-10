@@ -248,6 +248,7 @@
                     <th>Cod_docente</th>
                     <th>Apellidos</th>
                     <th>Nombres</th>
+                    <th>Tiempo de conexi&oacute;n</th>
                 </tr>
             </thead>
 
@@ -264,6 +265,7 @@
                     <th>Cod_docente</th>
                     <th>Apellidos</th>
                     <th>Nombres</th>
+                    <th>Tiempo de conexi&oacute;n</th>
                 </tr>
             </tfoot>
         </table>

@@ -138,7 +138,7 @@ function cargar_select(select, url, param) {
     var parameter = param || null;
 
     $('#' + select)
-            .attr('disabled', true);
+        .attr('disabled', true);
 
     parameter !== null && (serialize = (typeof parameter == 'object') ? $.param(parameter) : 'chk=' + parameter);
 
@@ -158,8 +158,8 @@ function cargar_select(select, url, param) {
             }
 
             $('#' + select)
-                    .removeAttr('disabled')
-                    .append(select_data);
+                .removeAttr('disabled')
+                .append(select_data);
         }
     });
 }

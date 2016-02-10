@@ -170,8 +170,8 @@
                             ]
                         });
                         $('#btnnew')
-                                .removeAttr('disabled')
-                                .text('Registrar usuario');
+                            .removeAttr('disabled')
+                            .text('Registrar usuario');
                         alert.open();
                     }
                 });

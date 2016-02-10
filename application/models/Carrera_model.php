@@ -135,20 +135,23 @@ class Carrera_model extends CI_Model {
         $sql = "SELECT category, f.description as facultad, c.description, 
             n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
             if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
-            n.coach, n.lastname, n.firstname";
+            n.coach, n.lastname, n.firstname, SEC_TO_TIME(SUM(TIME_TO_SEC(n.time_conection))) Tiempo";
 
-        $sql_from = " FROM n_report_detail n, n_faculty f, n_programs c "
-                . "where f.id = faculty and c.program_id = program and "
-                . "f.id = c.faculty_id and week "
-                . "between '" . $del . "' and '" . $al . "' "
-                . $sql_ciudad . $sql_carrera . $n_faculty
-                . " and category = '" . $prg
-                . "' GROUP BY section_code";
+        $sql_from = " FROM n_report_detail n, n_faculty f, n_programs c where 
+            f.id = faculty and c.program_id = program and f.id = c.faculty_id 
+            and week between '" . $del . "' and '" . $al . "' " . $sql_ciudad 
+            . $sql_carrera . $n_faculty . " and category = '" . $prg . "' 
+            GROUP BY section_code";
 
         if (!empty($herramienta)) {
             $sql_columns = ", ";
             for ($i = 0; $i < count($herramienta); $i++) {
-                $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
+                if (!stristr($herramienta[$i], 'course_base')) {
+                    $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
+                } else {
+                    $sql_columns .= $herramienta[$i] . " AS " . $herramienta[$i] . ", ";
+                }
+                
             }
 
             $sql_columns = substr($sql_columns, 0, -2);
@@ -236,5 +239,4 @@ class Carrera_model extends CI_Model {
             return $datos_para_graficar;
         }
     }
-
 }
