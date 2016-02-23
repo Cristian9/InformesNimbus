@@ -149,6 +149,9 @@
                                         dialogRef.close();
                                         $('input').val(null);
                                         $('#usuario').focus();
+                                        $('#btnnew')
+                                            .removeAttr('disabled')
+                                            .text('Registrar usuario');
                                     }
                                 }
                             ]

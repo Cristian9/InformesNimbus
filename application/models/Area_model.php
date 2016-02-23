@@ -162,6 +162,7 @@ class Area_model extends CI_Model {
                 
                 $data_herramientas[$herramienta[$i]] = $this->db->query($sql_herramientas)->result('array');
             }
+            
             $data_herramientas['Totales'] = $this->db->query($sql_totales)->result('array');
         }
         return $data_herramientas;

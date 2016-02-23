@@ -113,7 +113,9 @@
                                 {
                                     label : 'Aceptar',
                                     cssClass : 'btn-primary',
-                                    action : function(){
+                                    action : function(dialogRef){
+                                        dialogRef.close();
+                                        $('#btnnewperiod').attr('disabled', false).text('Agregar periodo');
                                         $('input').val('');
                                         $('#id_periodo').focus();
                                     }
