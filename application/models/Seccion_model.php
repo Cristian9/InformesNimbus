@@ -9,9 +9,14 @@ class Seccion_model extends CI_Model {
     }
 
     function getPeriodos($category) {
-        $sql = "SELECT np.period as id, pr.periodo as description 
-            from n_period_category np, n_period pr where 
-            np.period = pr.id and np.category_id = '" . $category . "'";
+        if($category == "") {
+            $sql = "SELECT id, periodo as description from n_period order by id desc";
+        } else {
+            $sql = "SELECT np.period as id, pr.periodo as description 
+                from n_period_category np, n_period pr where 
+                np.period = pr.id and np.category_id = '" . $category . "'";
+        }
+        
 
         return $this->db->query($sql)->result('array');
     }
@@ -75,11 +80,6 @@ class Seccion_model extends CI_Model {
 
         $query = $this->db->query($sql);
         return $query->result();
-    }
-
-    function getPeriodo() {
-        $sql = "SELECT * from n_period order by id desc";
-        return $this->db->query($sql)->result('array');
     }
 
     function get_category() {

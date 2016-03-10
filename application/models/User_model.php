@@ -141,9 +141,15 @@ class User_model extends CI_Model {
         // llenar la tabla para el menu de accesos
         for ($i = $niveles; $i <= $query_menucounter[0]['total']; $i++) {
 
-            if ($niveles == 3)
-                if ($i != 3 && $i != 6)
+            if ($niveles == 3) {
+                if ($i != 3 && $i != 6) {
                     continue;
+                }
+            }
+
+            if($niveles !== 7 && $i == 7){
+                continue;
+            }
 
             $sql_insert_accesos = "INSERT INTO n_permissions(user_id, menu_item_id) 
                 VALUES (" . $usuario . ", " . $i . ")";

@@ -62,9 +62,9 @@ class Area_model extends CI_Model {
                 " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
                 " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
-        $sql_area = ($area != '0') ? " inner join n_course_areas 
-                nc on n.course_code = nc.course_code and nc.area_id = 
-                '".$area."' and nc.period = '" . $periodo . "'" : "";
+        $sql_area = ($area != '0') ? " WHERE n.course_code 
+            IN (SELECT distinct course_code FROM n_course_areas WHERE area_id = 
+            '".$area."' and period = '" . $periodo . "')" : "";
 
         if ($_SESSION['rol'] == 3) {
             if ($area == '0') {
@@ -73,9 +73,9 @@ class Area_model extends CI_Model {
                 }
                 $in = substr($in, 0, -1);
 
-                $sql_area = " inner join n_course_areas 
-                    nc on n.course_code = nc.course_code and nc.area_id in 
-                    (" . $in . ") and nc.period = '" . $periodo . "'";
+                $sql_area = " WHERE n.course_code 
+                    IN (SELECT distinct course_code FROM n_course_areas WHERE area_id IN
+                    (" . $in . ") and period = '" . $periodo . "')";
             }
         }
 
@@ -84,7 +84,7 @@ class Area_model extends CI_Model {
             if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
             n.coach, n.lastname, n.firstname, SEC_TO_TIME(SUM(TIME_TO_SEC(n.time_conection))) Tiempo";
 
-        $sql_from = " FROM n_report_detail n " . $sql_area . " inner join n_faculty 
+        $sql_from = " FROM n_report_detail n inner join n_faculty 
             f on f.id = n.faculty inner join n_programs c on c.program_id = 
             n.program and f.id = c.faculty_id and n.week between '" . $del . 
             "' and '" . $al ."' " . $sql_ciudad . " and n.category = '" . $prg . 
@@ -107,7 +107,7 @@ class Area_model extends CI_Model {
         }
         //echo $sql . $sql_columns . $sql_from;
 
-        $query = $this->db->query($sql . $sql_columns . $sql_from)->result('array');
+        $query = $this->db->query("SELECT * FROM (".$sql . $sql_columns . $sql_from. ") AS n ".$sql_area)->result('array');
 
         for ($e = 0; $e < count($query); $e++) {
             foreach ($query[$e] as $v) {
@@ -162,7 +162,6 @@ class Area_model extends CI_Model {
                 
                 $data_herramientas[$herramienta[$i]] = $this->db->query($sql_herramientas)->result('array');
             }
-            
             $data_herramientas['Totales'] = $this->db->query($sql_totales)->result('array');
         }
         return $data_herramientas;

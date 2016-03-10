@@ -66,10 +66,10 @@ class Carrera_model extends CI_Model {
     function index($id) {
         if ($id == "1") {
             //$chk = " where (fa.id not like 'F%' and fa.id <> 'P2')";
-            $chk = " where fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8')";
+            $chk = " where fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA')";
         } else {
             //$chk = " where (fa.id like 'F%' or fa.id = 'P2')";
-            $chk = " where fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8')";
+            $chk = " where fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA')";
         }
 
         switch ($_SESSION['rol']) {

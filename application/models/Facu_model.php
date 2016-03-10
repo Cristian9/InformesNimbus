@@ -10,21 +10,22 @@ class Facu_model extends CI_Model {
 
     function index($id) {
         if ($id == "1") {
-            $chk = " where fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+            $chk = " fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA') ";
         } else {
-            $chk = " where fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+            $chk = " fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA') ";
         }
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "SELECT fa.id, fa.description from n_faculty fa " . $chk . " order by fa.id";
+                $sql = "SELECT fa.id, fa.description from n_faculty fa where " . $chk . " order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
                     $in .= "'" . $value . "',";
                 }
                 $in = substr($in, 0, -1);
-                $sql = "SELECT * from n_faculty fa where fa.id in (" . $in . ") order by fa.id, fa.description";
+
+                $sql = "SELECT * from n_faculty fa where fa.id in (" . $in . ") and " . $chk . " order by fa.id, fa.description";
                 break;
         }
         $query = $this->db->query($sql);
