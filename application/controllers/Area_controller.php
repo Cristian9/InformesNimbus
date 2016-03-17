@@ -23,16 +23,15 @@ class Area_controller extends CI_Controller {
         echo json_encode($json);
     }
 
-    function getWeeks() {
-        $periodo    = $this->input->get('periodo');
-        $category   = $this->input->get('category');
-        $json->listas = $this->area_model->getWeeks($periodo, $category);
-        echo json_encode($json);
-    }
-
     function getAreas() {
         session_start();
-        $json->listas = $this->area_model->index();
+        $enable = null;
+        
+        if($this->input->post('chk') !== null) {
+            $enable = $this->input->post('chk');
+        }
+
+        $json->listas = $this->area_model->index($enable);
         echo json_encode($json);
     }
 

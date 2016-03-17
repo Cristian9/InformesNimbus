@@ -276,7 +276,7 @@
 <div class="row-fluid" id="d_bar"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#cbo_periodo, #cbo_facultades, #cbo_cat, #input_date, #input_date2').select2();
+        $('select').select2();
 
         var ciudad_select;
         $('input:radio[name=radio-inline]').each(function () {
@@ -297,31 +297,7 @@
         });
 
         $('#cbo_periodo').change(function () {
-            var periodo = $(this).val();
-            var category = $('#cbo_cat').val();
-            var option = "";
-            $('#input_date, #input_date2')
-                .attr('disabled', true);
-
-            $.getJSON('area-getWeeks', {
-                periodo: periodo,
-                category: category
-            })
-            .done(function (data) {
-                var json = data;
-                for (var i = 0; i < json.listas[0]['weeks']; i++) {
-                    option += "<option ";
-                    option += "value='" + (i + 1) + "'>";
-                    option += "Semana " + (i + 1);
-                    option += "</option>";
-                }
-                $('#input_date, #input_date2')
-                    .removeAttr('disabled')
-                    .select2('val', 0)
-                    .html(null)
-                    .append("<option value='0'>.::: Seleccione :::.</option>")
-                    .append(option);
-            });
+            getWeeks();
         });
 
         $('input:radio[name=radio-inline]').each(function () {

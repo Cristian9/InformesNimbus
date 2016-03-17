@@ -21,13 +21,6 @@ class Seccion_model extends CI_Model {
         return $this->db->query($sql)->result('array');
     }
 
-    function getWeeks($periodo, $category) {
-        $sql = "SELECT weeks from n_period_category where 
-            period = '" . $periodo . "' and category_id = '" . $category . "'";
-
-        return $this->db->query($sql)->result('array');
-    }
-
     function index($fid, $id) {
         if ($fid == "1") {
             $chk = " and faculty not in ('F3', 'F4', 'F5', "

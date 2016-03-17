@@ -16,13 +16,6 @@ class Curso_model extends CI_Model {
         return $this->db->query($sql)->result('array');
     }
 
-    function getWeeks($periodo, $category) {
-        $sql = "SELECT weeks from n_period_category where 
-            period = '" . $periodo . "' and category_id = '" . $category . "'";
-            
-        return $this->db->query($sql)->result('array');
-    }
-
     function index($curso_id) {
         $periodo = substr($curso_id, 1, 3);
         switch ($_SESSION['rol']) {

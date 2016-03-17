@@ -7,6 +7,7 @@ ini_set( 'session.use_trans_sid', FALSE );
 class Main_controller extends CI_Controller {
 
     public function __construct() {
+        error_reporting(0);
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('main_model');
@@ -17,8 +18,35 @@ class Main_controller extends CI_Controller {
         redirect('login');
     }
 
-    function excel() {
-        $this->load->view('algo');
+    function habilitar(){
+        $type = $this->input->post('type');
+        $action = $this->input->post('action');
+        $ids = $this->input->post('ids');
+
+        $update = $this->main_model->habilitar($type, $action, $ids);
+
+        echo $update;
+    }
+
+    function areas_facultades(){
+        $this->load->view('main/enable_disable');
+    }
+
+    function getFacultades(){
+        $enable = null;
+        if ($this->input->post('chk') !== null) {
+            $enable = $this->input->post('chk');
+        }
+
+        $json->listas = $this->main_model->getFacultades($enable);
+        echo json_encode($json);
+    }
+
+    function getWeeks() {
+        $periodo    = $this->input->get('periodo');
+        $category   = $this->input->get('category');
+        $json->listas = $this->main_model->getWeeks($periodo, $category);
+        echo json_encode($json);
     }
 
     function auth() {

@@ -46,12 +46,12 @@ class User_model extends CI_Model {
     }
 
     function get_areas() {
-        $sql = "SELECT * from n_areas order by id, description";
+        $sql = "SELECT * from n_areas WHERE active = 1 order by id, description";
         return $query = $this->db->query($sql)->result();
     }
 
     function get_facultades() {
-        $sql = "SELECT * from n_faculty order by id, description";
+        $sql = "SELECT * from n_faculty WHERE active = 1 order by id, description";
         return $query = $this->db->query($sql)->result();
     }
 

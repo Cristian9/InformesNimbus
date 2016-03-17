@@ -36,13 +36,6 @@ class Carrera_model extends CI_Model {
         return $this->db->query($sql)->result('array');
     }
 
-    function getWeeks($periodo, $category) {
-        $sql = "SELECT weeks from n_period_category where 
-            period = '" . $periodo . "' and category_id = '" . $category . "'";
-
-        return $this->db->query($sql)->result('array');
-    }
-
     function get_category() {
         $by_category = "";
         $sql_filtro = "";

@@ -23,13 +23,6 @@ class Seccion_controller extends CI_Controller {
         echo json_encode($json);
     }
 
-    function getWeeks() {
-        $periodo = $this->input->get('periodo');
-        $category = $this->input->get('category');
-        $json->listas = $this->seccion_model->getWeeks($periodo, $category);
-        echo json_encode($json);
-    }
-
     function getSecciones() {
         session_start();
         $fid = $this->input->post('chk');

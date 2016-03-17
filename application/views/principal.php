@@ -102,6 +102,8 @@
                                 <span class="hidden-xs">Administraci&oacute;n</span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="ajax-link" href="users-newperiod">Fechas de inicio</a></li>
+                                <li><a class="ajax-link" href="configuracion">Habilitar areas y facultades</a></li>
                                 <li><a class="ajax-link" href="users-newperiod">Nuevo periodo</a></li>
                                 <li><a class="ajax-link" href="users-newuser">Nuevo Usuario</a></li>
                                 <li><a class="ajax-link" href="asignar">Asignar perfil de usuario</a></li>

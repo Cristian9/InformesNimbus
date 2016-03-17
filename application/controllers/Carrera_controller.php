@@ -23,13 +23,6 @@ class Carrera_controller extends CI_Controller {
         echo json_encode($json);
     }
 
-    function getWeeks() {
-        $periodo = $this->input->get('periodo');
-        $category = $this->input->get('category');
-        $json->listas = $this->carrera_model->getWeeks($periodo, $category);
-        echo json_encode($json);
-    }
-
     function getFacultades() {
         session_start();
         $fid = $this->input->post('chk');

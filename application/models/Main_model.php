@@ -19,6 +19,30 @@ class Main_model extends CI_Model {
         return $datos;
     }
 
+    function habilitar($type, $action, $ids){
+        $sql = "UPDATE n_" . $type . " set active = " . $action . " WHERE id in (";
+        foreach ($ids as $value) {
+            $sql .= "'" . $value . "', ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ")";
+        
+        return $this->db->query($sql);
+    }
+
+    function getFacultades($enable) {
+        $sql = "SELECT id, description FROM n_faculty WHERE active = ".$enable;
+
+        return $this->db->query($sql)->result('array');
+    }
+
+    function getWeeks($periodo, $category) {
+        $sql = "SELECT weeks from n_period_category where 
+            period = '" . $periodo . "' AND category_id = '" . $category . "'";
+
+        return $this->db->query($sql)->result('array');
+    }
+
     function get_profile($userid) {
         $sql_profile = "SELECT u.id, CONCAT(u.lastname, ', ', u.firstname) 
             nombre, pr.rol,  pr.area_id, pr.faculty_id, pr.program_id, pr.course_id 

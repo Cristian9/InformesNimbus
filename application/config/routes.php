@@ -11,6 +11,9 @@ $route['auth']                  = 	"main_controller/auth";
 $route['main-menu']             = 	"main_controller/menu_principal";
 $route['excel']                 = 	"main_controller/excel";
 $route['addcal']                =   "main_controller/add_period";
+$route['getweek']               =   "main_controller/getWeeks";
+$route['configuracion']			=	"main_controller/areas_facultades";
+$route['main-(:any)']			=	"main_controller/$1";
 
 #Users
 $route['users']                 = 	"user_controller/index";

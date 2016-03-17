@@ -289,7 +289,7 @@
     }
 
     $(document).ready(function () {
-        $('#cbo_periodo, #cbo_cat, #cbo_secciones, #input_date, #input_date2').select2();
+        $('select').select2();
 
         $('#cbo_cat').change(function () {
             var category = $(this).val();
@@ -335,32 +335,7 @@
                 cargar_select_seccion(chk);
             }
 
-            var periodo = $(this).val();
-            var category = $('#cbo_cat').val();
-            var option = "";
-            $('#input_date, #input_date2')
-                .attr('disabled', true)
-                .append("<option value='0'>Cargando....</option>");
-
-            $.getJSON('area-getWeeks', {
-                periodo: periodo,
-                category: category
-            })
-            .done(function (data) {
-                var json = data;
-                for (var i = 0; i < json.listas[0]['weeks']; i++) {
-                    option += "<option ";
-                    option += "value='" + (i + 1) + "'>";
-                    option += "Semana " + (i + 1);
-                    option += "</option>";
-                }
-                $('#input_date, #input_date2')
-                    .removeAttr('disabled')
-                    .select2('val', 0)
-                    .html(null)
-                    .append("<option value='0'>.::: Seleccione :::.</option>")
-                    .append(option);
-            });
+            getWeeks();
         });
 
         var chk = "";

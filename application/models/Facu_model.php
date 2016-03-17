@@ -17,7 +17,7 @@ class Facu_model extends CI_Model {
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "SELECT fa.id, fa.description from n_faculty fa where " . $chk . " order by fa.id";
+                $sql = "SELECT fa.id, fa.description from n_faculty fa where {$chk} and active = 1 order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
@@ -37,13 +37,6 @@ class Facu_model extends CI_Model {
             from n_period_category np, n_period pr where 
             np.period = pr.id and np.category_id = '" . $category . "'";
 
-        return $this->db->query($sql)->result('array');
-    }
-
-    function getWeeks($periodo, $category) {
-        $sql = "SELECT weeks from n_period_category where 
-            period = '" . $periodo . "' and category_id = '" . $category . "'";
-            
         return $this->db->query($sql)->result('array');
     }
 
@@ -156,13 +149,13 @@ class Facu_model extends CI_Model {
                         where course_title not in ('INGLES I', 'INGLES II', 'INGLES III') and 
                         category = '" . $programa . "' and faculty = '" . $value['faculty'] . "' 
                         and week between '" . $desde . "' and '" . $hasta . "' 
-                        GROUP BY faculty) as '" . substr($value['description'], 0, 10) . "',";
+                        GROUP BY faculty) as '" . $value['description'] . "',";
 
                     $sql_herramientas .= "(SELECT count(distinct(section_code)) from n_report_detail 
                         where " . $herramienta[$i] . " <> 0 and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') 
                         and faculty = '" . $value['faculty'] . "' and category = '" . $programa . "' and week 
                         between '" . $desde . "' and '" . $hasta . "' group by faculty) as '" . 
-                        substr($value['description'], 0, 10) . "',";
+                        $value['description'] . "',";
                 }
 
                 $sql_herramientas = substr($sql_herramientas, 0, -1);

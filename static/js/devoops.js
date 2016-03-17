@@ -24,6 +24,35 @@ var herramientas = {
     'course_progress'   : 'prog. Didáctica'
 };
 
+function getWeeks(){
+    var periodo = $('#cbo_periodo').val();
+    var category = $('#cbo_cat').val();
+    var option = "";
+    
+    $('#input_date, #input_date2')
+        .attr('disabled', true);
+
+    $.getJSON('getweek', {
+        periodo: periodo,
+        category: category
+    })
+    .done(function (data) {
+        var json = data;
+        for (var i = 0; i < json.listas[0]['weeks']; i++) {
+            option += "<option ";
+            option += "value='" + (i) + "'>";
+            option += "Semana " + (i);
+            option += "</option>";
+        }
+        $('#input_date, #input_date2')
+            .removeAttr('disabled')
+            .select2('val', 0)
+            .html(null)
+            .append("<option value='0'>.::: Seleccione :::.</option>")
+            .append(option);
+    });
+}
+
 function graficar(url, params) {
     $('#d_bar').html('Graficando.....');
     var csrf = $.cookie('nbscookie');

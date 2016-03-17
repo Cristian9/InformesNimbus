@@ -22,14 +22,7 @@ class Curso_controller extends CI_Controller {
         $json->listas = $this->curso_model->getPeriodos($category);
         echo json_encode($json);
     }
-
-    function getWeeks() {
-        $periodo = $this->input->get('periodo');
-        $category = $this->input->get('category');
-        $json->listas = $this->curso_model->getWeeks($periodo, $category);
-        echo json_encode($json);
-    }
-
+    
     function getCursos($curso_id) {
         session_start();
         $curso_id = $this->input->post('category');

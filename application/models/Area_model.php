@@ -8,9 +8,16 @@ class Area_model extends CI_Model {
         parent::__construct();
     }
 
-    function index() {
+    function index($enable) {
         if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
-            $sql = "SELECT id, description FROM n_areas ORDER BY id";
+
+            $sql_active = " WHERE active = 1";
+
+            if ($enable !== null) {
+                $sql_active = " WHERE active = " . $enable;
+            }
+
+            $sql = "SELECT id, description FROM n_areas " . $sql_active . " ORDER BY id";
         } else {
             $sql = "SELECT ar.id, ar.description from n_areas ar, n_assignment a, 
             n_users u where ar.id = a.area_id and a.user_id = u.id and u.username = '" . $_SESSION['usuario'] . "'";
@@ -25,13 +32,6 @@ class Area_model extends CI_Model {
             from n_period_category np, n_period pr where 
             np.period = pr.id and np.category_id = '" . $category . "'";
             
-        return $this->db->query($sql)->result('array');
-    }
-
-    function getWeeks($periodo, $category) {
-        $sql = "SELECT weeks from n_period_category where 
-            period = '" . $periodo . "' AND category_id = '" . $category . "'";
-
         return $this->db->query($sql)->result('array');
     }
 

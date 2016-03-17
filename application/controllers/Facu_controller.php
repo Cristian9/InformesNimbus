@@ -23,13 +23,6 @@ class Facu_controller extends CI_Controller {
         echo json_encode($json);
     }
 
-    function getWeeks() {
-        $periodo = $this->input->get('periodo');
-        $category = $this->input->get('category');
-        $json->listas = $this->facu_model->getWeeks($periodo, $category);
-        echo json_encode($json);
-    }
-
     function getFacultad() {
         session_start();
         $fid = $this->input->post('chk');
