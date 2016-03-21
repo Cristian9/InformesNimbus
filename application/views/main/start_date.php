@@ -232,9 +232,9 @@
 
                             $.post('main-updfechas', {
                                 '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
-                                start_edit : start_edit,
-                                end_edit : end_edit,
-                                idcategory : idcategory
+                                start_edit  : start_edit,
+                                end_edit    : end_edit,
+                                idcategory  : idcategory
                             })
                             .done(function(response){
                                 if(response){

@@ -86,7 +86,7 @@ class Facu_model extends CI_Model {
 
         $sql_from = " from n_report_detail n, n_faculty f, n_programs c 
             where f.id = faculty and c.program_id = program and f.id = 
-            c.faculty_id and week between '" . $del . "' and '" . $al . "' 
+            c.faculty_id and f.active = 1 and week between '" . $del . "' and '" . $al . "' 
             and course_title not in ('INGLES I', 'INGLES II', 'INGLES III') " 
             . $sql_ciudad . $sql_facu . " and category = '" . $prg . "' 
             GROUP BY section_code";
@@ -133,7 +133,8 @@ class Facu_model extends CI_Model {
         }
 
         $query_facultades = "SELECT faculty, f.description from n_faculty f, n_report_detail 
-            where f.id = faculty and category = '" . $programa . "' " . $where_facultad . " group by faculty";
+            where f.id = faculty and f.active = 1 and category = '" . $programa . "' " . 
+            $where_facultad . " group by faculty";
 
         $sql_facultades = $this->db->query($query_facultades)->result('array');
 

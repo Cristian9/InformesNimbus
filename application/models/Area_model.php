@@ -62,9 +62,15 @@ class Area_model extends CI_Model {
                 " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
                 " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
-        $sql_area = ($area != '0') ? " WHERE n.course_code 
-            IN (SELECT distinct course_code FROM n_course_areas WHERE area_id = 
-            '".$area."' and period = '" . $periodo . "')" : "";
+        $sql_area = " WHERE n.course_code IN (SELECT DISTINCT course_code 
+            FROM n_course_areas, n_areas a  WHERE n_course_areas.area_id = 
+            a.id and a.active=1 AND period = '{$periodo}')";
+
+        if ($area != '0'){
+            $sql_area = " WHERE n.course_code IN (SELECT distinct course_code 
+                FROM n_course_areas WHERE area_id = '".$area."' 
+                and period = '" . $periodo . "')";
+        }
 
         if ($_SESSION['rol'] == 3) {
             if ($area == '0') {
@@ -123,7 +129,11 @@ class Area_model extends CI_Model {
                 " n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
                 " n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
 
-        $where_area = ($area == '0') ? "" : " where id = '" . $area . "'";
+        $where_area = " where active = 1";
+
+        if($area != '0') {
+            $where_area = " where id = '" . $area . "'";
+        }
 
         if ($_SESSION['rol'] == 3) {
             if ($area == '0') {
