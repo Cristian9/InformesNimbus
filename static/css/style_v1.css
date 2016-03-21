@@ -18,6 +18,12 @@ body {
   z-index: 3000 !important;
 }
 
+.modal_page{
+  top:10%;
+  z-index: 3000 !important;
+  height: 750px !important;
+}
+
 .modal-backdrop {
   z-index: 3000 !important;
 }

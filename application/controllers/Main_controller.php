@@ -22,14 +22,53 @@ class Main_controller extends CI_Controller {
         $type = $this->input->post('type');
         $action = $this->input->post('action');
         $ids = $this->input->post('ids');
+        if(!empty($ids)) {
+            $update = $this->main_model->habilitar($type, $action, $ids);
 
-        $update = $this->main_model->habilitar($type, $action, $ids);
+            echo $update;
+        }
+    }
 
-        echo $update;
+    function edit(){
+        $params['idcategory']   = $this->input->post('idcategory');
+        $params['programaid']   = $this->input->post('programaid');
+        $params['fechainicio']  = $this->input->post('fechainicio');
+        $params['fechafin']     = $this->input->post('fechafin');
+
+        $this->load->view('main/edit_date_category', $params);
+    }
+
+    function addfechainicio(){
+        $programa   = $this->input->post('programa');
+        $idprograma = $this->input->post('idprograma');
+        $periodo    = $this->input->post('periodo');
+        $fec_inicio = $this->input->post('fec_inicio');
+        $fec_final  = $this->input->post('fec_final');
+
+        $add = $this->main_model->addfechainicio($programa, $idprograma, $periodo, $fec_inicio, $fec_final);
+
+        echo $add;
+    }
+
+    function updfechas(){
+        $start_date = $this->input->post('start_edit');
+        $end_date = $this->input->post('end_edit');
+        $idcategory = base64_decode($this->input->post('idcategory'));
+
+        $upd = $this->main_model->updfechas($idcategory, $start_date, $end_date);
+
+        echo $upd;
     }
 
     function areas_facultades(){
         $this->load->view('main/enable_disable');
+    }
+
+    function start_date(){
+        $data['periodcate'] = $this->main_model->getPeriodCategory();
+        $data['programs'] = $this->main_model->getPrograms();
+        $data['periodos'] = $this->main_model->getPeriodos();
+        $this->load->view('main/start_date', $data);
     }
 
     function getFacultades(){

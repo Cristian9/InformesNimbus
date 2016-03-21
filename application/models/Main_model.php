@@ -19,6 +19,26 @@ class Main_model extends CI_Model {
         return $datos;
     }
 
+    function addfechainicio($programa, $idprograma, $periodo, $fec_inicio, $fec_final){
+        $id = $idprograma.$periodo;
+        $category = $idprograma.$periodo.$programa;
+
+        $sql = "INSERT INTO n_period_category 
+            VALUES ('".$id."','".$idprograma."','".
+                $periodo."','".$category."','".$fec_inicio.
+                "','".$fec_final."', round(datediff('{$fec_final}', '{$fec_inicio}') / 7))";
+        return $this->db->query($sql);
+    }
+
+    function updfechas($idcategory, $start_date, $end_date){
+        $sql = "UPDATE n_period_category SET start_date = 
+            '{$start_date}', end_date = '{$end_date}', 
+            weeks = round(datediff('{$end_date}', '$start_date') / 7) 
+            WHERE id = '{$idcategory}'";
+    
+        return $this->db->query($sql);
+    }
+
     function habilitar($type, $action, $ids){
         $sql = "UPDATE n_" . $type . " set active = " . $action . " WHERE id in (";
         foreach ($ids as $value) {
@@ -28,6 +48,25 @@ class Main_model extends CI_Model {
         $sql .= ")";
         
         return $this->db->query($sql);
+    }
+
+    function getPeriodos($category) {
+        $sql = "SELECT * FROM n_period";
+            
+        return $this->db->query($sql)->result();
+    }
+
+    function getPrograms(){
+        $sql = "SELECT * FROM n_category";
+        return $this->db->query($sql)->result();
+    }
+
+    function getPeriodCategory(){
+        $sql = "SELECT id, category_id, period, category, 
+            start_date, end_date, weeks FROM n_period_category";
+
+        return $this->db->query($sql)->result();
+
     }
 
     function getFacultades($enable) {
