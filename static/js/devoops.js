@@ -46,9 +46,9 @@ function getWeeks(){
         }
         $('#input_date, #input_date2')
             .removeAttr('disabled')
-            .select2('val', 0)
+            .select2('val', -1)
             .html(null)
-            .append("<option value='0'>.::: Seleccione :::.</option>")
+            .append("<option value='-1'>.::: Seleccione :::.</option>")
             .append(option);
     });
 }

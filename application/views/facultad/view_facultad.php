@@ -202,13 +202,13 @@
             <div class="form-group has-feedback">
                 <div class="col-sm-2"><label>Desde *</label>
                     <select class="populate placeholder" id="input_date">
-                        <option value="0">.:::Seleccione:::.</option>
+                        <option value="-1">.:::Seleccione:::.</option>
                     </select>
                 </div>
 
                 <div class="col-sm-2"><label>Hasta *</label>
                     <select class="populate placeholder" id="input_date2">
-                        <option value="0">.:::Seleccione:::.</option>
+                        <option value="-1">.:::Seleccione:::.</option>
                     </select>
                 </div>
                 <div class="col-sm-offset-1 col-sm-2">
@@ -312,12 +312,17 @@
         });
 
         $('#btn_gr').click(function () {
-            $('#cbo_periodo, #cbo_cat, #input_date, #input_date2').validate({
+            $('#cbo_periodo, #cbo_cat').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
                 }
             });
+            
+            if($('#input_date').val() == -1 || $('#input_date2').val() == -1){
+                alert('Indicar el rango de semanas que desea consultar');
+                return false;
+            }
 
             if ($.isValid) {
                 var ciudad = [];
@@ -362,12 +367,17 @@
         });
         $('#btn_send').click(function () {
             $('#d_bar').html(null);
-            $('#cbo_periodo, #cbo_cat, #input_date, #input_date2').validate({
+            $('#cbo_periodo, #cbo_cat').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
                 }
             });
+            
+            if($('#input_date').val() == -1 || $('#input_date2').val() == -1){
+                alert('Indicar el rango de semanas que desea consultar');
+                return false;
+            }
             if ($.isValid) {
                 var tables = $.fn.dataTable.fnTables(true);
                 $(tables).each(function () {
