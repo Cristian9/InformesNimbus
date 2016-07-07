@@ -11,7 +11,7 @@ class User_controller extends CI_Controller {
         $this->load->model('user_model');
     }
 
-    function index() {
+    function getList() {
         $data = $this->user_model->index();
         $user_assignment = array();
         
@@ -71,9 +71,12 @@ class User_controller extends CI_Controller {
 
         }
 
-        $datos['user'] = $user_assignment;
+        $datos->data = $user_assignment;
+        echo json_encode($datos);
+    }
 
-        $this->load->view('user/view_user', $datos);
+    function index() {
+        $this->load->view('user/view_user');
     }
 
     function newperiod() {
@@ -181,13 +184,39 @@ class User_controller extends CI_Controller {
         $uid = base64_decode($_GET['uid']);
         $uname = base64_decode($_GET['uname']);
         $role = base64_decode($_GET['role']);
-        $delete_assignment = $this->user_model->delete($uid, $uname, $role);
+        $type = $_GET['type'];
+
+        $delete_assignment = $this->user_model->delete($uid, $uname, $role, $type);
 
         if ($delete_assignment) {
             redirect('main-menu#users');
         } else {
             die('Error');
         }
+    }
+
+    function edit() {
+        $userId = $this->user_model->getUserByUname($this->input->post('uname'));
+
+        $params['uname'] = $this->input->post('uname');
+        $params['token'] = $this->input->post('nbstoken');
+        $params['fname'] = $this->input->post('fname');
+        $params['lname'] = $this->input->post('lname');
+        $params['email'] = $this->input->post('email');
+        $params['uid']   = $userId[0]['id'];
+
+        $this->load->view('user/edit_usuario', $params);
+    }
+
+    function upduser() {
+        $uname = $this->input->post('uname');
+        $fname = $this->input->post('fname');
+        $lname = $this->input->post('lname');
+        $email = $this->input->post('email');
+        $uid   = $this->input->post('uid');
+        
+        $upd = $this->user_model->edit($uname, $fname, $lname, $email, $uid);
+        echo $upd;
     }
 
 }

@@ -14,31 +14,24 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
-        <div class="col-sm-3">
+        <div class="col-sm-3"><label>Sede *</label>
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="1" checked> Lima
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="2"> Chiclayo
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
+                <select class="populate placeholder" id="cbo_sede">
+                    <option value="0">.:::Seleccione:::.</option>
+                    <option value="1">Lima Centro</option>
+                    <option value="3">Lima Norte</option>
+                    <option value="2">Chiclayo</option>
+                    <option value="4">Arequipa</option>
+                </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                echo "<select class='populate placeholder' id='cbo_sede'>";
+                echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {
-                    echo "<div class='radio-inline'>";
-                    echo "<label>";
-                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
-                    echo "<i class='fa fa-circle-o'></i>";
-                    echo "</label>";
-                    echo "</div>";
+                    echo "<option value='" . $value['city_id'] . "'>" . $name_ciudad[$value['city_id']] . "</option>";
                 }
+                echo "</select>";
             }
             ?>
         </div>
@@ -272,7 +265,7 @@
         });
 
         $('#cbo_periodo').change(function () {
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -294,9 +287,10 @@
 
             getWeeks();
         });
+
         $('#btn_send').click(function () {
 
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -323,9 +317,7 @@
                 });
 
                 var check = [];
-                var ciudad = [];
                 var icheck = 0;
-                var iciudad = 0;
 
                 var e = document.getElementById('cbo_cat');
                 var category_code = e.value + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
@@ -344,20 +336,13 @@
                     }
                 });
 
-                $('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        ciudad[iciudad] = $(this).val();
-                        iciudad++;
-                    }
-                });
-
                 var curso = $('#cbo_cursos').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
                 var csrf = $.cookie('nbscookie');
+                var sede = $('#cbo_sede').val();
 
                 $('#datatable_area').removeClass('hidden').dataTable({
-                    'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
                         "infoEmpty": "Sin registros que mostrar",
@@ -377,11 +362,15 @@
                             'categoria': category_code,
                             'check': check,
                             'curso': curso,
-                            'ciudad' : ciudad,
+                            'ciudad' : sede,
                             'f1': f1,
                             'f2': f2
                         }
                     }
+                });
+                $('#datatable_area').wrap("<div class='double' style='width:100%'></div>");
+                $('.double').doubleScroll({
+                    resetOnWindowResize : true
                 });
             }
         });

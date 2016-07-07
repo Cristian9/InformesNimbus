@@ -14,31 +14,24 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
-        <div class="col-sm-4">
+        <div class="col-sm-3"><label>Sede *</label>
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="1" checked> Lima
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="2"> Chiclayo
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
+                <select class="populate placeholder" id="cbo_sede">
+                    <option value="0">.:::Seleccione:::.</option>
+                    <option value="1">Lima Centro</option>
+                    <option value="3">Lima Norte</option>
+                    <option value="2">Chiclayo</option>
+                    <option value="4">Arequipa</option>
+                </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                echo "<select class='populate placeholder' id='cbo_sede'>";
+                echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {
-                    echo "<div class='radio-inline'>";
-                    echo "<label>";
-                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
-                    echo "<i class='fa fa-circle-o'></i>";
-                    echo "</label>";
-                    echo "</div>";
+                    echo "<option value='" . $value['city_id'] . "'>" . $name_ciudad[$value['city_id']] . "</option>";
                 }
+                echo "</select>";
             }
             ?>
         </div>
@@ -291,7 +284,7 @@
         });
 
         $('#btn_gr').click(function () {
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -303,16 +296,8 @@
                 return false;
             }
             if ($.isValid) {
-                var radio = [];
                 var check = [];
                 var icheck = 0;
-                var iradio = 0;
-                $('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        radio[iradio] = $(this).val();
-                        iradio++;
-                    }
-                });
 
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
@@ -322,17 +307,14 @@
                     }
                 });
 
-                if (radio == "") {
-                    radio[iradio] = $('#city').val();
-                }
-
                 var e = document.getElementById('cbo_cat');
                 var prg = $('#cbo_cat').val() + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
                 var areas = $('#cbo_areas').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var sede = $('#cbo_sede').val();
                 var params = {
-                    'ciudad': radio,
+                    'ciudad': sede,
                     'programa': prg,
                     'area': areas,
                     'desde': f1,
@@ -342,9 +324,10 @@
                 graficar('area-graficar', params);
             }
         });
+
         $('#btn_send').click(function () {
             $('#d_bar').html(null);
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -355,28 +338,23 @@
                 alert('Indicar el rango de semanas que desea consultar');
                 return false;
             }
+
             if ($.isValid) {
                 var tables = $.fn.dataTable.fnTables(true);
                 $(tables).each(function () {
                     $(this).dataTable().fnClearTable();
                     $(this).dataTable().fnDestroy();
                 });
+
                 $('input:checkbox').each(function () {
                     $('#thead').find("#" + $(this).val() + "_head").remove();
                     $('#tfoot').find("#" + $(this).val() + "_foot").remove();
                     $('#thead').find("#" + $(this).val() + "_headbase").remove();
                     $('#tfoot').find("#" + $(this).val() + "_footbase").remove();
                 });
-                var radio = [];
+
                 var check = [];
                 var icheck = 0;
-                var iradio = 0;
-                $('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        radio[iradio] = $(this).val();
-                        iradio++;
-                    }
-                });
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
@@ -391,19 +369,15 @@
                     }
                 });
 
-                if (radio == "") {
-                    radio[iradio] = $('#city').val();
-                }
-
                 var e = document.getElementById('cbo_cat');
                 var prg = $('#cbo_cat').val() + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
                 var cbo = $('#cbo_areas').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var sede = $('#cbo_sede').val();
                 var csrf = $.cookie('nbscookie');
 
                 $('#datatable_area').removeClass('hidden').dataTable({
-                    'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
                         "infoEmpty": "Sin registros que mostrar",
@@ -420,7 +394,7 @@
                         'dataType': 'json',
                         'data': {
                             'nbstoken' : csrf,
-                            'ciudad': radio,
+                            'ciudad': sede,
                             'prg': prg,
                             'herramienta': check,
                             'areas': cbo,
@@ -428,6 +402,10 @@
                             'f2': f2
                         }
                     }
+                });
+                $('#datatable_area').wrap("<div class='double' style='width:100%'></div>");
+                $('.double').doubleScroll({
+                    resetOnWindowResize : true
                 });
             }
         });

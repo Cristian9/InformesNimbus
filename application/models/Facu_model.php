@@ -9,11 +9,8 @@ class Facu_model extends CI_Model {
     }
 
     function index($id) {
-        if ($id == "1") {
-            $chk = " fa.id not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA') ";
-        } else {
-            $chk = " fa.id in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8', 'FA') ";
-        }
+        $chk = " fa.sede = '{$id}'";
+
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
@@ -62,9 +59,8 @@ class Facu_model extends CI_Model {
 
     function listar($ciudad, $prg, $facu, $herramienta, $del, $al) {
         $estadisticas = array();
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
-                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+
+        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
 
         $sql_facu = ($facu != '0') ? " and faculty in ('" . $facu . "') " : "";
@@ -94,11 +90,7 @@ class Facu_model extends CI_Model {
         if (!empty($herramienta)) {
             $sql_columns = ", ";
             for ($i = 0; $i < count($herramienta); $i++) {
-                if (!stristr($herramienta[$i], 'course_base')) {
-                    $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
-                } else {
-                    $sql_columns .= $herramienta[$i] . " AS " . $herramienta[$i] . ", ";
-                }
+                $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
             }
 
             $sql_columns = substr($sql_columns, 0, -2);
@@ -116,9 +108,8 @@ class Facu_model extends CI_Model {
     }
 
     function data_graficar($ciudad, $herramienta, $programa, $facultad, $desde, $hasta) {
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
-                " and faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+
+        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
         $where_facultad = ($facultad != '0') ? " and faculty = '" . $facultad . "' " : $sql_ciudad;
 
@@ -133,7 +124,7 @@ class Facu_model extends CI_Model {
         }
 
         $query_facultades = "SELECT faculty, f.description from n_faculty f, n_report_detail 
-            where f.id = faculty and f.active = 1 and category = '" . $programa . "' " . 
+            where f.id = faculty and f.sede = {$ciudad} and f.active = 1 and category = '" . $programa . "' " . 
             $where_facultad . " group by faculty";
 
         $sql_facultades = $this->db->query($query_facultades)->result('array');

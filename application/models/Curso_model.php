@@ -98,9 +98,7 @@ class Curso_model extends CI_Model {
 
         $sql_rol = "";
 
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
-                " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+        $sql_ciudad = " and n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
         switch ($_SESSION['rol']) {
             case 3:
@@ -157,11 +155,7 @@ class Curso_model extends CI_Model {
         if (!empty($herramienta)) {
             $sql_columns = ", ";
             for ($i = 0; $i < count($herramienta); $i++) {
-                if (!stristr($herramienta[$i], 'course_base')) {
-                    $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
-                } else {
-                    $sql_columns .= $herramienta[$i] . " AS " . $herramienta[$i] . ", ";
-                }
+                $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
             }
 
             $sql_columns = substr($sql_columns, 0, -2);

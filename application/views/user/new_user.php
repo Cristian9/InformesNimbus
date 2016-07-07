@@ -108,7 +108,7 @@
         btn_newuser.addEventListener("click", function () {
             $('#correo').validate({
                 required: true,
-                regexp: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/,
+                regexp: /^[_a-z0-9A-Z]+(\.[_a-z0-9A-Z]+)*@[a-z0-9]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/,
                 message: {
                     required: 'Requerido',
                     regexp: 'Formato incorrecto'

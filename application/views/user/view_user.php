@@ -18,62 +18,25 @@
         <table class="display table-striped table-heading nowrap" cellspacing="0" width="100%" id="view-users">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Usuario</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Email</th>
                     <th>Perfil</th>
-                    <th>Area</th>
-                    <th>Facultad</th>
-                    <th>Escuela</th>
-                    <th>Curso</th>
-                    <th>Ciudad</th>
-                    <th>Programa</th>
-                    <th>Eliminar</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Start: list_row -->
-                <?php
-                    foreach($user as $value){
-                ?>
-                <tr>
-                    <td><?php echo $value['username']; ?></td>
-                    <td><img class="img-rounded" src="<?php echo base_url()?>static/images/avatar.jpg" alt="">&nbsp;&nbsp;<?php echo $value['firstname']; ?></td>
-                    <td><?php echo $value['lastname']; ?></td>
-                    <td><?php echo $value['email']; ?></td>
-                    <td><?php echo $value['perfil']; ?></td>
-                    <td><?php echo $value['area']; ?></td>
-                    <td><?php echo $value['facultad']; ?></td>
-                    <td><?php echo $value['escuela']; ?></td>
-                    <td><?php echo $value['curso']; ?></td>
-                    <td><?php echo $value['ciudad']; ?></td>
-                    <td><?php echo $value['programa']; ?></td>
-                    <td align="center" >
-                        <a class="delete" href="users-delete?uid=<?php echo base64_encode($value['id']) ?>&uname=<?php echo base64_encode($value['username']) ?>&role=<?php echo base64_encode($value['perfil']) ?>" title="Eliminar asignacion" class="del_assign">
-                            <i class="fa fa-chain-broken fa-2x"></i>
-                        </a>
-                    </td>
-                </tr>
-                <?php
-                    }
-                ?>
-                <!-- End: list_row -->
-            </tbody>
+
             <tfoot>
                 <tr>
+                    <th></th>
                     <th>Usuario</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Email</th>
                     <th>Perfil</th>
-                    <th>Area</th>
-                    <th>Facultad</th>
-                    <th>Escuela</th>
-                    <th>Curso</th>
-                    <th>Ciudad</th>
-                    <th>Programa</th>
-                    <th>Eliminar</th>
+                    <th>Opciones</th>
                 </tr>
             </tfoot>
         </table>
@@ -85,45 +48,189 @@
 <div class="row-fluid" id="d_bar"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#view-users').dataTable({
-            'scrollX': true,
-            'dom': 'Bfrtip',
-            'buttons': ['excelHtml5'],
+        var csrf = $.cookie('nbscookie');
+        var tablejs = "";
+
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnClearTable();
+            $(this).dataTable().fnDestroy();
         });
 
-        $('.delete').each(function(){
-            $(this).click(function(e){
-                var _self = $(this);
-                e.preventDefault();
-                var dialog = new BootstrapDialog({
-                    title : 'Confirmar !!',
-                    message: 'Va a eliminar la asignación del usuario, desea continuar?',
-                    tabindex: 50,
-                    cssClass : 'alert',
-                    buttons: [
-                        {
-                            id: 'btn-ok',        
-                            label: 'Aceptar',
-                            cssClass: 'btn-primary', 
-                            autospin: false,
-                            action: function(dialogRef){    
-                                dialogRef.close();
-                                window.location = _self.attr('href');
-                            }
-                        },
-                        {
-                            id : 'btn-cancel',
-                            label : 'Cancelar',
-                            cssClass : 'btn-danger',
-                            autospin : false,
-                            action: function(dialogRef){
-                                dialogRef.close();
-                            }
+        tablejs = $('#view-users').DataTable({
+            'dom': 'Bfrtip',
+            'buttons': ['excelHtml5'],
+            'ajax' : {
+                'type' : 'POST',
+                'url' : 'users-getList',
+                'dataType' : 'json',
+                'data' : {
+                    'nbstoken' : csrf
+                }
+            },
+            'columns' : [
+                {
+                    'className' : 'details-control',
+                    'orderable' : false,
+                    'data' : null,
+                    'defaultContent' : ''
+                },
+                {'data' : 'username'},
+                {'data' : 'firstname'},
+                {'data' : 'lastname'},
+                {'data' : 'email'},
+                {'data' : 'perfil'},
+                {
+                    'data' : function(data) {
+                        return ('<a class="edit" title="Editar registro" style="cursor:pointer;">' + 
+                                    '<i class="fa fa-pencil fa-lg fa-2x" alt="'+data.id+'"></i>' + 
+                                '</a>&nbsp;&nbsp;&nbsp;' + 
+                                '<a class="delete" alt="users-delete?type=0&uid=' + base64_encode(data.id) +
+                                    '&uname='+base64_encode(data.username)+'&role=' + base64_encode(data.perfil) + 
+                                    '" title="Eliminar asignacion" class="del_assign">' + 
+                                    '<i class="fa fa-chain-broken fa-2x"></i>' + 
+                                '</a>&nbsp;&nbsp;&nbsp;' + 
+                                '<a class="delete" alt="users-delete?type=1&uid=' + base64_encode(data.id) +
+                                    '&uname='+base64_encode(data.username)+'&role=' + base64_encode(data.perfil) + 
+                                    '" title="Eliminar asignacion" class="del_assign">' + 
+                                    '<i class="fa fa-trash fa-2x"></i>' + 
+                                '</a>'
+                                );
+                    }
+                }
+            ],
+            'order' : [[5, 'asc']]
+        });
+
+        function format(d) {
+            return '<table cellpadding="5" cellspacing="0" border="1" width="100%" style="padding-left:50px;">'+
+                        '<tr style="background:#4cabfb; color:#FFF;">'+
+                            '<td>Area</td>'+
+                            '<td>Facultad</td>'+
+                            '<td>Escuela</td>'+
+                            '<td>Curso</td>'+
+                            '<td>Ciudad</td>'+
+                            '<td>Programa</td>'+
+                        '</tr>'+
+                        '<tr>'+
+                            '<td>'+d.area+'</td>'+
+                            '<td>'+d.facultad+'</td>'+
+                            '<td>'+d.escuela+'</td>'+
+                            '<td>'+d.curso+'</td>'+
+                            '<td>'+d.ciudad+'</td>'+
+                            '<td>'+d.programa+'</td>'+
+                        '</tr>'+
+                    '</table>';
+        }
+
+        $('#view-users').on("click", '.delete', function(){
+            var _self = $(this);
+            var dialog = new BootstrapDialog({
+                title : 'Confirmar !!',
+                message: 'Seguro que quiere continuar?',
+                tabindex: 50,
+                cssClass : 'alert',
+                buttons: [
+                    {
+                        id: 'btn-ok',        
+                        label: 'Aceptar',
+                        cssClass: 'btn-primary', 
+                        autospin: false,
+                        action: function(dialogRef){    
+                            dialogRef.close();
+                            window.location = _self.attr('alt');
                         }
-                    ]
-                });
-                dialog.open();
+                    },
+                    {
+                        id : 'btn-cancel',
+                        label : 'Cancelar',
+                        cssClass : 'btn-danger',
+                        autospin : false,
+                        action: function(dialogRef){
+                            dialogRef.close();
+                        }
+                    }
+                ]
             });
+            dialog.open();
+        });
+
+        $('#view-users').on("click", '.edit', function(){
+            var csrf = $.cookie('nbscookie');
+            var uname = $(this).parent().prev().prev().prev().prev().prev().html();
+            var fname = $(this).parent().prev().prev().prev().prev().html();
+            var lname = $(this).parent().prev().prev().prev().html();
+            var email = $(this).parent().prev().prev().html();
+            
+            BootstrapDialog.show({
+                title: "Editar",
+                size : BootstrapDialog.SIZE_NORMAL,
+                message: $('<div></div>').load('users-edit', {
+                    uname       :   uname,
+                    nbstoken    :   csrf,
+                    fname       :   fname,
+                    lname       :   lname,
+                    email       :   email
+                }),
+                closable: false,
+                cssClass : 'modal_page',
+                buttons: [{
+                    label: 'Cancelar',
+                    cssClass: 'btn-danger',
+                    action: function(dialogRef){
+                        dialogRef.close();
+                    }
+                }, {
+                    label: 'Actualizar',
+                    cssClass: 'btn-primary',
+                    action: function(dialogRef){
+
+                        var uid   = $('#uid').val();
+                        var uname = $('#uname').val();
+                        var fname = $('#fname').val();
+                        var lname = $('#lname').val();
+                        var email = $('#email').val();
+
+                        $.post('users-upduser', {
+                            '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
+                            uid     : uid,
+                            uname   : uname,
+                            fname   : fname,
+                            lname   : lname,
+                            email   : email
+                        })
+                        .done(function(response){
+                            if(response){
+                                $('#div-message').removeClass('has-error').addClass('has-success');
+                                $('#lbl-message').text('Registro actualizado correctamente!');
+                                setTimeout(function(){
+                                    location.reload();
+                                    dialogRef.close();
+                                }, 500);
+                            } else {
+                                $('#div-message').removeClass('has-success').addClass('has-error');
+                                $('#lbl-message').text('Hubo un error intentado actualizar, verifique!');
+                            }
+                        });
+                    }
+                }]
+            });
+        });
+
+        $('#view-users tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = tablejs.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data())).show();
+                tr.addClass('shown');
+            }
         });
     });
 </script>

@@ -14,31 +14,24 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
-        <div class="col-sm-4">
+        <div class="col-sm-3"><label>Sede *</label>
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="1" checked> Lima
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="2"> Chiclayo
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
+                <select class="populate placeholder" id="cbo_sede">
+                    <option value="0">.:::Seleccione:::.</option>
+                    <option value="1">Lima Centro</option>
+                    <option value="3">Lima Norte</option>
+                    <option value="2">Chiclayo</option>
+                    <option value="4">Arequipa</option>
+                </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                echo "<select class='populate placeholder' id='cbo_sede'>";
+                echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {
-                    echo "<div class='radio-inline'>";
-                    echo "<label>";
-                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
-                    echo "<i class='fa fa-circle-o'></i>";
-                    echo "</label>";
-                    echo "</div>";
+                    echo "<option value='" . $value['city_id'] . "'>" . $name_ciudad[$value['city_id']] . "</option>";
                 }
+                echo "</select>";
             }
             ?>
         </div>
@@ -413,7 +406,6 @@
                 var csrf = $.cookie('nbscookie');
 
                 $('#datatable_area').removeClass('hidden').dataTable({
-                    'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
                         "infoEmpty": "Sin registros que mostrar",
@@ -438,6 +430,10 @@
                             'f2': f2
                         }
                     }
+                });
+                $('#datatable_area').wrap("<div class='double' style='width:100%'></div>");
+                $('.double').doubleScroll({
+                    resetOnWindowResize : true
                 });
             }
         });

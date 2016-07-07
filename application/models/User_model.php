@@ -45,6 +45,13 @@ class User_model extends CI_Model {
         return $dta_usuario;
     }
 
+    function getUserByUname($uname) {
+        $sql = "SELECT id FROM n_users WHERE username = '{$uname}'";
+        $data = $this->db->query($sql)->result('array');
+
+        return $data;
+    }
+
     function get_areas() {
         $sql = "SELECT * from n_areas WHERE active = 1 order by id, description";
         return $query = $this->db->query($sql)->result();
@@ -228,12 +235,16 @@ class User_model extends CI_Model {
         return ($data[0]['total'] > 0) ? true : false;
     }
 
-    function delete($uid, $uname, $role) {
+    function delete($uid, $uname, $role, $type) {
 
         $this->delete_assignment($uid);
 
-        $sql_upd_user = "UPDATE n_users set active = 0 where id = '" . $uid . "'";
-
+        if($type == 1) {
+            $sql_upd_user = "DELETE FROM n_users where id = '" . $uid . "'";
+        } else {
+            $sql_upd_user = "UPDATE n_users set active = 0 where id = '" . $uid . "'";
+        }
+        
         $sql_add_audit = "INSERT INTO n_audit (username, user_afected, rol_user_afected, 
             action, access_date, ip_address) values ('" . $_SESSION['usuario'] . "', 
             '" . $uname . "', '" . $role . "', 'Desasignacion', '" . date('Y-m-d H:i:s') . "', 
@@ -245,6 +256,12 @@ class User_model extends CI_Model {
         return ($upd && $aud) ? true : false;
     }
 
+    function edit($uname, $fname, $lname, $email, $uid) {
+        $sql = "UPDATE n_users set username = '{$uname}', firstname = '{$fname}', lastname = '{$lname}', email = '{$email}'
+                WHERE id = '{$uid}'";
+
+        return $this->db->query($sql);
+    }
 }
 
 ?>

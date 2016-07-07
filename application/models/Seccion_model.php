@@ -153,11 +153,7 @@ class Seccion_model extends CI_Model {
         if (!empty($herramienta)) {
             $sql_columns = ", ";
             for ($i = 0; $i < count($herramienta); $i++) {
-                if (!stristr($herramienta[$i], 'course_base')) {
-                    $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
-                } else {
-                    $sql_columns .= $herramienta[$i] . " AS " . $herramienta[$i] . ", ";
-                }
+                $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
             }
 
             $sql_columns = substr($sql_columns, 0, -2);

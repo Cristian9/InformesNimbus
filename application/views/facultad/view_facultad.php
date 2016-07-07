@@ -14,31 +14,24 @@
 <!--Start Dashboard 1-->
 <div id="dashboard-header">
     <div class="row" style="margin-left: 1px !important;">
-        <div class="col-sm-4">
+        <div class="col-sm-3"><label>Sede *</label>
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="1" checked> Lima
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio" name="radio-inline" value="2"> Chiclayo
-                        <i class="fa fa-circle-o"></i>
-                    </label>
-                </div>
+                <select class="populate placeholder" id="cbo_sede">
+                    <option value="0">.:::Seleccione:::.</option>
+                    <option value="1">Lima Centro</option>
+                    <option value="3">Lima Norte</option>
+                    <option value="2">Chiclayo</option>
+                    <option value="4">Arequipa</option>
+                </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima', 2 => 'Chiclayo'];
+                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                echo "<select class='populate placeholder' id='cbo_sede'>";
+                echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {
-                    echo "<div class='radio-inline'>";
-                    echo "<label>";
-                    echo "<input type='radio' name='radio-inline' value='" . $value['city_id'] . "' checked> " . $name_ciudad[$value['city_id']];
-                    echo "<i class='fa fa-circle-o'></i>";
-                    echo "</label>";
-                    echo "</div>";
+                    echo "<option value='" . $value['city_id'] . "'>" . $name_ciudad[$value['city_id']] . "</option>";
                 }
+                echo "</select>";
             }
             ?>
         </div>
@@ -278,15 +271,6 @@
     $(document).ready(function () {
         $('select').select2();
 
-        var ciudad_select;
-        $('input:radio[name=radio-inline]').each(function () {
-            if ($(this).is(':checked')) {
-                ciudad_select = $(this).val();
-            }
-        });
-
-        cargar_select('cbo_facultades', 'facultad-getFacultad', ciudad_select);
-
         $('#cbo_cat').change(function () {
             var category = $(this).val();
             $('#cbo_periodo')
@@ -300,19 +284,17 @@
             getWeeks();
         });
 
-        $('input:radio[name=radio-inline]').each(function () {
-            $(this).click(function () {
-                ciudad_select = $(this).val();
-                $('#cbo_facultades')
-                    .select2('val', 0)
-                    .html(null)
-                    .append("<option value='0'>::: Todos :::</option>");
-                cargar_select('cbo_facultades', 'facultad-getFacultad', ciudad_select);
-            });
+        $('#cbo_sede').change(function(){
+            var ciudad_select = $(this).val();
+            $('#cbo_facultades')
+                .select2('val', 0)
+                .html(null)
+                .append("<option value='0'>::: Todos :::</option>");
+            cargar_select('cbo_facultades', 'facultad-getFacultad', ciudad_select);
         });
 
         $('#btn_gr').click(function () {
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -325,16 +307,9 @@
             }
 
             if ($.isValid) {
-                var ciudad = [];
                 var herramienta = [];
-                var iciudad = 0;
                 var iherramienta = 0;
-                $('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        ciudad[iciudad] = $(this).val();
-                        iciudad++;
-                    }
-                });
+
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
@@ -343,18 +318,15 @@
                     }
                 });
 
-                if (ciudad == "") {
-                    ciudad[iciudad] = $('#city').val();
-                }
-
                 var e = document.getElementById('cbo_cat');
                 var prg = $('#cbo_cat').val() + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
                 var facultad = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
+                var sede = $('#cbo_sede').val();
 
                 var params = {
-                    'ciudad': ciudad,
+                    'ciudad': sede,
                     'herramienta': herramienta,
                     'programa': prg,
                     'facultad': facultad,
@@ -365,9 +337,10 @@
                 graficar('facultad-graficar', params);
             }
         });
+
         $('#btn_send').click(function () {
             $('#d_bar').html(null);
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -392,17 +365,8 @@
                     $('#tfoot').find("#" + $(this).val() + "_footbase").remove();
                 });
 
-                var radio = [];
                 var check = [];
                 var icheck = 0;
-                var iradio = 0;
-
-                $('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        radio[iradio] = $(this).val();
-                        iradio++;
-                    }
-                });
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
                         var txt = $(this).val();
@@ -417,19 +381,15 @@
                     }
                 });
 
-                if (radio == "") {
-                    radio[iradio] = $('#city').val();
-                }
-
                 var e = document.getElementById('cbo_cat');
                 var prg = $('#cbo_cat').val() + $('#cbo_periodo').val() + e.options[e.selectedIndex].text;
                 var cbo = $('#cbo_facultades').val();
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
                 var csrf = $.cookie('nbscookie');
+                var sede = $('#cbo_sede').val();
 
                 $('#datatable_area').removeClass('hidden').dataTable({
-                    'scrollX': true,
                     'language': {
                         'zeroRecords': 'No hay registros disponibles',
                         "infoEmpty": "Sin registros que mostrar",
@@ -447,13 +407,17 @@
                         'data': {
                             'nbstoken' : csrf,
                             'prg': prg,
-                            'radio': radio,
+                            'radio': sede,
                             'check': check,
                             'cbo': cbo,
                             'f1': f1,
                             'f2': f2
                         }
                     }
+                });
+                $('#datatable_area').wrap("<div class='double' style='width:100%'></div>");
+                $('.double').doubleScroll({
+                    resetOnWindowResize : true
                 });
             }
         });

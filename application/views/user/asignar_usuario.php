@@ -73,8 +73,10 @@
                             <label class="col-sm-3 control-label">Ciudad</label>
                             <div class="col-sm-5">
                                 <select class="populate placeholder" multiple name="country" id="s_ciudad">
-                                    <option value="1">-- Lima --</option>
+                                    <option value="1">-- Lima Centro --</option>
+                                    <option value="3">-- Lima Norte --</option>
                                     <option value="2">-- Chiclayo --</option>
+                                    <option value="4">-- Arequipa --</option>
                                 </select>
                             </div>
                         </div>

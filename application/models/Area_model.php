@@ -58,9 +58,7 @@ class Area_model extends CI_Model {
     function listar($ciudad, $area, $herramienta, $prg, $del, $al) {
         $estadisticas = array();
         $periodo = substr($prg, 1, 3);
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " and n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
-                " and n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+        $sql_ciudad = " and n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
         $sql_area = " WHERE n.course_code IN (SELECT DISTINCT course_code 
             FROM n_course_areas, n_areas a  WHERE n_course_areas.area_id = 
@@ -100,11 +98,7 @@ class Area_model extends CI_Model {
         if (!empty($herramienta)) {
             $sql_columns = ", ";
             for ($i = 0; $i < count($herramienta); $i++) {
-                if (!stristr($herramienta[$i], 'course_base')) {
-                    $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
-                } else {
-                    $sql_columns .= $herramienta[$i] . " AS " . $herramienta[$i] . ", ";
-                }
+                $sql_columns .= "SUM(" . $herramienta[$i] . ") AS " . $herramienta[$i] . ", ";
             }
 
             $sql_columns = substr($sql_columns, 0, -2);
@@ -125,9 +119,8 @@ class Area_model extends CI_Model {
 
     function data_graficar($ciudad, $programa, $area, $desde, $hasta, $herramienta) {
         $periodo = substr($programa, 1, 3);
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " n.faculty not in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') " :
-                " n.faculty in ('F3', 'F4', 'F5', 'F6', 'F7', 'FP', 'F8') ";
+
+        $sql_ciudad = " n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
         $where_area = " where active = 1";
 
