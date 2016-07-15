@@ -9,12 +9,12 @@ class Facu_model extends CI_Model {
     }
 
     function index($id) {
-        $chk = " fa.sede = '{$id}'";
+        //$chk = " fa.sede = '{$id}'";
 
         switch ($_SESSION['rol']) {
             case 1:
             case 2:
-                $sql = "SELECT fa.id, fa.description from n_faculty fa where {$chk} and active = 1 order by fa.id";
+                $sql = "SELECT fa.id, fa.description from n_faculty fa where /*{$chk} and*/ active = 1 order by fa.id";
                 break;
             case 4:
                 foreach ($_SESSION['faculty_id'] as $value) {
@@ -60,7 +60,7 @@ class Facu_model extends CI_Model {
     function listar($ciudad, $prg, $facu, $herramienta, $del, $al) {
         $estadisticas = array();
 
-        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = "";//" and faculty in (select id from n_faculty where sede = '{$ciudad}')";
 
 
         $sql_facu = ($facu != '0') ? " and faculty in ('" . $facu . "') " : "";

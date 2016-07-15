@@ -84,11 +84,35 @@ $query_builder = TRUE;
 	'save_queries' => TRUE
 );*/
 
-$db['default'] = array(
+// Datamart Desarrollo
+/*$db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '10.32.1.118',
 	'username' => 'usrnindev',
 	'password' => 'Qht68Fh9UU',
+	'database' => 'db_datamart',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);*/
+
+// Datamart Produccion
+$db['default'] = array(
+	'dsn'	=> '',
+	'hostname' => '10.31.1.118',
+	'username' => 'ctapia',
+	'password' => 'dtaCTO2016',
 	'database' => 'db_datamart',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

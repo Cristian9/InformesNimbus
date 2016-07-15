@@ -22,13 +22,8 @@ class Seccion_model extends CI_Model {
     }
 
     function index($fid, $id) {
-        if ($fid == "1") {
-            $chk = " and faculty not in ('F3', 'F4', 'F5', "
-                    . "'F6', 'F7', 'FP', 'F8') order by faculty asc";
-        } else {
-            $chk = " and faculty in ('F3', 'F4', 'F5', "
-                    . "'F6', 'F7', 'FP', 'F8') order by faculty asc";
-        }
+        
+        $chk = " and faculty in (select id from n_faculty where sede = '{$fid}') order by faculty asc";
 
         switch ($_SESSION['rol']) {
             case 1:
@@ -97,9 +92,8 @@ class Seccion_model extends CI_Model {
 
     function listar($ciudad, $prg, $seccion, $herramienta, $del, $al) {
         $estadisticas = array();
-        $sql_ciudad = ($ciudad[0] == "1") ?
-                " and faculty not in ('F3', 'F4', 'F5', 'F6', 'FP', 'F8') " :
-                " and faculty in ('F3', 'F4', 'F5', 'F6', 'FP', 'F8') ";
+
+        $sql_ciudad = " and faculty in(select id from n_faculty where sede = {$ciudad})";
 
         $sql_carrera = ($seccion != '0') ? " and section_code = '" . $seccion . "' " : "";
         $periodo = substr($prg, 1, 3);

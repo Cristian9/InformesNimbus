@@ -293,7 +293,7 @@
             cargar_select('cbo_periodo', 'secciones-getPeriodos', category);
         });
 
-        $('input:radio[name=radio-inline]').each(function () {
+        /*$('input:radio[name=radio-inline]').each(function () {
             $(this).click(function () {
                 $('#cbo_cat, #cbo_periodo').validate({
                     required: true,
@@ -307,16 +307,30 @@
                     cargar_select_seccion(chk);
                 }
             });
+        });*/
+
+        $('#cbo_sede').change(function(){
+            $('#cbo_cat, #cbo_periodo').validate({
+                required: true,
+                message: {
+                    required: 'Requerido'
+                }
+            });
+
+            if ($.isValid) {
+                var chk = $(this).val();
+                cargar_select_seccion(chk);
+            }
         });
 
         $('#cbo_periodo').change(function () {
-            var chk = "";
+            /*var chk = "";
             $('input:radio[name=radio-inline]').each(function () {
                 if ($(this).is(':checked')) {
                     chk = $(this).val();
                 }
-            });
-
+            });*/
+            var chk = $('#cbo_sede').val();
             $('#cbo_periodo').validate({
                 required: true,
                 message: {
@@ -331,17 +345,17 @@
             getWeeks();
         });
 
-        var chk = "";
+        /*var chk = "";
         $('input:radio[name=radio-inline]').each(function () {
             if ($(this).is(':checked')) {
                 chk = $(this).val();
             }
         });
-        cargar_select_seccion(chk);
+        cargar_select_seccion(chk);*/
 
         $('#btn_send').click(function () {
 
-            $('#cbo_periodo, #cbo_cat').validate({
+            $('#cbo_periodo, #cbo_cat, #cbo_sede').validate({
                 required: true,
                 message: {
                     required: 'Requerido'
@@ -368,12 +382,12 @@
                     $('#tfoot').find("#" + $(this).val() + "_footbase").remove();
                 });
 
-                var radio = [];
+                //var radio = [];
                 var check = [];
                 var icheck = 0;
-                var iradio = 0;
+                //var iradio = 0;
 
-                $('input:radio[name=radio-inline]').each(function () {
+                /*$('input:radio[name=radio-inline]').each(function () {
                     if ($(this).is(':checked')) {
                         radio[iradio] = $(this).val();
                         iradio++;
@@ -382,7 +396,7 @@
 
                 if (radio == "") {
                     radio[iradio] = $('#city').val();
-                }
+                }*/
 
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
@@ -404,6 +418,7 @@
                 var f1 = $('#input_date').val();
                 var f2 = $('#input_date2').val();
                 var csrf = $.cookie('nbscookie');
+                var sede = $('#cbo_sede').val();
 
                 $('#datatable_area').removeClass('hidden').dataTable({
                     'language': {
@@ -422,7 +437,7 @@
                         'dataType': 'json',
                         'data': {
                             'nbstoken' : csrf,
-                            'radio': radio,
+                            'radio': sede,
                             'prg': prg,
                             'check': check,
                             'cbo': cbo,
