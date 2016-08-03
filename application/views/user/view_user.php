@@ -92,7 +92,7 @@
                                 '</a>&nbsp;&nbsp;&nbsp;' + 
                                 '<a class="delete" alt="users-delete?type=1&uid=' + base64_encode(data.id) +
                                     '&uname='+base64_encode(data.username)+'&role=' + base64_encode(data.perfil) + 
-                                    '" title="Eliminar asignacion" class="del_assign">' + 
+                                    '" title="Eliminar usuario" class="del_assign">' + 
                                     '<i class="fa fa-trash fa-2x"></i>' + 
                                 '</a>'
                                 );
@@ -161,6 +161,7 @@
             var fname = $(this).parent().prev().prev().prev().prev().html();
             var lname = $(this).parent().prev().prev().prev().html();
             var email = $(this).parent().prev().prev().html();
+            var perfil = $(this).parent().prev().html();
             
             BootstrapDialog.show({
                 title: "Editar",
@@ -170,7 +171,8 @@
                     nbstoken    :   csrf,
                     fname       :   fname,
                     lname       :   lname,
-                    email       :   email
+                    email       :   email,
+                    perfil      :   perfil
                 }),
                 closable: false,
                 cssClass : 'modal_page',
@@ -190,6 +192,7 @@
                         var fname = $('#fname').val();
                         var lname = $('#lname').val();
                         var email = $('#email').val();
+                        var perfil = $('#perfil').val();
 
                         $.post('users-upduser', {
                             '<?php echo $this->security->get_csrf_token_name(); ?>':'<?php echo $this->security->get_csrf_hash(); ?>',
@@ -197,7 +200,8 @@
                             uname   : uname,
                             fname   : fname,
                             lname   : lname,
-                            email   : email
+                            email   : email,
+                            perfil  : perfil
                         })
                         .done(function(response){
                             if(response){

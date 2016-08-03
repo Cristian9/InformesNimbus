@@ -241,13 +241,15 @@ class User_model extends CI_Model {
 
         if($type == 1) {
             $sql_upd_user = "DELETE FROM n_users where id = '" . $uid . "'";
+            $message_action = "Usuario eliminado";
         } else {
             $sql_upd_user = "UPDATE n_users set active = 0 where id = '" . $uid . "'";
+            $message_action = "Quitar asignacion";
         }
         
         $sql_add_audit = "INSERT INTO n_audit (username, user_afected, rol_user_afected, 
             action, access_date, ip_address) values ('" . $_SESSION['usuario'] . "', 
-            '" . $uname . "', '" . $role . "', 'Desasignacion', '" . date('Y-m-d H:i:s') . "', 
+            '" . $uname . "', '" . $role . "', '".$message_action."', '" . date('Y-m-d H:i:s') . "', 
             '" . $_SERVER['REMOTE_ADDR'] . "')";
 
         $upd = $this->db->query($sql_upd_user);
@@ -256,11 +258,20 @@ class User_model extends CI_Model {
         return ($upd && $aud) ? true : false;
     }
 
-    function edit($uname, $fname, $lname, $email, $uid) {
+    function edit($uname, $perfil, $fname, $lname, $email, $uid) {
         $sql = "UPDATE n_users set username = '{$uname}', firstname = '{$fname}', lastname = '{$lname}', email = '{$email}'
                 WHERE id = '{$uid}'";
 
-        return $this->db->query($sql);
+        $sql_add_audit = "INSERT INTO n_audit (username, user_afected, rol_user_afected, 
+            action, access_date, ip_address) values ('" . $_SESSION['usuario'] . "', 
+            '" . $uname . "', '".$perfil."', 'Usuario editado', '" . date('Y-m-d H:i:s') . "', 
+            '" . $_SERVER['REMOTE_ADDR'] . "')";
+
+        $upd = $this->db->query($sql);
+        $aud = $this->db->query($sql_add_audit);
+
+        return ($upd && $aud) ? true : false;
+
     }
 }
 

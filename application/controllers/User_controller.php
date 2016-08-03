@@ -203,19 +203,22 @@ class User_controller extends CI_Controller {
         $params['fname'] = $this->input->post('fname');
         $params['lname'] = $this->input->post('lname');
         $params['email'] = $this->input->post('email');
+        $params['perfil'] = $this->input->post('perfil');
         $params['uid']   = $userId[0]['id'];
 
         $this->load->view('user/edit_usuario', $params);
     }
 
     function upduser() {
+        session_start();
         $uname = $this->input->post('uname');
         $fname = $this->input->post('fname');
         $lname = $this->input->post('lname');
         $email = $this->input->post('email');
+        $perfil = $this->input->post('perfil');
         $uid   = $this->input->post('uid');
         
-        $upd = $this->user_model->edit($uname, $fname, $lname, $email, $uid);
+        $upd = $this->user_model->edit($uname, $perfil, $fname, $lname, $email, $uid);
         echo $upd;
     }
 

@@ -39,6 +39,12 @@
                <input type="text" class="form-control" id="email" value="<?php echo $email; ?>" >
             </div>
         </div>
+        <div class="form-group has-success">
+            <label class="col-sm-4 control-label">Perfil:</label>
+            <div class="col-sm-4">
+               <input type="text" class="form-control" id="perfil" readonly value="<?php echo $perfil; ?>" >
+            </div>
+        </div>
         <div class="form-group" id="div-message">
             <label class="col-sm-8 control-label" id="lbl-message"></label>
         </div>

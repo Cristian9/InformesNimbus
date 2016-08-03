@@ -85,7 +85,7 @@ $query_builder = TRUE;
 );*/
 
 // Datamart Desarrollo
-/*$db['default'] = array(
+$db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '10.32.1.118',
 	'username' => 'usrnindev',
@@ -105,10 +105,10 @@ $query_builder = TRUE;
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
-);*/
+);
 
 // Datamart Produccion
-$db['default'] = array(
+/*$db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '10.31.1.118',
 	'username' => 'ctapia',
@@ -128,4 +128,4 @@ $db['default'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
-);
+);*/
