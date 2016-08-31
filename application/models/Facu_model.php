@@ -9,7 +9,7 @@ class Facu_model extends CI_Model {
     }
 
     function index($id) {
-        $chk = " fa.sede = '{$id}'";
+        $chk = " fa.acad_programa = '{$id}'";
 
         switch ($_SESSION['rol']) {
             case 1:
@@ -60,7 +60,7 @@ class Facu_model extends CI_Model {
     function listar($ciudad, $prg, $facu, $herramienta, $del, $al) {
         $estadisticas = array();
 
-        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and campus = '{$ciudad}'";
 
 
         $sql_facu = ($facu != '0') ? " and faculty in ('" . $facu . "') " : "";
@@ -76,8 +76,8 @@ class Facu_model extends CI_Model {
         }
 
         $sql = "SELECT category, f.description as facultad, c.description, 
-            n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
-            if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
+            n.nbr_users, n.section_code, n.course_code, if(n.turno='M', 'mañana', 
+            if(n.turno='T','tarde', 'noche')) as turno, n.course_title, 
             n.coach, n.lastname, n.firstname, SEC_TO_TIME(SUM(TIME_TO_SEC(n.time_conection))) Tiempo";
 
         $sql_from = " from n_report_detail n, n_faculty f, n_programs c 
@@ -109,7 +109,7 @@ class Facu_model extends CI_Model {
 
     function data_graficar($ciudad, $herramienta, $programa, $facultad, $desde, $hasta) {
 
-        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and campus = '{$ciudad}'";
 
         $where_facultad = ($facultad != '0') ? " and faculty = '" . $facultad . "' " : $sql_ciudad;
 
@@ -124,7 +124,7 @@ class Facu_model extends CI_Model {
         }
 
         $query_facultades = "SELECT faculty, f.description from n_faculty f, n_report_detail 
-            where f.id = faculty and f.sede = {$ciudad} and f.active = 1 and category = '" . $programa . "' " . 
+            where f.id = faculty and n_report_detail.campus = '{$ciudad}' and f.active = 1 and category = '" . $programa . "' " . 
             $where_facultad . " group by faculty";
 
         $sql_facultades = $this->db->query($query_facultades)->result('array');

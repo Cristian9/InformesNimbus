@@ -18,10 +18,10 @@
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
                 <select class="populate placeholder" id="cbo_sede">
                     <option value="0">.:::Seleccione:::.</option>
-                    <option value="1">Lima Centro</option>
-                    <option value="3">Lima Norte</option>
-                    <option value="2">Chiclayo</option>
-                    <option value="4">Arequipa</option>
+                    <option value="LI">Lima Centro</option>
+                    <option value="LN">Lima Norte</option>
+                    <option value="CH">Chiclayo</option>
+                    <option value="AQ">Arequipa</option>
                 </select>
                 <?php
             } else {

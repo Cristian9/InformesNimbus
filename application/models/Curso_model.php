@@ -98,7 +98,7 @@ class Curso_model extends CI_Model {
 
         $sql_rol = "";
 
-        $sql_ciudad = " and n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and n.campus = '{$ciudad}'";
 
         switch ($_SESSION['rol']) {
             case 3:

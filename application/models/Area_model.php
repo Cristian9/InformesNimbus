@@ -58,7 +58,7 @@ class Area_model extends CI_Model {
     function listar($ciudad, $area, $herramienta, $prg, $del, $al) {
         $estadisticas = array();
         $periodo = substr($prg, 1, 3);
-        $sql_ciudad = " and n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and n.campus = '{$ciudad}'";
 
         $sql_area = " WHERE n.course_code IN (SELECT DISTINCT course_code 
             FROM n_course_areas, n_areas a  WHERE n_course_areas.area_id = 
@@ -84,8 +84,8 @@ class Area_model extends CI_Model {
         }
 
         $sql = "SELECT n.category, f.description as facultad, c.description, 
-            n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
-            if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
+            n.nbr_users, n.section_code, n.course_code, if(n.turno='M', 'mañana', 
+            if(n.turno='T','tarde', 'noche')) as turno, n.course_title, 
             n.coach, n.lastname, n.firstname, SEC_TO_TIME(SUM(TIME_TO_SEC(n.time_conection))) Tiempo";
 
         $sql_from = " FROM n_report_detail n inner join n_faculty 
@@ -120,7 +120,7 @@ class Area_model extends CI_Model {
     function data_graficar($ciudad, $programa, $area, $desde, $hasta, $herramienta) {
         $periodo = substr($programa, 1, 3);
 
-        $sql_ciudad = " n.faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " n.campus = '{$ciudad}'";
 
         $where_area = " where active = 1";
 

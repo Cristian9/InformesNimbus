@@ -58,7 +58,7 @@ class Carrera_model extends CI_Model {
 
     function index($id) {
 
-        $chk = " where fa.sede = {$id}";
+        $chk = " where fa.acad_programa = '{$id}'";
 
         switch ($_SESSION['rol']) {
             case 1:
@@ -90,7 +90,7 @@ class Carrera_model extends CI_Model {
     function listar($ciudad, $prg, $carrera, $facultad, $herramienta, $del, $al) {
         $estadisticas = array();
 
-        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and campus = '{$ciudad}'";
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
 
@@ -152,7 +152,7 @@ class Carrera_model extends CI_Model {
 
     function graficar($ciudad, $herramienta, $programa, $carrera, $facultad, $desde, $hasta) {
 
-        $sql_ciudad = " and faculty in (select id from n_faculty where sede = '{$ciudad}')";
+        $sql_ciudad = " and campus = '{$ciudad}'";
 
         $n_faculty = ($facultad != "0") ? " and faculty = '" . $facultad . "'" : "";
 

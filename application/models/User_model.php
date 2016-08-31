@@ -24,8 +24,8 @@ class User_model extends CI_Model {
             n_report_detail where course_code = a.course_id limit 1) as curso from 
             n_users nu inner join n_assignment a on a.user_id = nu.id and nu.active=1";
 
-        $sql_assigned_city = "SELECT user_id, case city_id when 1 then 'Lima Centro' when 2 
-            then 'Chiclayo' when 3 then 'Lima Norte' when 4 then 'Arequipa' end as Ciudad from n_assignment_city";
+        $sql_assigned_city = "SELECT user_id, case city_id when 'LI' then 'Lima Centro' when 'CH' 
+            then 'Chiclayo' when 'LN' then 'Lima Norte' when 'AQ' then 'Arequipa' end as Ciudad from n_assignment_city";
 
         $sql_assigned_category = "SELECT nca.user_id, ca.category from n_assignment_category 
             nca, n_category ca where nca.category_id = ca.id";
@@ -134,7 +134,7 @@ class User_model extends CI_Model {
             // tabla ciudad
             foreach ($ciudad as $value) {
                 $sql_insert_city = "INSERT INTO n_assignment_city (user_id, city_id) 
-                    VALUES (" . $usuario . ", " . $value . ")";
+                    VALUES (" . $usuario . ", '" . $value . "')";
 
                 $this->db->query($sql_insert_city);
             }

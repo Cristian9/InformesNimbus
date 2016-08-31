@@ -18,10 +18,10 @@
             <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) { ?>
                 <select class="populate placeholder" id="cbo_sede">
                     <option value="0">.:::Seleccione:::.</option>
-                    <option value="1">Lima Centro</option>
-                    <option value="3">Lima Norte</option>
-                    <option value="2">Chiclayo</option>
-                    <option value="4">Arequipa</option>
+                    <option value="LI">Lima Centro</option>
+                    <option value="LN">Lima Norte</option>
+                    <option value="CH">Chiclayo</option>
+                    <option value="AQ">Arequipa</option>
                 </select>
                 <?php
             } else {
@@ -279,13 +279,28 @@
                 .html(null)
                 .append("<option value='0'>.::: Seleccione :::.</option>");
             cargar_select('cbo_periodo', 'carrera-getPeriodos', category);
+
+            var ciudad_select = $(this).val();
+            if($('#cbo_facultades').length != 0) {
+                $('#cbo_facultades')
+                    .select2('val', 0)
+                    .html(null)
+                    .append("<option value='0'>::: Seleccione :::</option>");
+                cargar_select('cbo_facultades', 'carrera-getFacultades', ciudad_select);
+            } else {
+                $('#cbo_carreras')
+                    .select2('val', 0)
+                    .html(null)
+                    .append("<option value='0'>::: Seleccione :::</option>");
+                cargar_select('cbo_carreras', 'carrera-getFacultades', ciudad_select);
+            }
         });
 
         $('#cbo_periodo').change(function () {
             getWeeks();
         });
 
-        $('#cbo_sede').change(function () {
+        /*$('#cbo_sede').change(function () {
             var ciudad_select = $(this).val();
             if($('#cbo_facultades').length != 0) {
                 $('#cbo_facultades')
@@ -301,7 +316,7 @@
                 cargar_select('cbo_carreras', 'carrera-getFacultades', ciudad_select);
             }
             
-        });
+        });*/
 
         $('#cbo_facultades').change(function () {
             $('#cbo_cat, #cbo_periodo, #cbo_sede').validate({
