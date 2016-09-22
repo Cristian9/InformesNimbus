@@ -25,7 +25,7 @@
                 </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                $name_ciudad = ['LI' => 'Lima Centro', 'CH' => 'Chiclayo', 'LN' => 'Lima Norte', 'AQ' => 'Arequipa'];
                 echo "<select class='populate placeholder' id='cbo_sede'>";
                 echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {

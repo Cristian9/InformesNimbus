@@ -79,7 +79,7 @@ class Carrera_model extends CI_Model {
                 $in = substr($in, 0, -1);
                 $sql = "SELECT n_programs.program_id as id, n_programs.description from n_programs, n_faculty f 
                     where f.id = n_programs.faculty_id and n_programs.program_id in ({$in}) and faculty_id = '" . $_SESSION['faculty_id'][0] . 
-                    "'  and f.sede = '{$id}'";
+                    "'  and f.acad_programa = '{$id}'";
                 break;
         }
 

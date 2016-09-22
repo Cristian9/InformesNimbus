@@ -23,7 +23,7 @@ class Seccion_model extends CI_Model {
 
     function index($fid, $id) {
         
-        $chk = " and faculty in (select id from n_faculty where sede = '{$fid}') order by faculty asc";
+        $chk = " and faculty in (select id from n_faculty where acad_programa = '{$fid}') order by faculty asc";
 
         switch ($_SESSION['rol']) {
             case 1:
@@ -93,7 +93,7 @@ class Seccion_model extends CI_Model {
     function listar($ciudad, $prg, $seccion, $herramienta, $del, $al) {
         $estadisticas = array();
 
-        $sql_ciudad = " and faculty in(select id from n_faculty where sede = {$ciudad})";
+        $sql_ciudad = " and faculty in(select id from n_faculty where acad_programa = {$ciudad})";
 
         $sql_carrera = ($seccion != '0') ? " and section_code = '" . $seccion . "' " : "";
         $periodo = substr($prg, 1, 3);

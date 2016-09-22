@@ -25,7 +25,7 @@
                 </select>
                 <?php
             } else {
-                $name_ciudad = [1 => 'Lima Centro', 2 => 'Chiclayo', 3 => 'Lima Norte', 4 => 'Arequipa'];
+                $name_ciudad = ['LI' => 'Lima Centro', 'CH' => 'Chiclayo', 'LN' => 'Lima Norte', 'AQ' => 'Arequipa'];
                 echo "<select class='populate placeholder' id='cbo_sede'>";
                 echo "<option value='0'>.:::Seleccione:::.</option>";
                 foreach ($_SESSION['city'] as $value) {
@@ -293,44 +293,8 @@
             cargar_select('cbo_periodo', 'secciones-getPeriodos', category);
         });
 
-        /*$('input:radio[name=radio-inline]').each(function () {
-            $(this).click(function () {
-                $('#cbo_cat, #cbo_periodo').validate({
-                    required: true,
-                    message: {
-                        required: 'Requerido'
-                    }
-                });
-
-                if ($.isValid) {
-                    var chk = $(this).val();
-                    cargar_select_seccion(chk);
-                }
-            });
-        });*/
-
-        $('#cbo_sede').change(function(){
-            $('#cbo_cat, #cbo_periodo').validate({
-                required: true,
-                message: {
-                    required: 'Requerido'
-                }
-            });
-
-            if ($.isValid) {
-                var chk = $(this).val();
-                cargar_select_seccion(chk);
-            }
-        });
-
         $('#cbo_periodo').change(function () {
-            /*var chk = "";
-            $('input:radio[name=radio-inline]').each(function () {
-                if ($(this).is(':checked')) {
-                    chk = $(this).val();
-                }
-            });*/
-            var chk = $('#cbo_sede').val();
+            var chk = $('#cbo_cat').val();
             $('#cbo_periodo').validate({
                 required: true,
                 message: {
@@ -344,14 +308,6 @@
 
             getWeeks();
         });
-
-        /*var chk = "";
-        $('input:radio[name=radio-inline]').each(function () {
-            if ($(this).is(':checked')) {
-                chk = $(this).val();
-            }
-        });
-        cargar_select_seccion(chk);*/
 
         $('#btn_send').click(function () {
 
@@ -382,21 +338,8 @@
                     $('#tfoot').find("#" + $(this).val() + "_footbase").remove();
                 });
 
-                //var radio = [];
                 var check = [];
                 var icheck = 0;
-                //var iradio = 0;
-
-                /*$('input:radio[name=radio-inline]').each(function () {
-                    if ($(this).is(':checked')) {
-                        radio[iradio] = $(this).val();
-                        iradio++;
-                    }
-                });
-
-                if (radio == "") {
-                    radio[iradio] = $('#city').val();
-                }*/
 
                 $('input:checkbox').each(function () {
                     if ($(this).is(':checked')) {
