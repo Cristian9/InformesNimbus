@@ -120,8 +120,8 @@ class Carrera_model extends CI_Model {
         }
 
         $sql = "SELECT category, f.description as facultad, c.description, 
-            n.nbr_users, n.section_code, n.course_code, if(n.turno=1, 'mañana', 
-            if(n.turno=2,'tarde', 'noche')) as turno, n.course_title, 
+            n.nbr_users, n.section_code, n.course_code, if(n.turno='M', 'mañana', 
+            if(n.turno='T','tarde', 'noche')) as turno, n.course_title, 
             n.coach, n.lastname, n.firstname, SEC_TO_TIME(SUM(TIME_TO_SEC(n.time_conection))) Tiempo";
 
         $sql_from = " FROM n_report_detail n, n_faculty f, n_programs c where 
